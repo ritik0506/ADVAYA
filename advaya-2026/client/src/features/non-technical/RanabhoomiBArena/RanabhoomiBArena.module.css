@@ -1,0 +1,221 @@
+.container {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%);
+  color: #fff;
+  padding: 2rem;
+}
+
+.header {
+  text-align: center;
+  padding: 3rem 0;
+  margin-bottom: 3rem;
+  background: linear-gradient(180deg, rgba(255, 69, 0, 0.2) 0%, transparent 100%);
+  border-radius: 20px;
+}
+
+.title {
+  font-size: 4rem;
+  font-family: 'Samarkan', serif;
+  color: #ff4500;
+  text-shadow: 0 0 30px rgba(255, 69, 0, 0.8), 0 0 60px rgba(255, 69, 0, 0.4);
+  margin-bottom: 1rem;
+}
+
+.tagline {
+  font-size: 1.5rem;
+  color: #ffa500;
+  font-style: italic;
+}
+
+.content {
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.section {
+  margin-bottom: 3rem;
+  background: rgba(255, 255, 255, 0.05);
+  padding: 2rem;
+  border-radius: 15px;
+  border: 2px solid rgba(255, 69, 0, 0.3);
+  backdrop-filter: blur(10px);
+}
+
+.sectionTitle {
+  font-size: 2rem;
+  font-family: 'Samarkan', serif;
+  color: #ff4500;
+  margin-bottom: 1.5rem;
+}
+
+.description {
+  font-size: 1.1rem;
+  line-height: 1.8;
+  color: #e0e0e0;
+}
+
+.categories {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+.category {
+  background: linear-gradient(135deg, rgba(255, 69, 0, 0.2) 0%, rgba(255, 165, 0, 0.1) 100%);
+  padding: 1.5rem;
+  border-radius: 10px;
+  border: 2px solid rgba(255, 69, 0, 0.4);
+  transition: all 0.3s ease;
+}
+
+.category:hover {
+  transform: translateY(-5px);
+  border-color: #ff4500;
+  box-shadow: 0 10px 30px rgba(255, 69, 0, 0.4);
+}
+
+.category h3 {
+  color: #ffa500;
+  margin-bottom: 0.5rem;
+  font-size: 1.3rem;
+}
+
+.gameTitle {
+  color: #ff4500;
+  font-size: 1.1rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+}
+
+.gameDetails {
+  list-style: none;
+  padding: 0;
+}
+
+.gameDetails li {
+  color: #e0e0e0;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  position: relative;
+  padding-left: 1.5rem;
+}
+
+.gameDetails li::before {
+  content: '▸';
+  position: absolute;
+  left: 0;
+  color: #ff4500;
+}
+
+.gameDetails li:last-child {
+  border-bottom: none;
+  color: #ffa500;
+  font-weight: bold;
+}
+
+.rules {
+  display: grid;
+  gap: 1rem;
+}
+
+.rule {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  background: rgba(255, 165, 0, 0.1);
+  padding: 1rem;
+  border-radius: 8px;
+}
+
+.ruleIcon {
+  font-size: 2rem;
+  flex-shrink: 0;
+}
+
+.rule p {
+  color: #e0e0e0;
+  margin: 0;
+}
+
+.schedule {
+  display: grid;
+  gap: 1rem;
+}
+
+.scheduleItem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: rgba(255, 69, 0, 0.1);
+  padding: 1.5rem;
+  border-radius: 10px;
+  border-left: 4px solid #ff4500;
+}
+
+.time {
+  color: #ffa500;
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+
+.event {
+  color: #e0e0e0;
+  font-size: 1.1rem;
+}
+
+.prizePool {
+  text-align: center;
+  padding: 2rem;
+  background: linear-gradient(135deg, rgba(255, 215, 0, 0.2) 0%, rgba(255, 165, 0, 0.2) 100%);
+  border-radius: 15px;
+  border: 2px solid #ffd700;
+}
+
+.poolAmount {
+  display: block;
+  font-size: 4rem;
+  color: #ffd700;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+  text-shadow: 0 0 20px rgba(255, 215, 0, 0.6);
+}
+
+.prizePool p {
+  color: #ffa500;
+  font-size: 1.2rem;
+}
+
+.registerBtn {
+  display: block;
+  margin: 2rem auto;
+  padding: 1rem 3rem;
+  font-size: 1.3rem;
+  background: linear-gradient(135deg, #ff4500 0%, #ff8c00 100%);
+  border: none;
+  border-radius: 50px;
+  color: #fff;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 5px 20px rgba(255, 69, 0, 0.4);
+}
+
+.registerBtn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 30px rgba(255, 69, 0, 0.6);
+}
+
+@media (max-width: 768px) {
+  .title {
+    font-size: 2.5rem;
+  }
+  
+  .categories {
+    grid-template-columns: 1fr;
+  }
+  
+  .scheduleItem {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+}
