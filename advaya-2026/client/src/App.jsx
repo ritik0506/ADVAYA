@@ -24,6 +24,9 @@ import GuptaLeela from './features/non-technical/GuptaLeela/GuptaLeela';
 import Nidhi404 from './features/non-technical/Nidhi404/Nidhi404';
 import RanabhoomiBArena from './features/non-technical/RanabhoomiBArena/RanabhoomiBArena';
 
+// Registration
+import Registration from './features/registration/Registration';
+
 import './App.css';
 
 const Home = () => (
@@ -42,6 +45,15 @@ function App() {
               <Routes>
                 <Route path="/" element={<Home />} />
                 <Route path="/events" element={<Events />} />
+                <Route path="/register" element={
+                  <Registration 
+                    eventName="ADVAYA 2026"
+                    category="UG/PG"
+                    registrationFee={500}
+                    minTeamSize={1}
+                    maxTeamSize={4}
+                  />
+                } />
                 
                 {/* PG Technical Events */}
                 <Route path="/events/vyasa-data" element={<VyasaData />} />
