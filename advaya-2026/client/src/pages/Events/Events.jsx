@@ -9,8 +9,8 @@ const Events = () => {
       category: 'pg-technical',
       events: [
         {
-          name: 'Vyasa Data',
-          slug: 'vyasa-data',
+          name: 'Data Vishleshana',
+          slug: 'data-vishleshana',
           description: 'Data Science & Analytics Competition - Unveil insights like Vyasa revealed the Mahabharata',
           icon: '📊',
         },
@@ -21,8 +21,8 @@ const Events = () => {
           icon: '⚔️',
         },
         {
-          name: 'WebAstra',
-          slug: 'webastra',
+          name: 'Web Astra',
+          slug: 'web-astra',
           description: 'Advanced Web Development - Forge divine weapons with modern web technologies',
           icon: '🏹',
         },
@@ -38,6 +38,12 @@ const Events = () => {
       title: 'UG Technical Events',
       category: 'ug-technical',
       events: [
+        {
+          name: 'Gandhari Mode',
+          slug: 'gandhari-mode',
+          description: 'Blind Coding Challenge - Code without seeing, like Gandhari\'s blindfolded wisdom',
+          icon: '👁️',
+        },
         {
           name: 'Web Shilpa Chakra',
           slug: 'web-shilpa-chakra',
@@ -57,9 +63,9 @@ const Events = () => {
           icon: '🎮',
         },
         {
-          name: 'ShabdaVedha',
-          slug: 'shabdavedha',
-          description: 'NLP & AI Challenge - Master the power of words and speech recognition',
+          name: 'Shastrartha Vāda',
+          slug: 'shastrartha-vada',
+          description: 'IT Debate - Engage in philosophical battles of technology and ideas',
           icon: '🗣️',
         },
       ],
@@ -69,34 +75,34 @@ const Events = () => {
       category: 'non-technical',
       events: [
         {
-          name: 'Drishti POV',
-          slug: 'drishti-pov',
-          description: 'Photography & Videography - Capture moments through the divine third eye',
-          icon: '📷',
-        },
-        {
-          name: 'Bids Sabha',
-          slug: 'bids-sabha',
-          description: 'Debate & Discussion - Voice your wisdom in the assembly of scholars',
-          icon: '⚖️',
-        },
-        {
-          name: 'Gupta Leela',
-          slug: 'gupta-leela',
-          description: 'Treasure Hunt - Uncover hidden treasures through divine play',
-          icon: '🔍',
-        },
-        {
-          name: 'Nidhi 404',
-          slug: 'nidhi-404',
-          description: 'Technical Quiz - Seek the lost treasures of knowledge',
-          icon: '💎',
-        },
-        {
           name: 'Ranabhoomi Arena',
           slug: 'ranabhoomi-arena',
           description: 'Gaming Tournament - Battle in the arena of digital warriors',
           icon: '🎯',
+        },
+        {
+          name: 'Bids Sabha',
+          slug: 'bids-sabha',
+          description: 'IPL Auction - Voice your wisdom in the assembly of cricket strategists',
+          icon: '⚖️',
+        },
+        {
+          name: 'Nidhi 404',
+          slug: 'nidhi-404',
+          description: 'Treasure Hunt - Seek the lost treasures of knowledge',
+          icon: '💎',
+        },
+        {
+          name: 'Drishti POV',
+          slug: 'drishti-pov',
+          description: 'Photography - Capture moments through the divine third eye',
+          icon: '📷',
+        },
+        {
+          name: 'Rahasya Mintz',
+          slug: 'rahasya-mintz',
+          description: 'Surprise Event - Embrace the mystery and unveil the unexpected',
+          icon: '🔍',
         },
       ],
     },

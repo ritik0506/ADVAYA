@@ -6,23 +6,13 @@ import Navbar from './components/Navbar/Navbar';
 // Pages
 import Events from './pages/Events/Events';
 
-// PG Technical Events
-import VyasaData from './features/pg-technical/VyasaData/VyasaData';
-import WebAstra from './features/pg-technical/WebAstra/WebAstra';
-import BrahmaBits from './features/pg-technical/BrahmaBits/BrahmaBits';
+// Category Pages
+import PGTechnical from './features/pg-technical';
+import UGTechnical from './features/ug-technical';
+import NonTechnical from './features/non-technical';
 
-// UG Technical Events
-import WebShilpaChakra from './features/ug-technical/WebShilpaChakra/WebShilpaChakra';
-import BitsVedha from './features/ug-technical/BitsVedha/BitsVedha';
-import MayaLoop from './features/ug-technical/MayaLoop/MayaLoop';
-import ShabdaVedha from './features/ug-technical/ShabdaVedha/ShabdaVedha';
-
-// Non-Technical Events
-import DrishtiPOV from './features/non-technical/DrishtiPOV/DrishtiPOV';
-import BidsSabha from './features/non-technical/BidsSabha/BidsSabha';
-import GuptaLeela from './features/non-technical/GuptaLeela/GuptaLeela';
-import Nidhi404 from './features/non-technical/Nidhi404/Nidhi404';
-import RanabhoomiBArena from './features/non-technical/RanabhoomiBArena/RanabhoomiBArena';
+// Event Detail Component (Dynamic)
+import EventDetail from './components/EventDetail/EventDetail';
 
 // Registration
 import Registration from './features/registration/Registration';
@@ -45,33 +35,15 @@ function App() {
               <Routes>
                 <Route path="/" element={<Home />} />
                 <Route path="/events" element={<Events />} />
-                <Route path="/register" element={
-                  <Registration 
-                    eventName="ADVAYA 2026"
-                    category="UG/PG"
-                    registrationFee={500}
-                    minTeamSize={1}
-                    maxTeamSize={4}
-                  />
-                } />
+                <Route path="/register" element={<Registration />} />
                 
-                {/* PG Technical Events */}
-                <Route path="/events/vyasa-data" element={<VyasaData />} />
-                <Route path="/events/webastra" element={<WebAstra />} />
-                <Route path="/events/brahma-bits" element={<BrahmaBits />} />
+                {/* Category Pages */}
+                <Route path="/events/pg-technical" element={<PGTechnical />} />
+                <Route path="/events/ug-technical" element={<UGTechnical />} />
+                <Route path="/events/non-technical" element={<NonTechnical />} />
                 
-                {/* UG Technical Events */}
-                <Route path="/events/web-shilpa-chakra" element={<WebShilpaChakra />} />
-                <Route path="/events/bits-vedha" element={<BitsVedha />} />
-                <Route path="/events/maya-loop" element={<MayaLoop />} />
-                <Route path="/events/shabdavedha" element={<ShabdaVedha />} />
-                
-                {/* Non-Technical Events */}
-                <Route path="/events/drishti-pov" element={<DrishtiPOV />} />
-                <Route path="/events/bids-sabha" element={<BidsSabha />} />
-                <Route path="/events/gupta-leela" element={<GuptaLeela />} />
-                <Route path="/events/nidhi-404" element={<Nidhi404 />} />
-                <Route path="/events/ranabhoomi-arena" element={<RanabhoomiBArena />} />
+                {/* Dynamic Event Detail Route - Handles all individual events */}
+                <Route path="/events/:eventId" element={<EventDetail />} />
               </Routes>
             </div>
       </Router>

@@ -2,60 +2,61 @@ import mongoose from 'mongoose';
 
 const eventSchema = new mongoose.Schema(
   {
-    name: {
-      type: String,
-      required: [true, 'Event name is required'],
-      trim: true,
-      unique: true,
-    },
-    slug: {
+    eventId: {
       type: String,
       required: true,
       unique: true,
-      lowercase: true,
+      trim: true,
+    },
+    mythologyName: {
+      type: String,
+      required: [true, 'Mythology name is required'],
+      trim: true,
+    },
+    actualName: {
+      type: String,
+      required: [true, 'Actual event name is required'],
+      trim: true,
+    },
+    category: {
+      type: String,
+      enum: ['PG', 'UG', 'Combined', 'Non-Tech'],
+      required: [true, 'Category is required'],
     },
     description: {
       type: String,
       required: [true, 'Event description is required'],
-    },
-    category: {
-      type: String,
-      enum: ['pg-technical', 'ug-technical', 'non-technical'],
-      required: true,
-    },
-    date: {
-      type: Date,
-      required: true,
-    },
-    venue: {
-      type: String,
-      required: true,
-    },
-    maxParticipants: {
-      type: Number,
-      default: null,
-    },
-    registrationFee: {
-      type: Number,
-      default: 0,
     },
     rules: [
       {
         type: String,
       },
     ],
-    prizes: {
-      first: String,
-      second: String,
-      third: String,
-    },
-    coordinators: [
-      {
-        name: String,
-        phone: String,
-        email: String,
+    teamSize: {
+      min: {
+        type: Number,
+        required: true,
+        min: 1,
       },
-    ],
+      max: {
+        type: Number,
+        required: true,
+        min: 1,
+      },
+    },
+    fee: {
+      type: Number,
+      required: true,
+      min: 0,
+    },
+    image: {
+      type: String,
+      default: '/assets/events/default.jpg',
+    },
+    duration: {
+      type: String,
+      default: 'TBA',
+    },
     isActive: {
       type: Boolean,
       default: true,
@@ -69,6 +70,10 @@ const eventSchema = new mongoose.Schema(
     timestamps: true,
   }
 );
+
+// Index for faster queries
+eventSchema.index({ eventId: 1 });
+eventSchema.index({ category: 1 });
 
 const Event = mongoose.model('Event', eventSchema);
 

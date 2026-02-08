@@ -1,15 +1,28 @@
 import React, { useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import { registerForEvent } from '../../services/api';
 import styles from './Registration.module.css';
 
 const Registration = ({ 
-  eventName, 
-  category, // 'UG' or 'PG'
-  registrationFee,
-  teamSize = 1, // number of participants
-  minTeamSize = 1,
-  maxTeamSize = 4
+  eventName: propEventName, 
+  category: propCategory,
+  registrationFee: propRegistrationFee,
+  teamSize: propTeamSize = 1,
+  minTeamSize: propMinTeamSize = 1,
+  maxTeamSize: propMaxTeamSize = 4
 }) => {
+  const location = useLocation();
+  
+  // Extract event data from navigate state (passed from EventDetail)
+  const stateEventData = location.state || {};
+  
+  // Use state data if available, otherwise fall back to props
+  const eventName = stateEventData.eventName || propEventName || 'ADVAYA 2026';
+  const actualName = stateEventData.actualName || '';
+  const category = stateEventData.category || propCategory || 'UG/PG';
+  const registrationFee = stateEventData.fee || propRegistrationFee || 500;
+  const minTeamSize = stateEventData.teamSize?.min || propMinTeamSize;
+  const maxTeamSize = stateEventData.teamSize?.max || propMaxTeamSize;
   const [formData, setFormData] = useState({
     collegeName: '',
     teamName: '',

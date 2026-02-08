@@ -1,0 +1,480 @@
+.card {
+  position: relative;
+  width: 100%;
+  max-width: 380px;
+  min-height: 420px;
+  background: linear-gradient(135deg, #1a1a1a 0%, #0d0d0d 100%);
+  border: 2px solid #FFD700;
+  border-radius: 8px;
+  padding: 2rem;
+  cursor: pointer;
+  transition: all 0.4s ease;
+  overflow: hidden;
+  box-shadow: 
+    0 4px 20px rgba(0, 0, 0, 0.5),
+    inset 0 0 60px rgba(255, 215, 0, 0.05);
+}
+
+.card:hover {
+  transform: translateY(-8px);
+  box-shadow: 
+    0 12px 40px rgba(255, 215, 0, 0.3),
+    inset 0 0 80px rgba(255, 215, 0, 0.1);
+  border-color: #FFC107;
+}
+
+/* Decorative Corners */
+.cornerTopLeft,
+.cornerTopRight,
+.cornerBottomLeft,
+.cornerBottomRight {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  border: 2px solid #FFC107;
+}
+
+.cornerTopLeft {
+  top: 10px;
+  left: 10px;
+  border-right: none;
+  border-bottom: none;
+}
+
+.cornerTopRight {
+  top: 10px;
+  right: 10px;
+  border-left: none;
+  border-bottom: none;
+}
+
+.cornerBottomLeft {
+  bottom: 10px;
+  left: 10px;
+  border-right: none;
+  border-top: none;
+}
+
+.cornerBottomRight {
+  bottom: 10px;
+  right: 10px;
+  border-left: none;
+  border-top: none;
+}
+
+/* Category Badge */
+.categoryBadge {
+  display: inline-block;
+  padding: 0.4rem 1rem;
+  background: rgba(255, 215, 0, 0.1);
+  border: 1px solid rgba(255, 215, 0, 0.3);
+  border-radius: 20px;
+  color: #FFC107;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 1.5rem;
+}
+
+/* Content */
+.content {
+  position: relative;
+  z-index: 1;
+}
+
+.title {
+  font-family: 'Cinzel', serif;
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #FFD700;
+  margin: 0 0 0.5rem;
+  letter-spacing: 0.05em;
+  text-shadow: 0 0 20px rgba(255, 215, 0, 0.4);
+}
+
+.subtitle {
+  font-size: 0.9rem;
+  color: #FFC107;
+  font-weight: 500;
+  margin: 0 0 1rem;
+  letter-spacing: 0.05em;
+  opacity: 0.9;
+}
+
+.divider {
+  width: 60px;
+  height: 2px;
+  background: linear-gradient(90deg, #FFD700, transparent);
+  margin: 1rem 0 1.5rem;
+}
+
+.description {
+  color: #F5DEB3;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  margin: 0 0 1.5rem;
+  min-height: 80px;
+}
+
+.info {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: auto;
+}
+
+.infoItem {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.infoLabel {
+  font-size: 0.75rem;
+  color: #8d6e63;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-weight: 600;
+}
+
+.infoValue {
+  font-size: 1.1rem;
+  color: #FFD700;
+  font-weight: 700;
+}
+
+/* Hover Overlay */
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.95);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+  z-index: 2;
+}
+
+.overlay.visible {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.btnViewRules,
+.btnRegister {
+  font-family: 'Cinzel', serif;
+  padding: 0.875rem 2rem;
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  border: 2px solid;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  min-width: 200px;
+}
+
+.btnViewRules {
+  background: transparent;
+  border-color: #FFC107;
+  color: #FFC107;
+}
+
+.btnViewRules:hover {
+  background: #FFC107;
+  color: #1a1a1a;
+  box-shadow: 0 0 20px rgba(255, 193, 7, 0.5);
+}
+
+.btnRegister {
+  background: linear-gradient(135deg, #FFD700 0%, #FFC107 100%);
+  border-color: #FFD700;
+  color: #1a1a1a;
+}
+
+.btnRegister:hover {
+  background: linear-gradient(135deg, #FFC107 0%, #FFD700 100%);
+  box-shadow: 0 0 30px rgba(255, 215, 0, 0.6);
+  transform: scale(1.05);
+}
+
+/* Modal Styles */
+.modalBackdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 2rem;
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.modal {
+  background: linear-gradient(135deg, #1a1a1a 0%, #0d0d0d 100%);
+  border: 2px solid #FFD700;
+  border-radius: 12px;
+  max-width: 700px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 
+    0 20px 60px rgba(0, 0, 0, 0.8),
+    inset 0 0 100px rgba(255, 215, 0, 0.05);
+  animation: slideUp 0.3s ease;
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(50px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.modalHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 2rem 2.5rem;
+  border-bottom: 1px solid rgba(255, 215, 0, 0.2);
+}
+
+.modalTitle {
+  font-family: 'Cinzel', serif;
+  font-size: 2rem;
+  font-weight: 700;
+  color: #FFD700;
+  margin: 0;
+  letter-spacing: 0.05em;
+  text-shadow: 0 0 20px rgba(255, 215, 0, 0.4);
+}
+
+.closeButton {
+  background: none;
+  border: none;
+  color: #FFD700;
+  font-size: 2.5rem;
+  line-height: 1;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  padding: 0;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.closeButton:hover {
+  color: #FFC107;
+  transform: rotate(90deg);
+}
+
+.modalContent {
+  padding: 2rem 2.5rem;
+}
+
+.modalSubtitle {
+  font-size: 1.1rem;
+  color: #FFC107;
+  margin: 0 0 2rem;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+}
+
+.modalSection {
+  margin-bottom: 2rem;
+}
+
+.modalSectionTitle {
+  font-family: 'Cinzel', serif;
+  font-size: 1.3rem;
+  color: #FFD700;
+  margin: 0 0 1rem;
+  letter-spacing: 0.05em;
+}
+
+.modalDetails {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.modalDetailItem {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 1rem;
+  background: rgba(255, 215, 0, 0.05);
+  border-left: 3px solid #FFC107;
+  border-radius: 4px;
+}
+
+.modalLabel {
+  font-size: 0.8rem;
+  color: #8d6e63;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-weight: 600;
+}
+
+.modalValue {
+  font-size: 1rem;
+  color: #F5DEB3;
+  font-weight: 600;
+}
+
+.rulesList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.ruleItem {
+  position: relative;
+  padding: 0.75rem 0 0.75rem 2rem;
+  color: #F5DEB3;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  border-bottom: 1px solid rgba(255, 215, 0, 0.1);
+}
+
+.ruleItem:last-child {
+  border-bottom: none;
+}
+
+.ruleItem::before {
+  content: '◆';
+  position: absolute;
+  left: 0;
+  color: #FFC107;
+  font-size: 0.8rem;
+}
+
+.modalDescription {
+  color: #F5DEB3;
+  font-size: 1rem;
+  line-height: 1.7;
+  margin: 0;
+}
+
+.modalFooter {
+  padding: 1.5rem 2.5rem;
+  border-top: 1px solid rgba(255, 215, 0, 0.2);
+  display: flex;
+  justify-content: center;
+}
+
+.modalBtnRegister {
+  font-family: 'Cinzel', serif;
+  padding: 1rem 3rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  background: linear-gradient(135deg, #FFD700 0%, #FFC107 100%);
+  border: 2px solid #FFD700;
+  border-radius: 4px;
+  color: #1a1a1a;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+}
+
+.modalBtnRegister:hover {
+  background: linear-gradient(135deg, #FFC107 0%, #FFD700 100%);
+  box-shadow: 0 0 30px rgba(255, 215, 0, 0.6);
+  transform: scale(1.05);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .card {
+    max-width: 100%;
+    min-height: 380px;
+    padding: 1.5rem;
+  }
+
+  .title {
+    font-size: 1.5rem;
+  }
+
+  .modal {
+    max-height: 95vh;
+    border-radius: 8px;
+  }
+
+  .modalHeader,
+  .modalContent,
+  .modalFooter {
+    padding: 1.5rem;
+  }
+
+  .modalTitle {
+    font-size: 1.5rem;
+  }
+
+  .modalDetails {
+    grid-template-columns: 1fr;
+  }
+
+  .btnViewRules,
+  .btnRegister {
+    min-width: 180px;
+    padding: 0.75rem 1.5rem;
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .modalBackdrop {
+    padding: 1rem;
+  }
+
+  .card {
+    padding: 1.25rem;
+  }
+
+  .title {
+    font-size: 1.3rem;
+  }
+
+  .description {
+    min-height: 60px;
+    font-size: 0.9rem;
+  }
+
+  .btnViewRules,
+  .btnRegister {
+    min-width: 160px;
+    padding: 0.625rem 1.25rem;
+    font-size: 0.85rem;
+  }
+}
