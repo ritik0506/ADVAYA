@@ -1,7 +1,6 @@
 "use client";
 
 import { useRef, useEffect, useState, useMemo } from "react";
-import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import gsap from "gsap";
 import ScrollTrigger from "gsap/ScrollTrigger";
@@ -24,56 +23,44 @@ export default function Home() {
   const videoRefs = useRef([]);
   const sectionRefs = useRef([]);
 
-  const [allEvents, setAllEvents] = useState([]); 
+  const [allEvents, setAllEvents] = useState([]);
   const [loading, setLoading] = useState(true);
   const [isMobile, setIsMobile] = useState(false);
   const [openScrollId, setOpenScrollId] = useState(null);
   const [selectedEvent, setSelectedEvent] = useState(null);
 
-  /* ================= FETCH LIVE DATA ================= */
+  /* ================= FETCH EVENTS ================= */
   useEffect(() => {
-    const fetchHomeEvents = async () => {
+    const fetchEvents = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/api/events/all");
-        setAllEvents(response.data);
+        const res = await axios.get("http://localhost:5000/api/events/all");
+        setAllEvents(res.data || []);
       } catch (err) {
-        console.error("Error fetching events for Home:", err);
+        console.error("Home events fetch failed:", err);
       } finally {
         setLoading(false);
       }
     };
-    fetchHomeEvents();
+    fetchEvents();
   }, []);
 
-  /* ================= DATA ENRICHMENT ================= */
+  /* ================= SECTION → EVENT MAPPING ================= */
   const enrichedSections = useMemo(() => {
-    if (allEvents.length === 0) return [];
+    if (!allEvents.length) return [];
 
-    return SECTIONS.map((section, index) => {
-      let filteredEvents = [];
-      
-      if (index === 0) {
-        filteredEvents = allEvents.filter(e => e.category === "PG");
-      } else if (index === 1) {
-        filteredEvents = allEvents.filter(e => e.category === "UG");
-      } else if (index === 2) {
-        filteredEvents = allEvents.filter(e => 
-          e.category === "Non-Tech" || e.category === "Combined"
-        );
-      }
-
-      return {
-        ...section,
-        events: filteredEvents
-      };
-    });
+    return SECTIONS.map((section) => ({
+      ...section,
+      events: allEvents.filter((event) =>
+        section.categoryFilter.includes(event.category)
+      ),
+    }));
   }, [allEvents]);
 
   /* ================= MOBILE CHECK ================= */
   useEffect(() => {
     const checkMobile = () => {
       setIsMobile(window.innerWidth < 1024);
-      setTimeout(() => ScrollTrigger.refresh(true), 300);
+      setTimeout(() => ScrollTrigger.refresh(), 300);
     };
     checkMobile();
     window.addEventListener("resize", checkMobile);
@@ -82,7 +69,7 @@ export default function Home() {
 
   /* ================= GSAP VIDEO SCROLL ================= */
   useEffect(() => {
-    if (loading || enrichedSections.length === 0) return;
+    if (loading || !enrichedSections.length) return;
 
     ScrollTrigger.getAll().forEach((t) => t.kill());
 
@@ -113,14 +100,14 @@ export default function Home() {
             end: isMobile ? "bottom 20%" : "bottom bottom",
             scrub: isMobile ? 1.2 : 0.5,
             onUpdate: (self) => {
-              const targetTime = self.progress * video.duration;
+              const target = self.progress * video.duration;
               gsap.to(proxy, {
-                time: targetTime,
+                time: target,
                 duration: isMobile ? 0.35 : 0.15,
-                ease: "power2.out",
                 overwrite: true,
+                ease: "power2.out",
                 onUpdate: () => {
-                  if (video && Math.abs(video.currentTime - proxy.time) > 0.05) {
+                  if (Math.abs(video.currentTime - proxy.time) > 0.05) {
                     video.currentTime = proxy.time;
                   }
                 },
@@ -135,15 +122,16 @@ export default function Home() {
     });
 
     return () => ctx.revert();
-  }, [isMobile, enrichedSections, loading]);
+  }, [loading, enrichedSections, isMobile]);
 
   const toggleScroll = (id) => {
-    setOpenScrollId(openScrollId === id ? null : id);
+    setOpenScrollId((prev) => (prev === id ? null : id));
   };
 
+  /* ================= LOADER ================= */
   if (loading) {
     return (
-      <div className="h-screen w-full flex items-center justify-center bg-[#050505]">
+      <div className="h-screen flex items-center justify-center bg-[#050505]">
         <div className="text-[#f3cf7a] animate-pulse font-serif italic text-2xl tracking-[0.2em]">
           SUMMONING THE ARENAS...
         </div>
@@ -151,11 +139,12 @@ export default function Home() {
     );
   }
 
+  /* ================= UI ================= */
   return (
-    <div className="relative bg-[#050505] text-[#f3cf7a] min-h-screen overflow-x-hidden selection:bg-[#f3cf7a]/20">
-      
-      <div className="fixed inset-0 z-0 bg-[#050505]">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,_rgba(176,141,50,0.05)_0%,_transparent_80%)]" />
+    <div className="relative bg-[#050505] text-[#f3cf7a] min-h-screen overflow-x-hidden">
+      {/* Background */}
+      <div className="fixed inset-0 z-0">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_rgba(176,141,50,0.05)_0%,_transparent_80%)]" />
       </div>
 
       <main className="relative z-10 pt-32 px-6">
@@ -165,12 +154,12 @@ export default function Home() {
         <div id="events">
           {isMobile ? (
             <div className="pb-20 space-y-40">
-              {enrichedSections.map((section, sIdx) => (
+              {enrichedSections.map((section, i) => (
                 <MobileEventSection
-                  key={`mobile-${sIdx}`}
+                  key={i}
                   section={section}
-                  sIdx={sIdx}
-                  videoRef={(el) => (videoRefs.current[sIdx] = el)}
+                  sIdx={i}
+                  videoRef={(el) => (videoRefs.current[i] = el)}
                   openScrollId={openScrollId}
                   toggleScroll={toggleScroll}
                   setSelectedEvent={setSelectedEvent}
@@ -179,13 +168,13 @@ export default function Home() {
             </div>
           ) : (
             <div className="pb-40 my-20">
-              {enrichedSections.map((section, sIdx) => (
+              {enrichedSections.map((section, i) => (
                 <DesktopEventSection
-                  key={`desktop-${sIdx}`}
+                  key={i}
                   section={section}
-                  sIdx={sIdx}
-                  sectionRef={(el) => (sectionRefs.current[sIdx] = el)}
-                  videoRef={(el) => (videoRefs.current[sIdx] = el)}
+                  sIdx={i}
+                  sectionRef={(el) => (sectionRefs.current[i] = el)}
+                  videoRef={(el) => (videoRefs.current[i] = el)}
                   openScrollId={openScrollId}
                   toggleScroll={toggleScroll}
                   setSelectedEvent={setSelectedEvent}
@@ -196,8 +185,9 @@ export default function Home() {
         </div>
       </main>
 
-      <footer className="relative z-10 py-16 my-28 bg-[#050505] text-center border-t border-[#f3cf7a]/10">
-        <div className="mb-4 font-serif italic text-2xl tracking-widest uppercase text-[#f3cf7a]">
+      {/* FOOTER */}
+      <footer className="relative z-10 py-16 my-28 text-center border-t border-[#f3cf7a]/10">
+        <div className="mb-4 font-serif italic text-2xl tracking-widest">
           ADVAYA 2K26
         </div>
         <p className="text-[10px] uppercase tracking-[0.6em] opacity-30 px-6">
@@ -205,10 +195,10 @@ export default function Home() {
         </p>
       </footer>
 
-      {/* ================= MODAL INTEGRATION ================= */}
+      {/* EVENT MODAL */}
       {selectedEvent && (
         <FullEventScrollModalResponsive
-          isOpen={!!selectedEvent}
+          isOpen
           onClose={() => setSelectedEvent(null)}
           eventId={selectedEvent.eventId}
           eventName={selectedEvent.mythologyName}
@@ -219,8 +209,7 @@ export default function Home() {
           registrationFee={selectedEvent.fee}
           teamSize={selectedEvent.teamSize}
           duration={selectedEvent.duration}
-          // PASSING THE NEW PROP HERE
-          registrationOpen={selectedEvent.registrationOpen} 
+          registrationOpen={selectedEvent.registrationOpen}
         />
       )}
     </div>

@@ -1,246 +1,268 @@
 "use client";
 
-import React, { useState, useEffect, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { ALL_EVENTS } from "../components/homecomponents/constant1";
+import { fetchAllEvents } from "../services/getallevents";
 import { registerWarrior } from "../services/registerapi";
+
+/* 🔁 CATEGORY NORMALIZATION BASED ON eventsData */
+const BACKEND_CATEGORY_MAP = {
+  PG: "PG",
+  UG: "UG",
+  Combined: "UG/PG",
+  "Non-Tech": "UG/PG",
+};
 
 export default function Register() {
   const { eventId } = useParams();
   const navigate = useNavigate();
 
   const [event, setEvent] = useState(null);
-  const [isDropOpen, setIsDropOpen] = useState(false);
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [toast, setToast] = useState(null);
 
-  const dropRef = useRef(null);
+  // start with ONE participant
+  const [participants, setParticipants] = useState([
+    { name: "", email: "", mobile: "" },
+  ]);
 
   const [formData, setFormData] = useState({
-    fullName: "",
-    email: "",
-    collegeName: "",
-    category: "",
-    phoneNumber: "",
     teamName: "",
+    collegeName: "",
   });
 
-  const categories = ["UG", "PG", "UG/PG"];
+  const [toast, setToast] = useState(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
+  /* ---------------- FETCH EVENT ---------------- */
   useEffect(() => {
-    const foundEvent = ALL_EVENTS.find((e) => e.id === eventId);
-    if (foundEvent) setEvent(foundEvent);
+    async function loadEvent() {
+      const events = await fetchAllEvents();
+      const found = events.find((e) => e.eventId === eventId);
+      if (!found) return navigate("/home");
 
-    window.scrollTo(0, 0);
+      const backendCategory = BACKEND_CATEGORY_MAP[found.category];
 
-    const handleClickOutside = (e) => {
-      if (dropRef.current && !dropRef.current.contains(e.target)) {
-        setIsDropOpen(false);
+      if (!backendCategory) {
+        console.error("Invalid category:", found.category);
+        return navigate("/home");
       }
-    };
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, [eventId]);
 
-  const handleChange = (e) =>
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+      setEvent({
+        eventId: found.eventId,
+        name: found.mythologyName,
+        displayCategory: found.category,   // UI only
+        backendCategory,                   // API only
+        fee: Number(found.fee),
+        minTeamSize: found.teamSize?.min ?? 1,
+        maxTeamSize: found.teamSize?.max ?? found.teamSize?.min ?? 1,
+      });
+    }
 
-  const selectCategory = (cat) => {
-    setFormData({ ...formData, category: cat });
-    setIsDropOpen(false);
+    loadEvent();
+  }, [eventId, navigate]);
+
+  /* ---------------- PARTICIPANTS ---------------- */
+  const handleParticipantChange = (index, field, value) => {
+    const updated = [...participants];
+    updated[index][field] = value;
+    setParticipants(updated);
+    setToast(null);
   };
 
+  const addMember = () => {
+    if (participants.length >= event.maxTeamSize) return;
+    setParticipants([...participants, { name: "", email: "", mobile: "" }]);
+  };
+
+  const removeMember = (index) => {
+    if (participants.length <= event.minTeamSize) return;
+    setParticipants(participants.filter((_, i) => i !== index));
+  };
+
+  /* ---------------- VALIDATION ---------------- */
+  const validateForm = () => {
+    setToast(null);
+
+    if (!formData.teamName.trim())
+      return setToast({ type: "error", message: "Add team name" }), false;
+
+    if (!formData.collegeName.trim())
+      return setToast({ type: "error", message: "Add college name" }), false;
+
+    if (participants.length < event.minTeamSize)
+      return (
+        setToast({
+          type: "error",
+          message: `Add at least ${event.minTeamSize} members`,
+        }),
+        false
+      );
+
+    for (let i = 0; i < participants.length; i++) {
+      const p = participants[i];
+      if (!p.name || !p.email || !p.mobile)
+        return (
+          setToast({
+            type: "error",
+            message: `Fill all fields for member ${i + 1}`,
+          }),
+          false
+        );
+    }
+
+    return true;
+  };
+
+  /* ---------------- SUBMIT ---------------- */
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    if (!formData.category) {
-      setToast({ message: "Please choose a category", type: "error" });
-      return;
-    }
+    if (!validateForm()) return;
 
     setIsSubmitting(true);
 
-    const rawFee = event?.fees || "0";
-    const numericFee = Number(String(rawFee).replace(/[^0-9.]/g, "")) || 0;
-
-    const payload = {
-      eventName: event?.name || "Unknown Event",
-      category: formData.category,
-      registrationFee: numericFee,
-      collegeName: formData.collegeName.trim(),
-      teamName: formData.teamName.trim(),
-      teamSize: 1,
-      participants: [
-        {
-          name: formData.fullName.trim(),
-          mobile: formData.phoneNumber.trim(),
-          email: formData.email.trim().toLowerCase(),
-        },
-      ],
-    };
-
     try {
-      const result = await registerWarrior(payload);
-
-      setToast({
-        message: result.message || "Thy name has been etched in the scrolls",
-        type: "success",
+      await registerWarrior({
+        eventName: event.name,
+        category: event.backendCategory, // ✅ ENUM SAFE
+        registrationFee: event.fee,
+        teamName: formData.teamName.trim(),
+        collegeName: formData.collegeName.trim(),
+        teamSize: participants.length,
+        participants,
       });
 
+      setToast({ type: "success", message: "Registration successful" });
       setTimeout(() => navigate("/home"), 1200);
-    } catch (error) {
+    } catch (err) {
       setToast({
-        message: error.message || "The ritual has failed",
         type: "error",
+        message: err.message || "Registration failed",
       });
     } finally {
       setIsSubmitting(false);
     }
   };
 
-  if (!event) return <div className="min-h-screen bg-[#050505]" />;
+  if (!event) return null;
 
+  /* ---------------- UI ---------------- */
   return (
-    <div className="min-h-screen bg-[#050505] text-gray-200 py-12 pt-32 px-4 relative overflow-hidden font-sans">
-      {toast && (
-        <Toast
-          message={toast.message}
-          type={toast.type}
-          onClose={() => setToast(null)}
-        />
-      )}
+    <div className="min-h-screen bg-[#050505] text-white px-4 pt-32">
+      {toast && <Toast {...toast} onClose={() => setToast(null)} />}
 
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[600px] bg-[#f3cf7a]/5 blur-[120px] rounded-full opacity-40 pointer-events-none" />
+      <div className="max-w-3xl mx-auto">
+        <h1 className="text-4xl font-black text-center">{event.name}</h1>
+        <p className="text-center text-[#f3cf7a]">
+          {event.displayCategory}
+        </p>
 
-      <div className="max-w-3xl mx-auto relative z-10">
-        <button
-          onClick={() => navigate(-1)}
-          className="group flex items-center gap-3 text-[#f3cf7a]/60 hover:text-[#f3cf7a] transition-all mb-10 uppercase text-[10px] font-black tracking-[0.3em]"
-        >
-          <span className="text-xl group-hover:-translate-x-2 transition-transform">
-            ←
-          </span>
-          Return to the Pantheon
-        </button>
+        <form onSubmit={handleSubmit} className="space-y-6 mt-8">
+          <Input
+            label="Team Name"
+            value={formData.teamName}
+            onChange={(e) =>
+              setFormData({ ...formData, teamName: e.target.value })
+            }
+          />
 
-        <div className="bg-[#0c0c0c] border border-[#f3cf7a]/10 rounded-[2.5rem] overflow-hidden shadow-[0_0_80px_rgba(0,0,0,0.6)]">
-          <div className="p-10 text-center border-b border-[#f3cf7a]/5 bg-gradient-to-b from-[#f3cf7a]/5 to-transparent">
-            <div className="flex justify-center mb-6">
-              <div className="w-20 h-20 rounded-2xl border border-[#f3cf7a]/20 flex items-center justify-center bg-[#050505] text-4xl">
-                {event.icon}
-              </div>
-            </div>
-            <h1 className="text-5xl font-serif italic font-black">
-              {event.name}
-            </h1>
-            <p className="text-[#f3cf7a]/40 text-[11px] mt-3 uppercase tracking-[0.3em] italic">
-              Contribution: {event.fees}
-            </p>
-          </div>
+          <Input
+            label="College Name"
+            value={formData.collegeName}
+            onChange={(e) =>
+              setFormData({ ...formData, collegeName: e.target.value })
+            }
+          />
 
-          <form onSubmit={handleSubmit} className="p-8 md:p-14 space-y-10">
-            <div className="grid md:grid-cols-2 gap-10">
-              {[
-                ["Team Name", "teamName"],
-                ["Captain Name", "fullName"],
-                ["Email Address", "email"],
-                ["Phone Number", "phoneNumber"],
-                ["College / Institution", "collegeName"],
-              ].map(([label, name], i) => (
-                <div key={i} className="space-y-3 md:col-span-2">
-                  <label className="text-[10px] font-black uppercase tracking-[0.2em] text-[#f3cf7a]/60">
-                    {label}
-                  </label>
-                  <input
-                    required
-                    name={name}
-                    value={formData[name]}
-                    onChange={handleChange}
-                    className="w-full bg-white/[0.02] border border-[#f3cf7a]/10 rounded-xl px-5 py-4 text-white"
-                  />
-                </div>
-              ))}
+          {participants.map((p, idx) => (
+            <div key={idx} className="relative border p-4 rounded-xl space-y-3">
+              <p className="font-bold">
+                {idx === 0 ? "Captain" : `Member ${idx + 1}`}
+              </p>
 
-              <div className="space-y-3 md:col-span-2 relative" ref={dropRef}>
-                <label className="text-[10px] font-black uppercase tracking-[0.2em] text-[#f3cf7a]/60">
-                  Division
-                </label>
-                <div
-                  onClick={() => setIsDropOpen(!isDropOpen)}
-                  className="w-full bg-white/[0.02] border border-[#f3cf7a]/10 rounded-xl px-5 py-4 cursor-pointer flex justify-between"
-                >
-                  <span>
-                    {formData.category || "Select UG or PG"}
-                  </span>
-                  <span>▾</span>
-                </div>
-
-                {isDropOpen && (
-                  <div className="absolute w-full mt-2 bg-[#0c0c0c] border border-[#f3cf7a]/20 rounded-xl overflow-hidden">
-                    {categories.map((cat) => (
-                      <div
-                        key={cat}
-                        onClick={() => selectCategory(cat)}
-                        className="px-5 py-4 hover:bg-[#f3cf7a] hover:text-black cursor-pointer"
-                      >
-                        {cat}
-                      </div>
-                    ))}
-                  </div>
+              {participants.length > event.minTeamSize &&
+                idx >= event.minTeamSize && (
+                  <button
+                    type="button"
+                    onClick={() => removeMember(idx)}
+                    className="absolute top-3 right-3 text-red-400"
+                  >
+                    ✕
+                  </button>
                 )}
-              </div>
+
+              <Input
+                label="Name"
+                value={p.name}
+                onChange={(e) =>
+                  handleParticipantChange(idx, "name", e.target.value)
+                }
+              />
+              <Input
+                label="Email"
+                value={p.email}
+                onChange={(e) =>
+                  handleParticipantChange(idx, "email", e.target.value)
+                }
+              />
+              <Input
+                label="Mobile"
+                value={p.mobile}
+                onChange={(e) =>
+                  handleParticipantChange(idx, "mobile", e.target.value)
+                }
+              />
             </div>
+          ))}
 
+          {participants.length < event.maxTeamSize && (
             <button
-              disabled={isSubmitting}
-              className={`w-full py-6 bg-[#f3cf7a] text-black font-black uppercase tracking-[0.4em] rounded-2xl ${
-                isSubmitting ? "opacity-50" : "hover:scale-[1.02]"
-              }`}
+              type="button"
+              onClick={addMember}
+              className="w-full border py-3 rounded-xl"
             >
-              {isSubmitting ? "ETCHING THE SCROLL..." : "CONFIRM ENROLLMENT"}
+              Add Member
             </button>
-          </form>
-        </div>
-      </div>
+          )}
 
-      <style jsx="true">{`
-        @keyframes toast-in {
-          from {
-            opacity: 0;
-            transform: translate(-40px, -20px);
-          }
-          to {
-            opacity: 1;
-            transform: translate(0, 0);
-          }
-        }
-        .toast-anim {
-          animation: toast-in 0.45s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-      `}</style>
+          <button
+            disabled={isSubmitting}
+            className="w-full py-5 bg-[#f3cf7a] text-black font-black rounded-2xl"
+          >
+            {isSubmitting ? "Registering..." : "Confirm Registration"}
+          </button>
+        </form>
+      </div>
     </div>
   );
 }
 
-/* ---------- TOAST COMPONENT ---------- */
+/* ---------------- REUSABLE ---------------- */
+function Input({ label, ...props }) {
+  return (
+    <div>
+      <label className="text-xs text-[#f3cf7a]/60">{label}</label>
+      <input
+        className="w-full p-4 bg-black border border-[#f3cf7a]/20 rounded-xl"
+        {...props}
+      />
+    </div>
+  );
+}
 
 function Toast({ message, type, onClose }) {
-  useEffect(() => {
-    const t = setTimeout(onClose, 4000);
+  React.useEffect(() => {
+    const t = setTimeout(onClose, 3000);
     return () => clearTimeout(t);
   }, [onClose]);
 
   return (
     <div
-      className={`fixed top-6 left-6 z-[10000] px-6 py-4 rounded-2xl border shadow-2xl toast-anim ${
+      className={`fixed top-34 right-6 px-6 py-4 rounded-xl z-50 ${
         type === "success"
-          ? "bg-[#0c0c0c] border-[#f3cf7a]/40 text-[#f3cf7a]"
-          : "bg-[#140808] border-red-800/40 text-red-400"
+          ? "bg-green-900 text-green-300"
+          : "bg-red-900 text-red-300"
       }`}
     >
-      <p className="text-xs font-black uppercase tracking-[0.3em]">
-        {message}
-      </p>
+      {message}
     </div>
   );
 }
