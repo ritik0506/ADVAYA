@@ -6,6 +6,7 @@ import { fileURLToPath } from 'url';
 import connectDB from './config/db.js';
 import logger from './middleware/logger.js';
 import { notFound, errorHandler } from './middleware/errorMiddleware.js';
+import eventRoutes from './routes/Eventroutes.js'; 
 
 // Routes
 import registrationRoutes from './routes/registrationRoutes.js';
@@ -50,6 +51,7 @@ app.get('/', (req, res) => {
 // API Routes
 app.use('/api/registration', registrationRoutes);
 app.use('/api/logs', logRoutes);
+app.use('/api/events', eventRoutes); 
 
 // Error handling
 app.use(notFound);

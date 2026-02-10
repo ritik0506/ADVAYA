@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Stickman throws trident</title>
+  <style>
+    body {
+      background: #0a1f44;
+      height: 100vh;
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-family: Arial, sans-serif;
+      overflow: hidden;
+    }
+
+    .scene {
+      position: relative;
+      width: 420px;
+      height: 300px;
+    }
+
+    .stickman {
+      position: absolute;
+      left: 60px;
+      bottom: 80px;
+      width: 80px;
+      height: 140px;
+    }
+
+    .head {
+      width: 36px;
+      height: 36px;
+      background: #ffe0b2;
+      border-radius: 50%;
+      position: absolute;
+      left: 22px;
+      top: 0;
+    }
+
+    .smile {
+      width: 16px;
+      height: 8px;
+      border-bottom: 3px solid #333;
+      border-radius: 0 0 50% 50%;
+      position: absolute;
+      top: 14px;
+      left: 10px;
+    }
+
+    .body {
+      width: 4px;
+      height: 60px;
+      background: #333;
+      position: absolute;
+      left: 38px;
+      top: 36px;
+    }
+
+    .arm {
+      width: 50px;
+      height: 4px;
+      background: #333;
+      position: absolute;
+      top: 50px;
+      left: 38px;
+      transform-origin: right center;
+      transform: rotate(-35deg);
+    }
+
+    .trident {
+      position: absolute;
+      left: 0px;
+      top: -14px;
+      font-size: 60px;
+      line-height: 1;
+      transform: rotate(-35deg);
+      transform-origin: right center;
+      color: #f06292;
+    }
+
+    .target-word {
+      position: absolute;
+      right: 40px;
+      top: 120px;
+      font-size: 80px;
+      font-weight: bold;
+      color: #ffeb3b;
+      text-shadow: 0 0 20px #ff9800;
+    }
+
+    /* Throw animation */
+    @keyframes throw {
+      0%   { transform: translateX(0) rotate(-35deg); }
+      45%  { transform: translateX(0) rotate(-80deg); }
+      55%  { transform: translateX(0) rotate(-100deg); }
+      100% { transform: translateX(340px) rotate(-100deg); }
+    }
+
+    .trident.throw {
+      animation: throw 1.8s forwards;
+      animation-delay: 1.2s;
+      animation-timing-function: ease-out;
+    }
+
+    .arm.throw {
+      animation: throw-arm 1.8s forwards;
+      animation-delay: 1.2s;
+    }
+
+    @keyframes throw-arm {
+      0%   { transform: rotate(-35deg); }
+      45%  { transform: rotate(-80deg); }
+      55%  { transform: rotate(-100deg); }
+      100% { transform: rotate(-100deg); }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="scene">
+    <div class="stickman">
+      <div class="head">
+        <div class="smile"></div>
+      </div>
+      <div class="body"></div>
+      <div class="arm">
+        <div class="trident">ψ</div>   <!-- ← trident symbol  or use ↰ ↱ ⇁ etc. -->
+      </div>
+    </div>
+
+    <div class="target-word">BOOM!</div>
+  </div>
+
+  <script>
+    // restart animation on click (optional but fun)
+    document.body.addEventListener('click', () => {
+      const t = document.querySelector('.trident');
+      const a = document.querySelector('.arm');
+      t.classList.remove('throw');
+      a.classList.remove('throw');
+      void t.offsetWidth; // trigger reflow
+      t.classList.add('throw');
+      a.classList.add('throw');
+    });
+  </script>
+
+</body>
+</html>

@@ -1,53 +1,47 @@
-import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import ErrorBoundary from './components/ErrorBoundary/ErrorBoundary';
-import Navbar from './components/Navbar/Navbar';
-
-// Pages
-import Events from './pages/Events/Events';
-
-// Category Pages
-import PGTechnical from './features/pg-technical';
-import UGTechnical from './features/ug-technical';
-import NonTechnical from './features/non-technical';
-
-// Event Detail Component (Dynamic)
-import EventDetail from './components/EventDetail/EventDetail';
-
-// Registration
-import Registration from './features/registration/Registration';
-
-import './App.css';
-
-const Home = () => (
-  <div className="home-container">
-    <h1 className="home-title">Welcome to ADVAYA 2026</h1>
-    <p className="home-subtitle">Where Technology Meets Tradition</p>
-  </div>
-);
+import React from "react";
+import { Routes, Route, useLocation } from "react-router-dom";
+import Navbar from "./components/headerfootercomponents/navbar"; 
+import SecondVideo from "./components/mainpagecomponents/initialpage"; 
+import EventsPage from "./pages/events"; 
+import Rules from "./pages/rules";
+import Support from "./pages/support";
+import About from "./pages/about";
+import Home from "./pages/home";
+import Timeline from "./pages/timeline";
+import Register from "./pages/register";
 
 function App() {
+  const location = useLocation();
+
+  // Show navbar everywhere EXCEPT the landing video page ("/")
+  const showNavbar = location.pathname !== "/";
+
   return (
-    <ErrorBoundary>
-      <Router>
-        <Navbar />
-        <div className="main-content">
-              <Routes>
-                <Route path="/" element={<Home />} />
-                <Route path="/events" element={<Events />} />
-                <Route path="/register" element={<Registration />} />
-                
-                {/* Category Pages */}
-                <Route path="/events/pg-technical" element={<PGTechnical />} />
-                <Route path="/events/ug-technical" element={<UGTechnical />} />
-                <Route path="/events/non-technical" element={<NonTechnical />} />
-                
-                {/* Dynamic Event Detail Route - Handles all individual events */}
-                <Route path="/events/:eventId" element={<EventDetail />} />
-              </Routes>
-            </div>
-      </Router>
-    </ErrorBoundary>
+    <div className="bg-black min-h-screen selection:bg-amber-500/30">
+      {/* Conditionally render the Navbar */}
+      {showNavbar && <Navbar />}
+
+      <Routes>
+        {/* The Landing/Initial Video Page */}
+        <Route path="/" element={<SecondVideo />} />
+
+        {/* Main Application Pages */}
+        <Route path="/home" element={<Home />} />
+        <Route path="/events" element={<EventsPage />} />
+        <Route path="/rules" element={<Rules />} />
+        <Route path="/support" element={<Support />} />
+        <Route path="/about" element={<About />} />
+        <Route path="/timeline" element={<Timeline />} />
+
+        {/* The Specific Registration Route 
+           URL Example: /register/code-kurukshetra 
+        */}
+        <Route path="/register/:eventId" element={<Register />} />
+
+        {/* Fallback - Redirects unknown URLs back to landing or home */}
+        <Route path="*" element={<SecondVideo />} />
+      </Routes>
+    </div>
   );
 }
 
