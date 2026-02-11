@@ -147,7 +147,7 @@ export default function Home() {
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_rgba(176,141,50,0.05)_0%,_transparent_80%)]" />
       </div>
 
-      <main className="relative z-10 pt-32 px-6">
+      <main className="relative z-10 pt-32 ">
         <Hero />
         <About />
 

@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -37,21 +37,37 @@ const Navbar = () => {
 
   return (
     <>
-      {/* Reduced py-2 to py-0 to let the big logo dictate the height */}
-      <nav className="fixed top-0 left-0 right-0 z-[100] px-4 md:px-12 py-0 flex justify-between items-center bg-black/40 backdrop-blur-xl border-b border-[#f3cf7a]/10">
-        
-        {/* LEFT SIDE: LOGO - Increased sizes */}
+      {/* NAVBAR */}
+      <nav className="fixed top-0 left-0 right-0 z-[100] px-4 md:px-12 py-2 flex justify-between items-center bg-black/40 backdrop-blur-xl border-b border-[#f3cf7a]/10">
+
+        {/* LEFT SIDE: LOGO STACK */}
         <div className="flex-1 flex justify-start">
-          <div className="relative group cursor-pointer py-2" onClick={(e) => handleScroll(e, "#")}>
-            <img 
-              src="/logomain.png" 
-              alt="Advaya Logo" 
-              className="relative h-16 md:h-28 w-auto object-contain brightness-110 transition-transform duration-500 group-hover:scale-105"
+          <div
+            className="relative group cursor-pointer flex flex-col"
+            onClick={(e) => handleScroll(e, "#")}
+          >
+            {/* MAIN LOGO */}
+            <img
+              src="/logomain.png"
+              alt="Advaya Logo"
+              className="h-14 md:h-20 w-auto object-contain brightness-110 transition-transform duration-500 group-hover:scale-105"
             />
+
+            {/* 2026 LOGO — RIGHT ALIGNED BELOW */}
+           {/* 2026 LOGO — SMALLER & SLIGHTLY UP */}
+<div className="w-full flex justify-end -mt-3">
+  <img
+    src="/2026logo.png"
+    alt="2026 Logo"
+    className="h-3 -mt-2  md:h-3 w-auto object-contain opacity-90 
+"
+  />
+</div>
+
           </div>
         </div>
 
-        {/* CENTER SIDE: DESKTOP LINKS */}
+        {/* CENTER: DESKTOP LINKS */}
         <div className="hidden md:flex items-center gap-10 flex-[2] justify-center">
           {navLinks.map((link) => (
             <a
@@ -66,7 +82,7 @@ const Navbar = () => {
           ))}
         </div>
 
-        {/* RIGHT SIDE: ACTION BUTTONS */}
+        {/* RIGHT SIDE */}
         <div className="flex-1 flex justify-end items-center gap-3 md:gap-6">
           <a
             href={registerLink.href}
@@ -75,7 +91,8 @@ const Navbar = () => {
             {registerLink.name}
           </a>
 
-          <button 
+          {/* HAMBURGER */}
+          <button
             onClick={() => setIsOpen(!isOpen)}
             className="md:hidden flex flex-col gap-1.5 z-[120] p-1"
             aria-label="Toggle Menu"
@@ -89,20 +106,23 @@ const Navbar = () => {
 
       {/* MOBILE SIDEBAR */}
       <div className="md:hidden">
-        <div 
+        <div
           className={`fixed inset-0 bg-black/80 backdrop-blur-md z-[105] transition-opacity duration-500 ${isOpen ? "opacity-100 visible" : "opacity-0 invisible"}`}
           onClick={() => setIsOpen(false)}
         />
 
-        <div className={`fixed top-0 right-0 h-full w-[80%] max-w-[300px] bg-[#0a0a0a] border-l border-[#f3cf7a]/20 z-[110] transform transition-transform duration-500 ease-in-out ${isOpen ? "translate-x-0" : "translate-x-full"}`}>
+        <div
+          className={`fixed top-0 right-0 h-full w-[80%] max-w-[300px] bg-[#0a0a0a] border-l border-[#f3cf7a]/20 z-[110] transform transition-transform duration-500 ease-in-out ${isOpen ? "translate-x-0" : "translate-x-full"}`}
+        >
           <div className="flex flex-col h-full p-10 pt-20 gap-8">
-            {/* BIGGER SIDEBAR LOGO */}
-            <img 
-              src="/logomain.png" 
-              alt="Logo" 
-              className="w-48 self-center mb-8 opacity-80 brightness-110" 
+
+            {/* Sidebar Logo */}
+            <img
+              src="/logomain.png"
+              alt="Logo"
+              className="w-48 self-center opacity-80 brightness-110"
             />
-            
+
             <div className="flex flex-col gap-8">
               {navLinks.map((link) => (
                 <a

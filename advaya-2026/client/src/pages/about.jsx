@@ -47,51 +47,77 @@ export default function About() {
 
       <div className="relative z-10">
 
-        {/* HERO */}
-        <section className="min-h-screen flex items-center justify-center px-8 relative">
-          <motion.div
-            initial={{ opacity: 0, scale: 0.92 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 1.8, ease: [0.16, 1, 0.3, 1] }}
-            className="text-center -mt-10"
-          >
-            <motion.span
-              initial={{ letterSpacing: "0.2em", opacity: 0 }}
-              animate={{ letterSpacing: "0.8em", opacity: 0.6 }}
-              transition={{ duration: 1.5 }}
-              className="text-[10px] uppercase text-blue-400 mb-8 block font-black"
-            >
-              The Grand Symposium
-            </motion.span>
+ {/* HERO */}
+<section className="min-h-screen flex items-center justify-center px-8 relative">
+  <motion.div
+    initial={{ opacity: 0, scale: 0.92 }}
+    animate={{ opacity: 1, scale: 1 }}
+    transition={{ duration: 1.8, ease: [0.16, 1, 0.3, 1] }}
+    className="text-center -mt-10 flex flex-col items-center"
+  >
+    {/* MAIN LOGO CONTAINER */}
+    <div className="flex flex-col items-center">
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.3, duration: 1.5 }}
+        className="relative group mb-0" 
+      >
+        <img 
+          src="/logomain.png" 
+          alt="Advaya Logo" 
+          className="h-32 md:h-64 lg:h-80 w-auto object-contain drop-shadow-[0_0_30px_rgba(255,255,255,0.1)] transition-transform duration-700 group-hover:scale-105"
+        />
+        <div className="absolute inset-0 bg-white/5 blur-3xl rounded-full -z-10" />
+      </motion.div>
 
-            {/* FIXED ADVAYA */}
-            <h1 className="text-7xl pb-4 md:text-[14rem] font-serif italic leading-[1.05] tracking-tighter text-transparent bg-clip-text bg-gradient-to-b from-white via-white to-white/20">
-              Advaya
-            </h1>
+      {/* UNDERLINE - Pulled way up to touch the main logo */}
+<motion.div
+  initial={{ width: 0 }}
+  animate={{ width: "60%" }}
+  transition={{ delay: 0.5, duration: 1 }}
+  className="
+  h-[1px]
+  bg-gradient-to-r from-transparent via-blue-500 to-transparent
+  -mt-10
+  md:-mt-20
+  mb-6
+  shadow-[0_0_20px_rgba(59,130,246,0.8)]
+"
 
-            <motion.div
-              initial={{ width: 0 }}
-              animate={{ width: "100%" }}
-              transition={{ delay: 0.5, duration: 1 }}
-              className="h-px bg-gradient-to-r from-transparent via-blue-500 to-transparent my-8 shadow-[0_0_20px_rgba(59,130,246,0.8)]"
-            />
+/>
 
-            <div className="flex justify-center items-center gap-8">
-              <h2 className="text-5xl md:text-8xl font-serif italic text-amber-500">
-                2K26
-              </h2>
-              <p className="text-left text-[10px] uppercase tracking-[0.4em] leading-relaxed text-white/40 border-l border-white/10 pl-8">
-                District Level <br /> Technical Symposium
-              </p>
-            </div>
-          </motion.div>
 
-          <motion.div
-            animate={{ y: [0, 10, 0] }}
-            transition={{ duration: 2, repeat: Infinity }}
-            className="absolute bottom-10 w-px h-20 bg-gradient-to-b from-blue-500 to-transparent"
-          />
-        </section>
+    </div>
+
+    {/* SECONDARY LOGO & SUBTEXT */}
+    <div className="flex justify-center items-center gap-6 md:gap-8">
+      {/* 2026 Logo - Smaller */}
+<motion.div
+  initial={{ opacity: 0, x: -20 }}
+  animate={{ opacity: 1, x: 0 }}
+  transition={{ delay: 0.6, duration: 1.2 }}
+>
+  <img 
+    src="./2026logo.png" 
+    alt="2026 Logo" 
+    className="h-8 md:h-10 lg:h-12 w-auto object-contain opacity-90"
+  />
+</motion.div>
+
+
+      <p className="text-left text-[9px] md:text-[10px] uppercase tracking-[0.4em] leading-relaxed text-white/40 border-l border-white/10 pl-6 md:pl-8">
+        District Level <br /> Technical Symposium
+      </p>
+    </div>
+  </motion.div>
+  
+  <motion.div
+    animate={{ y: [0, 10, 0] }}
+    transition={{ duration: 2, repeat: Infinity }}
+    className="absolute bottom-10 w-px h-20 bg-gradient-to-b from-blue-500 to-transparent"
+  />
+</section>
 
         {/* SECTION 01 */}
         <section className="max-w-7xl mx-auto px-8 md:px-24 py-40">
@@ -149,7 +175,7 @@ export default function About() {
               {["MCA", "BCA", "BSc"].map((dept) => (
                 <div
                   key={dept}
-                  className="w-40 h-40 md:w-56 md:h-56 rounded-full border border-white/10 flex items-center justify-center"
+                  className="w-40 h-40 md:w-56 md:h-56 rounded-full border border-white/10 flex items-center justify-center transition-all hover:border-blue-500/50 hover:bg-blue-500/5"
                 >
                   <span className="text-5xl md:text-7xl font-serif italic">
                     {dept}

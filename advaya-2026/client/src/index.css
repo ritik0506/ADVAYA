@@ -1,4 +1,46 @@
-/* @import url('https://fonts.googleapis.com/css2?family=Bitcount+Prop+Single:slnt,wght,CRSV@-4,100..900,0&display=swap'); */
 
 
 @import "tailwindcss";
+
+/* --- CUSTOM SCROLLBAR --- */
+
+/* 1. The Width and Track (Background) */
+::-webkit-scrollbar {
+  width: 6px; /* Very thin and elegant */
+}
+
+::-webkit-scrollbar-track {
+  background: #020308; /* Match your darkest background */
+  border-left: 1px solid rgba(243, 207, 122, 0.05); /* Subtle edge line */
+}
+
+/* 2. The Thumb (Moving Part) */
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    #f3cf7a, /* Core Gold */
+    #b08d32, /* Deep Amber */
+    transparent
+  );
+  border-radius: 20px;
+  box-shadow: 0 0 10px rgba(243, 207, 122, 0.3); /* Glow effect */
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* 3. Hover Effect */
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(
+    to bottom,
+    #f3cf7a,
+    #fff, /* Brighter core on hover */
+    #f3cf7a
+  );
+  box-shadow: 0 0 15px rgba(243, 207, 122, 0.6);
+}
+
+/* For Firefox (Standard Property) */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #f3cf7a #020308;
+}

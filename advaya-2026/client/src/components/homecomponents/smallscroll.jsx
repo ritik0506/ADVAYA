@@ -99,7 +99,21 @@ const smallStyles = {
   scrollWrapper: { display: "flex", flexDirection: "column", alignItems: "center", marginBottom: "16px" },
   rodContainer: { width: "340px", height: "38px", position: "relative", display: "flex", justifyContent: "center", alignItems: "center", cursor: "pointer", zIndex: 10 },
   rodImage: { width: "100%", height: "100%", position: "absolute", filter: "drop-shadow(0 6px 10px rgba(0,0,0,0.7))" },
-  rodText: { position: "relative", color: "#000", fontFamily: "'Playfair Display', serif", fontWeight: 900, fontSize: "11px", letterSpacing: "4px", opacity: 0.85, pointerEvents: "none", textAlign: "center", width: "100%" },
+rodText: {
+  position: "relative",
+  top: "-2px",   // 👈 move text up (adjust -1px to -4px as needed)
+  color: "#000",
+  fontFamily: "'Playfair Display', serif",
+  fontWeight: 900,
+  fontSize: "14px",
+  letterSpacing: "2px",
+  opacity: 1,
+  pointerEvents: "none",
+  textAlign: "center",
+  width: "100%",
+  textShadow: "0 1px 2px rgba(0,0,0,0.5)",
+},
+
   paperContainer: { height: "0px", overflow: "hidden", position: "relative", zIndex: 5, backgroundColor: "#e2d192", boxShadow: "inset 0 0 20px rgba(0,0,0,0.3)" },
   
   // MODIFIED: Added more top padding to create spacing

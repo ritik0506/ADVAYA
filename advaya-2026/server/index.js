@@ -6,9 +6,9 @@ import { fileURLToPath } from 'url';
 import connectDB from './config/db.js';
 import logger from './middleware/logger.js';
 import { notFound, errorHandler } from './middleware/errorMiddleware.js';
-import eventRoutes from './routes/Eventroutes.js'; 
 
 // Routes
+import eventRoutes from './routes/Eventroutes.js'; 
 import registrationRoutes from './routes/registrationRoutes.js';
 import logRoutes from './routes/logRoutes.js';
 

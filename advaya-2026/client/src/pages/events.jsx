@@ -93,7 +93,7 @@ export default function EventsPage() {
         {/* HERO */}
         <section className="h-[45vh] mt-8 flex flex-col items-center justify-center text-center px-4 relative pt-20">
           <h1 className="text-7xl lg:text-9xl font-serif italic font-black text-[#f3cf7a] leading-none tracking-tighter drop-shadow-[0_10px_30px_rgba(243,207,122,0.2)]">
-            ARENAS
+            EVENTS
           </h1>
           <div className="mt-8 flex flex-col items-center gap-4">
             <p className="text-[10px] tracking-[0.6em] text-[#f3cf7a] uppercase opacity-50 font-bold italic">
@@ -118,84 +118,117 @@ export default function EventsPage() {
         <div className="pb-32" />
       </div>
 
-      {/* EVENT MODAL */}
-      {selectedEvent && (
-        <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 lg:p-10">
-            <div className="absolute inset-0 bg-black/95 backdrop-blur-xl" onClick={() => setSelectedEvent(null)} />
+{/* EVENT MODAL */}
+{selectedEvent && (
+  <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 md:p-10 perspective-[1500px]">
+    {/* Deep Cinematic Backdrop */}
+    <div 
+      className="absolute inset-0 bg-[#050505]/80 backdrop-blur-md transition-opacity duration-500" 
+      onClick={() => setSelectedEvent(null)} 
+    />
+    
+    {/* 3D Glass Card Container */}
+    <div className="relative w-full max-w-4xl max-h-[90vh] bg-white/[0.08] backdrop-blur-[40px] 
+                    rounded-[2.5rem] overflow-hidden flex flex-col lg:flex-row
+                    border-t border-l border-white/20 border-r border-b border-black/40
+                    shadow-[0_40px_80px_-15px_rgba(0,0,0,0.9),0_0_50px_rgba(243,207,122,0.15)]
+                    animate-in fade-in zoom-in-95 duration-500">
+        
+        {/* LEFT/MAIN CONTENT */}
+        <div className="flex-1 p-6 md:p-12 overflow-y-auto custom-scrollbar relative z-10">
             
-            <div className="relative w-full max-w-5xl max-h-[90vh] bg-[#0a0a0a] border border-[#f3cf7a]/10 rounded-[3rem] overflow-y-auto shadow-[0_0_100px_rgba(0,0,0,1)] custom-scrollbar">
-                
-                <button 
-                  onClick={() => setSelectedEvent(null)}
-                  className="sticky top-8 float-right mr-8 z-[100] w-12 h-12 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-xl hover:bg-[#f3cf7a] hover:text-black transition-all duration-500"
-                >✕</button>
+            {/* ✅ FIXED/STICKY CLOSE BUTTON */}
+            <div className="sticky top-0 z-[100] flex justify-end mb-2">
+              <button 
+                onClick={() => setSelectedEvent(null)}
+                className="w-10 h-10 rounded-full bg-black/40 backdrop-blur-md border border-white/20 
+                           flex items-center justify-center text-white/70 hover:text-[#f3cf7a] 
+                           hover:border-[#f3cf7a]/50 hover:scale-110 transition-all duration-300
+                           shadow-[0_4px_12px_rgba(0,0,0,0.5)]"
+              >
+                ✕
+              </button>
+            </div>
 
-                <div className="p-8 lg:p-20">
-                    <div className="flex flex-col lg:flex-row gap-16">
-                        
-                        {/* LEFT: DETAILS */}
-                        <div className="lg:w-1/2">
-                            <div className="flex items-center gap-4 mb-6">
-                              <span className="w-12 h-px bg-[#f3cf7a]/40"></span>
-                              <span className="text-[#f3cf7a] text-[11px] font-black tracking-[0.5em] uppercase italic">
-                                {selectedEvent.actualName}
-                              </span>
-                            </div>
-                            <h2 className="text-5xl lg:text-7xl font-serif italic font-black text-white leading-tight mb-10">
-                                {selectedEvent.mythologyName}
-                            </h2>
-                            <p className="text-gray-400 text-base leading-relaxed mb-12 border-l-2 border-[#f3cf7a]/20 pl-8 italic font-light">
-                                {selectedEvent.description}
-                            </p>
-                            
-                            <div className="grid grid-cols-2 gap-4">
-                                <StatBox label="Offerings" value={`₹${selectedEvent.fee}`} />
-                                <StatBox label="Ritual Time" value={selectedEvent.duration} />
-                                <StatBox label="Min Warriors" value={`${selectedEvent.teamSize?.min}`} />
-                                <StatBox label="Max Warriors" value={`${selectedEvent.teamSize?.max}`} />
-                            </div>
-                        </div>
+            <div className="space-y-1 mb-6 mt-2">
+              <span className="text-[#f3cf7a] text-[9px] font-black tracking-[0.5em] uppercase italic">
+                {selectedEvent.actualName}
+              </span>
+              <h2 className="text-4xl md:text-6xl font-serif italic font-black text-white leading-tight drop-shadow-2xl">
+                {selectedEvent.mythologyName}
+              </h2>
+            </div>
 
-                        {/* RIGHT: RULES & CTA */}
-                        <div className="lg:w-1/2 flex flex-col justify-between">
-                            <div>
-                              <h4 className="text-[10px] font-black uppercase tracking-[0.4em] text-white/30 mb-10 flex items-center gap-6">
-                                The Code of Conduct <span className="flex-1 h-px bg-white/5"></span>
-                              </h4>
-                              <ul className="space-y-6">
-                                  {selectedEvent.rules?.map((rule, idx) => (
-                                      <li key={idx} className="flex gap-6 text-[13px] text-gray-400 leading-relaxed group">
-                                          <span className="text-[#f3cf7a]/40 font-black italic group-hover:text-[#f3cf7a] transition-colors">0{idx + 1}</span>
-                                          {rule}
-                                      </li>
-                                  ))}
-                              </ul>
-                            </div>
-                            
-                            <div className="mt-16 pt-10 border-t border-white/5">
-                              {selectedEvent.registrationOpen ? (
-                                <button 
-                                  onClick={() => {
-                                    setSelectedEvent(null);
-                                    navigate(`/register/${selectedEvent.eventId}`);
-                                  }}
-                                  className="group relative w-full py-7 bg-[#f3cf7a] text-black font-black uppercase tracking-[0.3em] text-xs rounded-2xl overflow-hidden hover:scale-[1.02] active:scale-[0.98] transition-all duration-500"
-                                >
-                                  <span className="relative z-10">Enlist in the Battle</span>
-                                  <div className="absolute inset-0 bg-white opacity-0 group-hover:opacity-20 transition-opacity"></div>
-                                </button>
-                              ) : (
-                                <div className="w-full py-7 bg-white/5 text-red-500/50 text-center font-black uppercase tracking-[0.3em] text-xs rounded-2xl border border-red-900/20 italic">
-                                  Battleground Sealed
-                                </div>
-                              )}
-                            </div>
-                        </div>
+            <p className="text-white/70 text-sm md:text-base leading-relaxed italic font-light mb-8 max-w-lg border-l-2 border-[#f3cf7a]/40 pl-5">
+                {selectedEvent.description}
+            </p>
+
+            <div className="space-y-6">
+                <h4 className="text-[9px] font-black uppercase tracking-[0.4em] text-[#f3cf7a]/80 flex items-center gap-4">
+                  The Code <span className="flex-1 h-px bg-white/10"></span>
+                </h4>
+                <ul className="space-y-4 pb-10">
+                    {selectedEvent.rules?.map((rule, idx) => (
+                        <li key={idx} className="flex gap-4 text-[12px] text-white/60 leading-relaxed group">
+                            <span className="text-[#f3cf7a] font-black italic opacity-50 group-hover:opacity-100 transition-opacity">0{idx + 1}</span>
+                            <span className="group-hover:text-white transition-colors">{rule}</span>
+                        </li>
+                    ))}
+                </ul>
+            </div>
+        </div>
+
+        {/* RIGHT SIDEBAR */}
+        <div className="w-full lg:w-[320px] bg-black/60 lg:bg-white/[0.03] border-t lg:border-t-0 lg:border-l border-white/10 p-6 md:p-10 flex flex-col justify-between relative z-20">
+            <div className="hidden lg:block space-y-4">
+                <h4 className="text-[9px] font-black text-white/40 uppercase tracking-[0.3em] mb-4">Arena Stats</h4>
+                <div className="space-y-3">
+                    <StatBox label="Offerings" value={`₹${selectedEvent.fee}`} />
+                    <StatBox label="Ritual" value={selectedEvent.duration} />
+                    <div className="grid grid-cols-2 gap-2">
+                      <StatBox label="Min" value={selectedEvent.teamSize?.min} />
+                      <StatBox label="Max" value={selectedEvent.teamSize?.max} />
                     </div>
                 </div>
             </div>
+
+            {/* Mobile Stats Summary */}
+            <div className="lg:hidden flex justify-between gap-2 mb-6">
+                <div className="text-center bg-white/5 p-3 rounded-2xl flex-1 border border-white/5">
+                  <p className="text-[8px] text-[#f3cf7a] font-bold uppercase">Fee</p>
+                  <p className="text-sm text-white font-serif">₹{selectedEvent.fee}</p>
+                </div>
+                <div className="text-center bg-white/5 p-3 rounded-2xl flex-1 border border-white/5">
+                  <p className="text-[8px] text-[#f3cf7a] font-bold uppercase">Squad</p>
+                  <p className="text-sm text-white font-serif">{selectedEvent.teamSize?.min}-{selectedEvent.teamSize?.max}</p>
+                </div>
+            </div>
+
+            <div className="relative">
+              {selectedEvent.registrationOpen ? (
+                <button 
+                  onClick={() => {
+                    setSelectedEvent(null);
+                    navigate(`/register/${selectedEvent.eventId}`);
+                  }}
+                  className="group relative w-full py-5 md:py-6 bg-[#f3cf7a] text-black font-black uppercase tracking-[0.2em] text-[11px] rounded-2xl 
+                             shadow-[0_15px_30px_rgba(0,0,0,0.5),0_0_20px_rgba(243,207,122,0.3)] 
+                             hover:shadow-[0_20px_40px_rgba(243,207,122,0.5)] 
+                             transition-all duration-500 active:scale-95 overflow-hidden"
+                >
+                  <span className="relative z-10 font-black">Enlist Now</span>
+                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/40 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700" />
+                </button>
+              ) : (
+                <div className="w-full py-5 md:py-6 bg-black/60 text-red-500/60 text-center font-black uppercase tracking-[0.2em] text-[10px] rounded-2xl border border-red-900/30 italic">
+                  Battleground Sealed
+                </div>
+              )}
+            </div>
         </div>
-      )}
+    </div>
+  </div>
+)}
 
       <style jsx="true">{`
         .custom-scrollbar::-webkit-scrollbar { width: 4px; }
@@ -230,7 +263,7 @@ function EventArena({ title, events, onSelect }) {
       </div>
 
       <h2 className="text-center text-4xl lg:text-6xl font-serif font-black text-[#f3cf7a] mb-20 uppercase italic px-4">
-        {title} <span className="text-white/10 font-sans not-italic mx-4 text-2xl">/</span> Arena
+        {title} <span className="text-white/10 font-sans not-italic mx-4 text-2xl">/</span> 
       </h2>
 
       <div className="relative w-full h-[500px] lg:h-[600px] flex items-center justify-center perspective-[2500px]">

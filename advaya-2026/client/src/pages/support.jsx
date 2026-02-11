@@ -79,7 +79,7 @@ export default function Support() {
     },
     {
       title: "Direct Line",
-      value: "+91 98765 43210",
+      value: "+91 7892358529",
       icon: <Phone size={24} strokeWidth={1.5} />,
       action: "tel:+919876543210",
     },
@@ -87,7 +87,7 @@ export default function Support() {
       title: "WhatsApp Support",
       value: "Chat with Us",
       icon: <MessageCircle size={24} strokeWidth={1.5} />,
-      action: "https://wa.me/919876543210",
+      action: "https://wa.me/917892358529",
     },
   ];
 
