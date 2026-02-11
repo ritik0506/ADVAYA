@@ -16,8 +16,8 @@ import logRoutes from './routes/logRoutes.js';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// Load environment variables from parent directory
-dotenv.config({ path: path.join(__dirname, './.env') });
+// Load environment variables
+dotenv.config();
 
 // Connect to MongoDB
 connectDB();
