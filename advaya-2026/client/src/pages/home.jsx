@@ -33,7 +33,9 @@ export default function Home() {
   useEffect(() => {
     const fetchEvents = async () => {
       try {
-        const res = await axios.get("http://localhost:5000/api/events/all");
+        const res = await axios.get(
+          `${import.meta.env.VITE_API_BASE_URL}/api/events/all`
+        );
         setAllEvents(res.data || []);
       } catch (err) {
         console.error("Home events fetch failed:", err);
@@ -44,10 +46,9 @@ export default function Home() {
     fetchEvents();
   }, []);
 
-  /* ================= SECTION → EVENT MAPPING ================= */
+  /* ================= MAP EVENTS ================= */
   const enrichedSections = useMemo(() => {
     if (!allEvents.length) return [];
-
     return SECTIONS.map((section) => ({
       ...section,
       events: allEvents.filter((event) =>
@@ -67,7 +68,7 @@ export default function Home() {
     return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
-  /* ================= GSAP VIDEO SCROLL ================= */
+  /* ================= GSAP SCROLL ================= */
   useEffect(() => {
     if (loading || !enrichedSections.length) return;
 
@@ -87,13 +88,15 @@ export default function Home() {
             ScrollTrigger.create({
               trigger: section,
               start: "top top",
-              end: "bottom bottom",
+              end: "+=100%",
               pin: true,
               pinSpacing: false,
+              anticipatePin: 1,
             });
           }
 
           const proxy = { time: 0 };
+
           ScrollTrigger.create({
             trigger: isMobile ? video : section,
             start: isMobile ? "top 80%" : "top top",
@@ -128,7 +131,7 @@ export default function Home() {
     setOpenScrollId((prev) => (prev === id ? null : id));
   };
 
-  /* ================= LOADER ================= */
+  /* ================= LOADING SCREEN ================= */
   if (loading) {
     return (
       <div className="h-screen flex items-center justify-center bg-[#050505]">
@@ -139,21 +142,22 @@ export default function Home() {
     );
   }
 
-  /* ================= UI ================= */
+  /* ================= MAIN RENDER ================= */
   return (
-    <div className="relative bg-[#050505] text-[#f3cf7a] min-h-screen overflow-x-hidden">
-      {/* Background */}
-      <div className="fixed inset-0 z-0">
+    <div className="relative bg-[#050505] text-[#f3cf7a] h-auto overflow-x-hidden">
+      
+      {/* Background Glow */}
+      <div className="fixed inset-0 z-0 pointer-events-none">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_rgba(176,141,50,0.05)_0%,_transparent_80%)]" />
       </div>
 
-      <main className="relative z-10 pt-32 ">
+      <main className="relative z-10 pt-32">
         <Hero />
         <About />
 
-        <div id="events">
+        <div id="events" className="relative">
           {isMobile ? (
-            <div className="pb-20 space-y-40">
+            <div className="pb-0 space-y-32">
               {enrichedSections.map((section, i) => (
                 <MobileEventSection
                   key={i}
@@ -167,7 +171,7 @@ export default function Home() {
               ))}
             </div>
           ) : (
-            <div className="pb-40 my-20">
+            <div className="pb-0 mb-0">
               {enrichedSections.map((section, i) => (
                 <DesktopEventSection
                   key={i}
@@ -185,17 +189,31 @@ export default function Home() {
         </div>
       </main>
 
-      {/* FOOTER */}
-      <footer className="relative z-10 py-16 my-28 text-center border-t border-[#f3cf7a]/10">
-        <div className="mb-4 font-serif italic text-2xl tracking-widest">
-          ADVAYA 2K26
-        </div>
-        <p className="text-[10px] uppercase tracking-[0.6em] opacity-30 px-6">
-          RV Institute of Technology and Management • Department of MCA
-        </p>
-      </footer>
+      {/* ================= BEAUTIFUL TRANSITION SECTION ================= */}
+      <section className="relative py-32 flex flex-col items-center justify-center text-center overflow-hidden md:pt-120">
+        
+        <div className="w-full h-px bg-gradient-to-r from-transparent via-[#f3cf7a]/60 to-transparent mb-16" />
 
-      {/* EVENT MODAL */}
+        <div className="absolute inset-0 pointer-events-none">
+          <div className="absolute inset-0 " />
+        </div>
+
+        <div className="relative z-10 max-w-3xl px-6">
+          <h2 className="text-3xl md:text-5xl font-serif tracking-widest mb-6">
+            THE JOURNEY CONTINUES
+          </h2>
+
+          <p className="text-[#f3cf7a]/70 text-lg leading-relaxed ">
+            Beyond every battlefield lies a new challenge. 
+            Stay prepared, stay relentless, and let your brilliance echo 
+            through the arenas of ADVAYA.
+          </p>
+        </div>
+
+        <div className="absolute bottom-0 left-0 w-full h-24 bg-gradient-to-b from-transparent to-[#050505]" />
+      </section>
+
+      {/* ================= EVENT MODAL ================= */}
       {selectedEvent && (
         <FullEventScrollModalResponsive
           isOpen

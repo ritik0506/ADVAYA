@@ -46,7 +46,7 @@ export const registerParticipant = async (req, res, next) => {
     if (existingRegistrations >= 1) {
       return res.status(400).json({
         success: false,
-        message: `Registration limit reached: ${collegeName} has already registered 2 teams for ${eventName}`,
+        message: `Registration limit reached: ${collegeName} has already registered 1 teams for ${eventName}`,
       });
     }
 

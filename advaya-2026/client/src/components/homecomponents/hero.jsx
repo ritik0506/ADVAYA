@@ -1,3 +1,5 @@
+"use client";
+
 export default function Hero() {
   // Stadium dimensions
   const width = 450;  
@@ -12,19 +14,16 @@ export default function Hero() {
   const perimeter = (2 * flatWidth) + (Math.PI * height);
 
   return (
-    <div className="flex flex-col items-center justify-center mb-32 mt-12 relative min-h-[500px]">
+    <div className="flex flex-col items-center justify-center mb-32 mt-12 relative min-h-[600px]">
       
-      {/* --- INTENSIFIED BACKGROUND GLOW (Behind everything) --- */}
-      {/* Layer 1: Central Golden Bloom */}
+      {/* --- INTENSIFIED BACKGROUND GLOW --- */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-80 bg-[#f3cf7a]/20 blur-[120px] rounded-full animate-pulse z-0" />
-      
-      {/* Layer 2: Wide Deep Amber Glow */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[400px] bg-[#b08d32]/10 blur-[160px] rounded-full z-0 opacity-60" />
 
       {/* --- LOGO UNIT --- */}
       <div className="relative group cursor-crosshair z-10 flex items-center justify-center">
         
-        {/* THE BORDER SYSTEM (Always Visible + 2 Animated Snakes) */}
+        {/* THE BORDER SYSTEM */}
         <div className="absolute pointer-events-none" style={{ width: width, height: height }}>
           <svg 
             width="100%" 
@@ -32,7 +31,7 @@ export default function Hero() {
             viewBox={`0 0 ${width} ${height}`}
             className="overflow-visible"
           >
-            {/* 1. THE STATIC BORDER (Always visible) */}
+            {/* 1. THE STATIC BORDER */}
             <rect
               x={strokeWidth / 2}
               y={strokeWidth / 2}
@@ -42,8 +41,8 @@ export default function Hero() {
               ry={borderRadius}
               fill="none"
               stroke="#f3cf7a"
-              strokeWidth={1} /* Thinner static border */
-              className="opacity-20" /* Faint, elegant visibility */
+              strokeWidth={1}
+              className="opacity-20"
             />
 
             {/* 2. THE DUAL ANIMATED SNAKES */}
@@ -59,7 +58,6 @@ export default function Hero() {
               strokeWidth={strokeWidth}
               strokeLinecap="round"
               style={{
-                /* Dash(20%) - Gap(30%) - Dash(20%) - Gap(30%) */
                 strokeDasharray: `${perimeter * 0.2} ${perimeter * 0.3} ${perimeter * 0.2} ${perimeter * 0.3}`,
                 animation: "snake-travel-stadium 6s linear infinite",
                 filter: "drop-shadow(0 0 12px #f3cf7a) drop-shadow(0 0 4px #f3cf7a)"
@@ -80,24 +78,50 @@ export default function Hero() {
           <img 
             src="/collegelogo.png" 
             alt="RVITM Logo" 
-            className="relative h-24 md:h-32 w-auto object-contain 
-                       drop-shadow-[0_0_20px_rgba(243,207,122,0.4)]
-                       transition-all duration-700 group-hover:scale-105"
+            className="relative h-24 md:h-28 w-auto object-contain drop-shadow-[0_0_20px_rgba(243,207,122,0.4)] transition-all duration-700 group-hover:scale-105"
           />
         </div>
       </div>
 
       {/* --- TEXT UNIT --- */}
-      <div className="mt-20 text-center z-10">
-        <h3 className="text-sm md:text-3xl tracking-[1.5em] text-[#f3cf7a] font-serif font-black uppercase drop-shadow-[0_0_15px_rgba(243,207,122,0.5)]">
-          RVITM
-        </h3>
-        <div className="relative h-[1px] w-72 mx-auto mt-8">
-            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-[#f3cf7a] to-transparent shadow-[0_0_10px_#f3cf7a]" />
-        </div>
-        <p className="text-[10px] md:text-xs tracking-[0.8em] text-white/50 uppercase mt-8 font-bold">
-          GO! CHANGE THE WORLD 
+      <div className="mt-20 text-center z-10 px-6 max-w-4xl">
+        {/* Organizers */}
+        <p className="text-[10px] md:text-xs tracking-[0.5em] text-[#f3cf7a]/70 uppercase font-bold mb-4">
+          Department of MCA • RVITM Presents
         </p>
+
+        {/* Main Title */}
+        <h1 className="text-6xl md:text-9xl tracking-[0.2em] text-[#f3cf7a] font-serif italic font-black uppercase drop-shadow-[0_0_30px_rgba(243,207,122,0.3)] leading-none">
+          ADVAYA
+        </h1>
+
+        {/* The Golden Line with center Diamond */}
+        <div className="relative h-[1px] w-48 md:w-96 mx-auto mt-8 mb-12">
+          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-[#f3cf7a] to-transparent shadow-[0_0_10px_#f3cf7a] opacity-50" />
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-2 h-2 rotate-45 border border-[#f3cf7a] bg-[#050505] shadow-[0_0_10px_#f3cf7a]" />
+        </div>
+
+        {/* Description Section */}
+        <div className="space-y-6 max-w-3xl mx-auto">
+          <p className="text-lg md:text-2xl leading-relaxed text-white font-serif italic tracking-wide">
+            "A <span className="text-[#f3cf7a]">flagship technical symposium</span> where ancient myths collide with the digital frontier."
+          </p>
+          
+          <div className="flex flex-col items-center gap-4">
+            <p className="text-xs md:text-sm leading-relaxed text-white/50 uppercase tracking-[0.15em] font-medium max-w-2xl">
+              Advaya 2K26 provides a competitive stage for students across the region to showcase their skills in 
+              <span className="text-white/80 italic"> software development</span>, 
+              <span className="text-white/80 italic"> problem-solving</span>, and 
+              <span className="text-white/80 italic"> surprise events</span>.
+            </p>
+          </div>
+        </div>
+
+        {/* Scroll Indicator */}
+        <div className="mt-16 flex flex-col items-center gap-2 opacity-30 animate-pulse">
+            <span className="text-[9px] tracking-[0.8em] uppercase text-[#f3cf7a]">Enter the Arena</span>
+            <div className="w-[1px] h-12 bg-gradient-to-b from-[#f3cf7a] to-transparent" />
+        </div>
       </div>
 
       <style jsx>{`
