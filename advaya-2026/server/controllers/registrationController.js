@@ -1,61 +1,98 @@
 import Registration from '../models/Registration.js';
 import { google } from 'googleapis';
 
-// @desc    Register for an event
-// @route   POST /api/registration
-// @access  Public
+/**
+ * EVENT NAME  →  GOOGLE SHEET TAB NAME
+ * ⚠️ Sheet names MUST match exactly
+ */
+const EVENT_SHEET_MAP = {
+  "Code Kurukshetra": "Code Kurukshetra(PG)",
+  "Web Astra": "Web Astra(PG)",
+  "Data Vishleshana": "Data Vishleshana(PG)",
+  "Brahma Bits": "Brahma BIts(PG)",
+
+  "Gandhari Mode": "Gandhari Mode(UG)",
+  "Web Shilpa Chakra": "Web ShilpaChakra(UG)",
+  "Bits Vedha": "Bits Vedha(UG)",
+  "Maya Loop": "Maya Loop(UG)",
+
+  "Bids Sabha": "Bids Sabha(UG&PG)",
+  "Nidhi 404": "Nidhi 404(UG&PG)",
+  "Ranabhoomi Arena": "Ranabhoomi Arena(UG&PG)",
+  "Drishti POV": "Drishti Pov(UG&PG)",
+  "Rahasya Mintz": "RahasyaMintz(UG&PG)",
+  "Shastrartha Vada": "Shastrartha Vada(UG&PG)"
+};
+
+// =====================================================
+// REGISTER PARTICIPANT
+// =====================================================
 export const registerParticipant = async (req, res, next) => {
   try {
-    const { 
-      eventName, 
-      category, 
-      registrationFee, 
-      collegeName, 
-      teamName, 
+    const {
+      eventName,
+      category,
+      registrationFee,
+      collegeName,
+      teamName,
       participants,
-      teamSize 
+      teamSize
     } = req.body;
 
-   
-    // Normalize college name to lowercase to prevent case-sensitive duplicates
+    // Normalize college name
     const normalizedCollegeName = collegeName.trim().toLowerCase();
 
-    // Validate required fields
-    if (!eventName || !category || !collegeName || !teamName || !participants || participants.length === 0) {
+    // ================= VALIDATION =================
+    if (
+      !eventName ||
+      !category ||
+      !collegeName ||
+      !teamName ||
+      !participants ||
+      participants.length === 0
+    ) {
       return res.status(400).json({
         success: false,
         message: 'Please provide all required fields',
       });
     }
 
-    // Validate participants data
     for (let i = 0; i < participants.length; i++) {
-      const participant = participants[i];
-      if (!participant.name || !participant.mobile || !participant.email) {
+      const { name, mobile, email } = participants[i];
+      if (!name || !mobile || !email) {
         return res.status(400).json({
           success: false,
-          message: `Participant ${i + 1}: All fields (name, mobile, email) are required`,
+          message: `Participant ${i + 1}: name, mobile and email are required`,
         });
       }
     }
 
-    // Check college registration limit for this event (max 2 registrations per college per event)
+    // ================= SHEET RESOLUTION =================
+    const sheetName = EVENT_SHEET_MAP[eventName];
+
+    if (!sheetName) {
+      return res.status(400).json({
+        success: false,
+        message: `No Google Sheet mapped for event: ${eventName}`,
+      });
+    }
+
+    // ================= DUPLICATE CHECKS =================
     const existingRegistrations = await Registration.countDocuments({
-      eventName: eventName,
+      eventName,
       collegeName: normalizedCollegeName,
     });
 
     if (existingRegistrations >= 1) {
       return res.status(400).json({
         success: false,
-        message: `Registration limit reached: ${collegeName} has already registered 1 teams for ${eventName}`,
+        message: `${collegeName} has already registered for ${eventName}`,
       });
     }
 
-    // Check for duplicate team name for the same event
     const existingTeam = await Registration.findOne({
-      eventName: eventName,
-      teamName: teamName,
+      eventName,
+      teamName,
     });
 
     if (existingTeam) {
@@ -64,52 +101,47 @@ export const registerParticipant = async (req, res, next) => {
         message: 'Team name already exists for this event',
       });
     }
-     console.log(req.body);
-//google sheet integration code
 
-      const auth = new google.auth.GoogleAuth({ 
-        keyFile: './credentials.json', 
-        scopes: ['https://www.googleapis.com/auth/spreadsheets'],
+    // ================= PARTICIPANTS → COLUMNS =================
+    // [P1 Name, P1 Mobile, P1 Email, P2 Name, ...]
+    const participantColumns = participants.flatMap(p => [
+      p.name,
+      p.mobile,
+      p.email
+    ]);
 
-  });
+    // ================= GOOGLE SHEETS =================
+    const auth = new google.auth.GoogleAuth({
+      keyFile: './credentials.json',
+      scopes: ['https://www.googleapis.com/auth/spreadsheets'],
+    });
 
-  //create client instance for auth
-      const client = await auth.getClient();
+    const client = await auth.getClient();
+    const googleSheets = google.sheets({ version: 'v4', auth: client });
 
-  //instance of google sheets api
-  const googleSheets = google.sheets({ version: 'v4', auth: client });
-  const spreadsheetId = "1XV5FcKDoA4mhk46auDANnh68yf0c_G9nOJ91XLANPVs";
+    const spreadsheetId = '1XV5FcKDoA4mhk46auDANnh68yf0c_G9nOJ91XLANPVs';
 
-const metadata = await googleSheets.spreadsheets.get({
-  auth,
-  spreadsheetId,
-});
-console.log(metadata);
+    await googleSheets.spreadsheets.values.append({
+      spreadsheetId,
+      range: `${sheetName}!A1`, // ✅ always start from column A
+      valueInputOption: 'USER_ENTERED',
+      insertDataOption: 'INSERT_ROWS',
+      resource: {
+        values: [
+          [
+            eventName,
+            category,
+            registrationFee,
+            teamName,
+            collegeName,
+            teamSize || participants.length,
+            ...participantColumns
+          ],
+        ],
+      },
+    });
 
-
-//get rows from google sheet
-const getRows = await googleSheets.spreadsheets.values.get({
-  auth,
-  spreadsheetId,
-  range: "Sheet1",
-});
-console.log(getRows.data);
-
-
-//write rows to google sheet
-await googleSheets.spreadsheets.values.append({
-  auth,
-  spreadsheetId,
-  range: "Sheet1!A:E",
-  valueInputOption: "USER_ENTERED",
-  resource: {
-    values: [
-      [eventName, category, registrationFee, teamName,collegeName,teamSize, JSON.stringify(participants), teamSize || participants.length]
-    ],
-  },
-});
-
-    // Create registration
+    // ================= DATABASE =================
     const registration = await Registration.create({
       eventName,
       category,
@@ -126,8 +158,8 @@ await googleSheets.spreadsheets.values.append({
       teamId: registration.teamId,
       data: registration,
     });
+
   } catch (error) {
-    // Handle validation errors
     if (error.name === 'ValidationError') {
       const messages = Object.values(error.errors).map(err => err.message);
       return res.status(400).json({
@@ -139,20 +171,20 @@ await googleSheets.spreadsheets.values.append({
   }
 };
 
-// @desc    Get all registrations
-// @route   GET /api/registration
-// @access  Private/Admin
+// =====================================================
+// GET ALL REGISTRATIONS
+// =====================================================
 export const getAllRegistrations = async (req, res, next) => {
   try {
     const { eventName, collegeName } = req.query;
-    
-    // Build filter
     const filter = {};
     if (eventName) filter.eventName = eventName;
     if (collegeName) filter.collegeName = collegeName;
 
-    const registrations = await Registration.find(filter).sort({ createdAt: -1 });
-    
+    const registrations = await Registration
+      .find(filter)
+      .sort({ createdAt: -1 });
+
     res.status(200).json({
       success: true,
       count: registrations.length,
@@ -163,12 +195,14 @@ export const getAllRegistrations = async (req, res, next) => {
   }
 };
 
-// @desc    Get registration by Team ID
-// @route   GET /api/registration/:teamId
-// @access  Public
+// =====================================================
+// GET REGISTRATION BY TEAM ID
+// =====================================================
 export const getRegistrationById = async (req, res, next) => {
   try {
-    const registration = await Registration.findOne({ teamId: req.params.teamId });
+    const registration = await Registration.findOne({
+      teamId: req.params.teamId,
+    });
 
     if (!registration) {
       return res.status(404).json({
@@ -186,14 +220,14 @@ export const getRegistrationById = async (req, res, next) => {
   }
 };
 
-// @desc    Get registrations by event
-// @route   GET /api/registration/event/:eventName
-// @access  Public
+// =====================================================
+// GET REGISTRATIONS BY EVENT
+// =====================================================
 export const getRegistrationsByEvent = async (req, res, next) => {
   try {
-    const registrations = await Registration.find({ 
-      eventName: req.params.eventName 
-    }).sort({ createdAt: -1 });
+    const registrations = await Registration
+      .find({ eventName: req.params.eventName })
+      .sort({ createdAt: -1 });
 
     res.status(200).json({
       success: true,
@@ -205,14 +239,14 @@ export const getRegistrationsByEvent = async (req, res, next) => {
   }
 };
 
-// @desc    Get registrations by college
-// @route   GET /api/registration/college/:collegeName
-// @access  Public
+// =====================================================
+// GET REGISTRATIONS BY COLLEGE
+// =====================================================
 export const getRegistrationsByCollege = async (req, res, next) => {
   try {
-    const registrations = await Registration.find({ 
-      collegeName: req.params.collegeName 
-    }).sort({ createdAt: -1 });
+    const registrations = await Registration
+      .find({ collegeName: req.params.collegeName })
+      .sort({ createdAt: -1 });
 
     res.status(200).json({
       success: true,

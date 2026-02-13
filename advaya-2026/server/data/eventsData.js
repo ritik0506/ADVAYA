@@ -202,7 +202,7 @@ const eventsData = [
   // ==================== COMBINED ====================
   {
     eventId: 'shastrartha-vada',
-    mythologyName: 'Shastrartha Vāda',
+    mythologyName: 'Shastrartha Vada',
     actualName: 'IT Debate',
     category: 'Combined',
     description:
