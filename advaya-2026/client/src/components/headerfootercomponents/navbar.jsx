@@ -42,28 +42,17 @@ const Navbar = () => {
       <nav className="fixed top-0 left-0 right-0 z-[100] px-4 md:px-12 py-2 flex justify-between items-center bg-black/40 backdrop-blur-xl border-b border-[#f3cf7a]/10">
 
         {/* LEFT SIDE: LOGO STACK */}
-        <div className="flex-1 flex justify-start">
+        <div className="flex-1 flex justify-start -ml-3 md:-ml-10">
           <div
             className="relative group cursor-pointer flex flex-col"
             onClick={(e) => handleScroll(e, "#")}
           >
             {/* MAIN LOGO */}
             <img
-              src="/logomain.png"
+              src="/collegelogo.png"
               alt="Advaya Logo"
-              className="h-14 md:h-20 w-auto object-contain brightness-110 transition-transform duration-500 group-hover:scale-105"
+              className="h-8 md:h-18 w-auto object-contain brightness-110 transition-transform duration-500 group-hover:scale-105"
             />
-
-            {/* 2026 LOGO — RIGHT ALIGNED BELOW */}
-           {/* 2026 LOGO — SMALLER & SLIGHTLY UP */}
-<div className="w-full flex justify-end -mt-3">
-  <img
-    src="/2026logo.png"
-    alt="2026 Logo"
-    className="h-3 -mt-2  md:h-3 w-auto object-contain opacity-90 
-"
-  />
-</div>
 
           </div>
         </div>

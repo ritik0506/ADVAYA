@@ -1,5 +1,7 @@
 "use client";
 
+import React from "react";
+
 export default function Hero() {
   // Stadium dimensions
   const width = 450;  
@@ -67,36 +69,52 @@ export default function Hero() {
         </div>
 
         {/* Logo Container */}
-        <div 
-          className="relative bg-[#050505]/80 backdrop-blur-3xl border border-white/5 shadow-[0_0_50px_rgba(0,0,0,0.8)] flex items-center justify-center transition-all duration-700 group-hover:bg-[#050505]/95"
-          style={{ 
-            width: width - 20, 
-            height: height - 20,
-            borderRadius: (height - 20) / 2 
-          }} 
-        >
-          <img 
-            src="/collegelogo.png" 
-            alt="RVITM Logo" 
-            className="relative h-24 md:h-28 w-auto object-contain drop-shadow-[0_0_20px_rgba(243,207,122,0.4)] transition-all duration-700 group-hover:scale-105"
-          />
-        </div>
+        {/* Logo Container */}
+<div 
+  className="relative bg-[#050505]/90 backdrop-blur-3xl 
+             border border-white/5 
+             shadow-[0_0_50px_rgba(0,0,0,0.8)] 
+             flex flex-col items-center justify-center 
+             transition-all duration-700 
+             group-hover:bg-[#050505]/95"
+  style={{ 
+    width: width - 10, 
+    height: height - 10,
+    borderRadius: (height - 20) / 2 
+  }} 
+>
+<div className="pb-1">
+
+  {/* MAIN LOGO — MUCH BIGGER */}
+  <img 
+    src="/logomain.png" 
+    alt="Main Logo" 
+    className="h-[230px] md:h-[220px] w-auto object-contain 
+    drop-shadow-[0_0_30px_rgba(243,207,122,0.6)] 
+    transition-all duration-700 
+    group-hover:scale-110"
+    />
+
+  {/* 2026 LOGO — SMALL + NO GAP */}
+  <div className="flex justify-center">
+
+  <img 
+    src="/2026logo.png" 
+    alt="2026 Logo" 
+    className="h-5 md:h-6 w-auto object-contain 
+    -mt-20 opacity-90 brightness-110  "
+    />
+    </div>
+    </div>
+</div>
+
       </div>
 
       {/* --- TEXT UNIT --- */}
       <div className="mt-20 text-center z-10 px-6 max-w-4xl">
-        {/* Organizers */}
-        <p className="text-[10px] md:text-xs tracking-[0.5em] text-[#f3cf7a]/70 uppercase font-bold mb-4">
-          Department of MCA • RVITM Presents
-        </p>
-
-        {/* Main Title */}
-        <h1 className="text-6xl md:text-9xl tracking-[0.2em] text-[#f3cf7a] font-serif italic font-black uppercase drop-shadow-[0_0_30px_rgba(243,207,122,0.3)] leading-none">
-          ADVAYA
-        </h1>
 
         {/* The Golden Line with center Diamond */}
-        <div className="relative h-[1px] w-48 md:w-96 mx-auto mt-8 mb-12">
+        <div className="relative h-[1px] w-108 md:w-96 mx-auto mb-12">
           <div className="absolute inset-0 bg-gradient-to-r from-transparent via-[#f3cf7a] to-transparent shadow-[0_0_10px_#f3cf7a] opacity-50" />
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-2 h-2 rotate-45 border border-[#f3cf7a] bg-[#050505] shadow-[0_0_10px_#f3cf7a]" />
         </div>

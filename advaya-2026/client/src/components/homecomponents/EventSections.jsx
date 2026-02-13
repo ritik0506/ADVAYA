@@ -2,8 +2,8 @@
 
 import SmallScroll from "./smallscroll";
 
-const GAP_DESKTOP_HORIZONTAL = "4rem";
-const GAP_DESKTOP_VERTICAL = "4rem";
+const GAP_DESKTOP_HORIZONTAL = "1rem";
+const GAP_DESKTOP_VERTICAL = "1.4rem";
 
 export function DesktopEventSection({
   section,
@@ -15,16 +15,16 @@ export function DesktopEventSection({
   setSelectedEvent,
 }) {
   return (
-    <section ref={sectionRef} className="min-h-[180vh] px-24 py-20">
+    <section ref={sectionRef} className="min-h-[180vh] px-14 py-20 md:-mt-0">
       <div className="flex gap-12 items-start">
         {/* Left: Event Scrolls */}
-        <div className="w-1/2">
-          <h2 className="text-7xl font-serif italic text-white mb-20 mt-20 uppercase tracking-tighter leading-none">
+        <div className="w-300">
+          <h2 className="text-6xl font-serif italic text-white  mt-4 uppercase tracking-tighter leading-none">
             {section?.title}
           </h2>
 
           <div
-            className="grid grid-cols-2"
+            className="grid grid-cols-2 pt-10 pb-20"
             style={{ gap: `${GAP_DESKTOP_VERTICAL} ${GAP_DESKTOP_HORIZONTAL}` }}
           >
             {/* Added optional chaining ?. to prevent mapping over undefined */}
@@ -49,7 +49,7 @@ export function DesktopEventSection({
         </div>
 
         {/* Right: Video */}
-        <div className="w-1/2 sticky top-24 h-[75vh] flex items-center justify-center pointer-events-none">
+        <div className="w-340 sticky top-23 h-[75vh] flex items-center justify-center pointer-events-none">
           <video
             ref={videoRef}
             src={section?.video}
@@ -83,7 +83,7 @@ export function MobileEventSection({
           playsInline
           preload="auto"
           className={`w-full h-full object-contain mix-blend-screen ${
-            sIdx > 0 ? "scale-75" : "scale-100"
+            sIdx > 0 ? "scale-95" : "scale-160"
           }`}
         />
       </div>

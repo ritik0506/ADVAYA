@@ -57,7 +57,7 @@ export default function EventsPage() {
       <div className={`transition-all duration-700 ease-in-out ${selectedEvent ? 'blur-xl brightness-50 scale-95' : ''}`}>
         
         {/* HERO SECTION - Moderate Height */}
-        <section className="h-[35vh] flex flex-col items-center justify-center text-center px-4 relative pt-18">
+        <section className="h-[35vh] flex flex-col items-center justify-center text-center px-4 relative pt-28">
           <h1 className="text-7xl lg:text-9xl font-serif italic font-black text-[#f3cf7a] leading-none tracking-tighter drop-shadow-[0_10px_30px_rgba(243,207,122,0.2)]">
             EVENTS
           </h1>
