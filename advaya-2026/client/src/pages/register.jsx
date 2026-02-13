@@ -114,7 +114,7 @@ export default function Register() {
       <div className="max-w-3xl mx-auto relative z-10">
         {/* HEADER */}
         <div className="text-center mb-16 space-y-6">
-          <h1 className="text-6xl md:text-8xl font-black tracking-tighter uppercase italic bg-gradient-to-b from-white via-[#f3cf7a] to-[#b8860b] bg-clip-text text-transparent drop-shadow-[0_10px_30px_rgba(243,207,122,0.3)]">
+          <h1 className="text-6xl md:text-8xl font-black tracking-tighter uppercase italic bg-linear-to-b from-white via-[#f3cf7a] to-[#b8860b] bg-clip-text text-transparent drop-shadow-[0_10px_30px_rgba(243,207,122,0.3)]">
             {event.name}
           </h1>
           <div className="inline-flex items-center gap-3 px-6 py-2 rounded-full border-2 border-blue-500/40 bg-blue-500/10 backdrop-blur-xl text-blue-400 text-[10px] font-black tracking-[0.4em] uppercase">
@@ -127,7 +127,7 @@ export default function Register() {
           {/* PERMANENT BORDERED TEAM SECTION */}
           <div className="relative">
             {/* The Permanent Dual-Tone Border Rim */}
-            <div className="absolute -inset-[2px] bg-gradient-to-br from-[#f3cf7a]/60 via-blue-500/20 to-blue-500/60 rounded-3xl opacity-100" />
+            <div className="absolute -inset-[2px] bg-linear-to-br from-[#f3cf7a]/60 via-blue-500/20 to-blue-500/60 rounded-3xl opacity-100" />
             
             <div className="relative bg-[#050505] backdrop-blur-3xl p-8 rounded-3xl border border-white/10 shadow-[inset_0_0_20px_rgba(243,207,122,0.05)]">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -159,7 +159,7 @@ export default function Register() {
             {participants.map((p, idx) => (
               <div key={idx} className="relative">
                 {/* Permanent Rim: Gold for Captain, Blue for Warriors */}
-                <div className={`absolute -inset-[1.5px] bg-gradient-to-r ${idx === 0 ? 'from-[#f3cf7a] via-[#f3cf7a]/40' : 'from-blue-500 via-blue-500/40'} to-transparent rounded-2xl opacity-80`} />
+                <div className={`absolute -inset-[1.5px] bg-linear-to-r ${idx === 0 ? 'from-[#f3cf7a] via-[#f3cf7a]/40' : 'from-blue-500 via-blue-500/40'} to-transparent rounded-2xl opacity-80`} />
                 
                 <div className="relative bg-[#080808] p-8 rounded-2xl border border-white/5 shadow-2xl">
                   <div className="flex justify-between items-center mb-8">
@@ -207,7 +207,7 @@ export default function Register() {
               {/* Bottom Depth Shadow */}
               <div className="absolute inset-0 bg-[#b8860b] rounded-xl translate-y-1.5" />
               {/* Main Button with Permanent Border */}
-              <div className="relative z-10 py-5 bg-gradient-to-r from-[#f3cf7a] to-[#ffde8a] text-black font-black uppercase tracking-[0.3em] rounded-xl border-2 border-white/40 shadow-2xl flex items-center justify-center gap-3 transition-transform active:translate-y-1">
+              <div className="relative z-10 py-5 bg-linear-to-r from-[#f3cf7a] to-[#ffde8a] text-black font-black uppercase tracking-[0.3em] rounded-xl border-2 border-white/40 shadow-2xl flex items-center justify-center gap-3 transition-transform active:translate-y-1">
                 {isSubmitting ? (
                   <div className="h-5 w-5 border-2 border-black/30 border-t-black animate-spin rounded-full" />
                 ) : (
@@ -230,7 +230,7 @@ function Input({ label, icon, ...props }) {
       </label>
       <div className="relative">
         {/* Permanent Border Container for Input */}
-        <div className="absolute -inset-[1px] bg-gradient-to-r from-white/10 to-blue-500/20 rounded-xl" />
+        <div className="absolute -inset-px bg-linear-to-r from-white/10 to-blue-500/20 rounded-xl" />
         <input
           className="relative w-full px-5 py-4 bg-[#0a0a0a] border border-white/10 rounded-xl focus:border-blue-500 transition-all outline-none text-white text-sm placeholder:text-gray-800"
           {...props}
@@ -247,7 +247,7 @@ function Toast({ message, type, onClose }) {
   }, [onClose]);
 
   return (
-    <div className={`fixed top-10 right-10 px-8 py-5 rounded-2xl z-[100] border-2 shadow-2xl animate-in slide-in-from-right duration-500 ${
+    <div className={`fixed top-10 right-10 px-8 py-5 rounded-2xl z-100 border-2 shadow-2xl animate-in slide-in-from-right duration-500 ${
       type === "success"
         ? "bg-[#050505] border-green-500 text-green-400 shadow-green-500/10"
         : "bg-[#050505] border-red-500 text-red-400 shadow-red-500/10"

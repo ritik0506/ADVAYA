@@ -87,7 +87,7 @@ const Navbar = () => {
         <div className="flex-1 flex justify-end items-center gap-3 md:gap-6">
           <a
             href={registerLink.href}
-            className="bg-gradient-to-br from-[#f3cf7a] via-[#b08d32] to-[#8a6d29] px-4 md:px-8 py-2 md:py-3 rounded-[2px] text-black text-[10px] md:text-xs font-black tracking-[0.1em] md:tracking-[0.2em] shadow-[0_0_15px_rgba(176,141,50,0.3)] active:scale-95 transition-transform"
+            className="bg-[#f3cf7a] px-4 md:px-8 py-2 md:py-3 rounded-[2px] text-black text-[10px] md:text-xs font-black tracking-[0.1em] md:tracking-[0.2em] shadow-[0_0_20px_rgba(243,207,122,0.5),0_0_40px_rgba(176,141,50,0.2)] border border-[#f3cf7a] hover:bg-[#f5d88a] hover:shadow-[0_0_25px_rgba(243,207,122,0.7),0_0_50px_rgba(176,141,50,0.3)] hover:border-[#f5d88a] active:scale-95 transition-all duration-300"
           >
             {registerLink.name}
           </a>
