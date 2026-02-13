@@ -39,7 +39,7 @@ const Navbar = () => {
   return (
     <>
       {/* NAVBAR */}
-      <nav className="fixed top-0 left-0 right-0 z-[100] px-4 md:px-12 py-2 flex justify-between items-center bg-black/40 backdrop-blur-xl border-b border-[#f3cf7a]/10">
+      <nav className="fixed top-0 left-0 right-0 z-100 px-4 md:px-12 py-2 flex justify-between items-center bg-black/40 backdrop-blur-xl border-b border-[#f3cf7a]/10">
 
         {/* LEFT SIDE: LOGO STACK */}
         <div className="flex-1 flex justify-start">
@@ -69,7 +69,7 @@ const Navbar = () => {
         </div>
 
         {/* CENTER: DESKTOP LINKS */}
-        <div className="hidden md:flex items-center gap-10 flex-[2] justify-center">
+        <div className="hidden md:flex items-center gap-10 flex-2 justify-center">
           {navLinks.map((link) => (
             <a
               key={link.name}
@@ -78,7 +78,7 @@ const Navbar = () => {
               className="relative text-[11px] tracking-[0.3em] font-bold text-[#b08d32] hover:text-[#f3cf7a] transition-all duration-300 group"
             >
               {link.name}
-              <span className="absolute -bottom-2 left-1/2 w-0 h-[1px] bg-[#f3cf7a] transition-all duration-500 group-hover:w-full group-hover:left-0" />
+              <span className="absolute -bottom-2 left-1/2 w-0 h-px bg-[#f3cf7a] transition-all duration-500 group-hover:w-full group-hover:left-0" />
             </a>
           ))}
         </div>
@@ -87,7 +87,7 @@ const Navbar = () => {
         <div className="flex-1 flex justify-end items-center gap-3 md:gap-6">
           <a
             href={registerLink.href}
-            className="bg-[#f3cf7a] px-4 md:px-8 py-2 md:py-3 rounded-[2px] text-black text-[10px] md:text-xs font-black tracking-[0.1em] md:tracking-[0.2em] shadow-[0_0_20px_rgba(243,207,122,0.5),0_0_40px_rgba(176,141,50,0.2)] border border-[#f3cf7a] hover:bg-[#f5d88a] hover:shadow-[0_0_25px_rgba(243,207,122,0.7),0_0_50px_rgba(176,141,50,0.3)] hover:border-[#f5d88a] active:scale-95 transition-all duration-300"
+            className="bg-[#f3cf7a] px-4 md:px-8 py-2 md:py-3 rounded-[2px] text-black text-[10px] md:text-xs font-black tracking-widest md:tracking-[0.2em] shadow-[0_0_20px_rgba(243,207,122,0.5),0_0_40px_rgba(176,141,50,0.2)] border border-[#f3cf7a] hover:bg-[#f5d88a] hover:shadow-[0_0_25px_rgba(243,207,122,0.7),0_0_50px_rgba(176,141,50,0.3)] hover:border-[#f5d88a] active:scale-95 transition-all duration-300"
           >
             {registerLink.name}
           </a>
@@ -95,7 +95,7 @@ const Navbar = () => {
           {/* HAMBURGER */}
           <button
             onClick={() => setIsOpen(!isOpen)}
-            className="md:hidden flex flex-col gap-1.5 z-[120] p-1"
+            className="md:hidden flex flex-col gap-1.5 z-120 p-1"
             aria-label="Toggle Menu"
           >
             <div className={`w-6 h-0.5 bg-[#f3cf7a] transition-all duration-300 ${isOpen ? "rotate-45 translate-y-2" : ""}`} />
@@ -108,12 +108,12 @@ const Navbar = () => {
       {/* MOBILE SIDEBAR */}
       <div className="md:hidden">
         <div
-          className={`fixed inset-0 bg-black/80 backdrop-blur-md z-[105] transition-opacity duration-500 ${isOpen ? "opacity-100 visible" : "opacity-0 invisible"}`}
+          className={`fixed inset-0 bg-black/80 backdrop-blur-md z-105 transition-opacity duration-500 ${isOpen ? "opacity-100 visible" : "opacity-0 invisible"}`}
           onClick={() => setIsOpen(false)}
         />
 
         <div
-          className={`fixed top-0 right-0 h-full w-[80%] max-w-[300px] bg-[#0a0a0a] border-l border-[#f3cf7a]/20 z-[110] transform transition-transform duration-500 ease-in-out ${isOpen ? "translate-x-0" : "translate-x-full"}`}
+          className={`fixed top-0 right-0 h-full w-[80%] max-w-[300px] bg-[#0a0a0a] border-l border-[#f3cf7a]/20 z-110 transform transition-transform duration-500 ease-in-out ${isOpen ? "translate-x-0" : "translate-x-full"}`}
         >
           <div className="flex flex-col h-full p-10 pt-20 gap-8">
 

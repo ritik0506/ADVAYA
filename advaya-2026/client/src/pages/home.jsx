@@ -148,7 +148,7 @@ export default function Home() {
       
       {/* Background Glow */}
       <div className="fixed inset-0 z-0 pointer-events-none">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_rgba(176,141,50,0.05)_0%,_transparent_80%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(176,141,50,0.05)_0%,transparent_80%)]" />
       </div>
 
       <main className="relative z-10 pt-32">
@@ -192,7 +192,7 @@ export default function Home() {
       {/* ================= BEAUTIFUL TRANSITION SECTION ================= */}
       <section className="relative py-32 flex flex-col items-center justify-center text-center overflow-hidden md:pt-120">
         
-        <div className="w-full h-px bg-gradient-to-r from-transparent via-[#f3cf7a]/60 to-transparent mb-16" />
+        <div className="w-full h-px bg-linear-to-r from-transparent via-[#f3cf7a]/60 to-transparent mb-16" />
 
         <div className="absolute inset-0 pointer-events-none">
           <div className="absolute inset-0 " />
@@ -210,7 +210,7 @@ export default function Home() {
           </p>
         </div>
 
-        <div className="absolute bottom-0 left-0 w-full h-24 bg-gradient-to-b from-transparent to-[#050505]" />
+        <div className="absolute bottom-0 left-0 w-full h-24 bg-linear-to-b from-transparent to-[#050505]" />
       </section>
 
       {/* ================= EVENT MODAL ================= */}
