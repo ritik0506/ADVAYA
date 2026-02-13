@@ -63,7 +63,7 @@ export default function EventsPage() {
           </h1>
           <div className="mt-6 flex flex-col items-center gap-3">
             <p className="text-[10px] tracking-[0.6em] text-[#f3cf7a] uppercase opacity-50 font-bold italic">Step into the Battleground of the Gods</p>
-            <div className="w-px h-12 bg-linear-to-b from-[#f3cf7a] to-transparent opacity-20"></div>
+            <div className="w-px h-12 bg-gradient-to-b from-[#f3cf7a] to-transparent opacity-20"></div>
           </div>
         </section>
 
@@ -79,11 +79,11 @@ export default function EventsPage() {
 
       {/* MODAL */}
       {selectedEvent && (
-        <div className="fixed inset-0 z-9999 flex items-center justify-center p-4 md:p-10 perspective-[1500px]">
+        <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 md:p-10 perspective-[1500px]">
           <div className="absolute inset-0 bg-[#050505]/95 backdrop-blur-md" onClick={() => setSelectedEvent(null)} />
           <div className="relative w-full max-w-4xl max-h-[90vh] bg-[#0d0d0d] rounded-[2.5rem] overflow-hidden flex flex-col lg:flex-row border border-white/10 shadow-[0_0_80px_rgba(0,0,0,1)] animate-in fade-in zoom-in-95 duration-500">
               <div className="flex-1 p-6 md:p-12 overflow-y-auto custom-scrollbar relative z-10">
-                  <div className="sticky top-0 z-100 flex justify-end mb-2">
+                  <div className="sticky top-0 z-[100] flex justify-end mb-2">
                     <button onClick={() => setSelectedEvent(null)} className="w-10 h-10 rounded-full bg-black/40 border border-white/20 flex items-center justify-center text-white/70 hover:text-[#f3cf7a] transition-all">✕</button>
                   </div>
                   <div className="space-y-1 mb-6 mt-2">
@@ -100,7 +100,7 @@ export default function EventsPage() {
                       </ul>
                   </div>
               </div>
-              <div className="w-full lg:w-[320px] bg-white/2 border-t lg:border-t-0 lg:border-l border-white/10 p-10 flex flex-col justify-between">
+              <div className="w-full lg:w-[320px] bg-white/[0.02] border-t lg:border-t-0 lg:border-l border-white/10 p-10 flex flex-col justify-between">
                   <div className="space-y-4">
                       <StatBox label="Offerings" value={`₹${selectedEvent.fee}`} />
                       <div className="grid grid-cols-2 gap-2">
@@ -124,7 +124,7 @@ export default function EventsPage() {
 
 function StatBox({ label, value }) {
   return (
-    <div className="p-5 bg-white/3 rounded-3xl border border-white/5">
+    <div className="p-5 bg-white/[0.03] rounded-3xl border border-white/5">
       <p className="text-[8px] uppercase tracking-widest text-white/30 mb-2">{label}</p>
       <p className="text-xl font-serif text-[#f3cf7a]">{value}</p>
     </div>
@@ -214,7 +214,7 @@ function EventCard({ event, isActive, position, onClick }) {
             className="w-full h-full object-cover opacity-30 group-hover:scale-110 transition-transform duration-[2.5s] will-change-transform" 
             alt={event.mythologyName} 
           />
-          <div className="absolute inset-0 bg-linear-to-t from-[#050505] via-transparent to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-transparent to-transparent" />
         </div>
 
         <div className="relative z-10 h-full p-7 flex flex-col justify-end">
