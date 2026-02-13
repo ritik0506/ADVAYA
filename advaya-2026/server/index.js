@@ -48,6 +48,7 @@ app.get('/', (req, res) => {
   });
 });
 
+
 // API Routes
 app.use('/api/registration', registrationRoutes);
 app.use('/api/logs', logRoutes);
@@ -58,9 +59,8 @@ app.use(notFound);
 app.use(errorHandler);
 
 // Start server
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 5001;
 app.listen(PORT, () => {
   logger.info(`Server running in ${process.env.NODE_ENV || 'development'} mode on port ${PORT}`);
   console.log(`Server running on port ${PORT}`);
 });
-

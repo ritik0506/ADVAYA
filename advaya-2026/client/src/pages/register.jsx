@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { fetchAllEvents } from "../services/getallevents";
-import { registerWarrior } from "../services/registerapi";
+import {  registerWarrior } from "../services/registerapi";
 import { Plus, Trash2, School, Shield, Zap, Swords } from "lucide-react";
 
 const BACKEND_CATEGORY_MAP = {
@@ -86,7 +86,8 @@ export default function Register() {
         teamSize: participants.length,
         participants,
       });
-      setToast({ type: "success", message: "Warrior Registered Successfully!" });
+
+      setToast({ type: "success", message: "Registered Successfully!" });
       setTimeout(() => navigate("/home"), 1500);
     } catch (err) {
       setToast({ type: "error", message: err.message || "Registration failed" });

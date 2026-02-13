@@ -26,3 +26,5 @@ export const registerWarrior = async (registrationData) => {
     throw new Error(message);
   }
 };
+
+

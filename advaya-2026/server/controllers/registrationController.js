@@ -1,4 +1,5 @@
 import Registration from '../models/Registration.js';
+import { google } from 'googleapis';
 
 // @desc    Register for an event
 // @route   POST /api/registration
@@ -15,6 +16,7 @@ export const registerParticipant = async (req, res, next) => {
       teamSize 
     } = req.body;
 
+   
     // Normalize college name to lowercase to prevent case-sensitive duplicates
     const normalizedCollegeName = collegeName.trim().toLowerCase();
 
@@ -62,6 +64,50 @@ export const registerParticipant = async (req, res, next) => {
         message: 'Team name already exists for this event',
       });
     }
+     console.log(req.body);
+//google sheet integration code
+
+      const auth = new google.auth.GoogleAuth({ 
+        keyFile: './credentials.json', 
+        scopes: ['https://www.googleapis.com/auth/spreadsheets'],
+
+  });
+
+  //create client instance for auth
+      const client = await auth.getClient();
+
+  //instance of google sheets api
+  const googleSheets = google.sheets({ version: 'v4', auth: client });
+  const spreadsheetId = "1XV5FcKDoA4mhk46auDANnh68yf0c_G9nOJ91XLANPVs";
+
+const metadata = await googleSheets.spreadsheets.get({
+  auth,
+  spreadsheetId,
+});
+console.log(metadata);
+
+
+//get rows from google sheet
+const getRows = await googleSheets.spreadsheets.values.get({
+  auth,
+  spreadsheetId,
+  range: "Sheet1",
+});
+console.log(getRows.data);
+
+
+//write rows to google sheet
+await googleSheets.spreadsheets.values.append({
+  auth,
+  spreadsheetId,
+  range: "Sheet1!A:E",
+  valueInputOption: "USER_ENTERED",
+  resource: {
+    values: [
+      [eventName, category, registrationFee, teamName,collegeName,teamSize, JSON.stringify(participants), teamSize || participants.length]
+    ],
+  },
+});
 
     // Create registration
     const registration = await Registration.create({
