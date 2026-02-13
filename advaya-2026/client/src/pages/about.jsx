@@ -107,7 +107,7 @@ export default function About() {
 
 
       <p className="text-left text-[9px] md:text-[10px] uppercase tracking-[0.4em] leading-relaxed text-white/40 border-l border-white/10 pl-6 md:pl-8">
-        District Level <br /> Technical Symposium
+        Intercollege Level <br /> Technical Symposium
       </p>
     </div>
   </motion.div>
