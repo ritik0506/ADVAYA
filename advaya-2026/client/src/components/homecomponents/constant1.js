@@ -11,7 +11,7 @@ export const SECTIONS = [
   },
   {
     video: "/videos/bhishmaputra1.webm",
-    title: "Non-Tech - UG/PG",
+    title: "Cultural & Non-Tech",
     categoryFilter: ["Non-Tech", "Combined"],
   },
 ];

@@ -114,7 +114,7 @@ rodText: {
   textShadow: "0 1px 2px rgba(0,0,0,0.5)",
 },
 
-  paperContainer: { height: "0px", overflow: "hidden", position: "relative", zIndex: 5, backgroundColor: "#e2d192", boxShadow: "inset 0 0 20px rgba(0,0,0,0.3)" },
+  paperContainer: { height: "0px", overflow: "hidden", position: "relative", zIndex: 5, backgroundColor: "#070707", boxShadow: "inset 0 0 20px rgba(0,0,0,0.3)" },
   
   // MODIFIED: Added more top padding to create spacing
   paperTexture: { width: "100%", minHeight: "400px", backgroundImage: "url('/assests/scrollpaper1.png')", backgroundSize: "100% auto", backgroundRepeat: "repeat-y", padding: "30px 12px 80px 12px", textAlign: "center", color: "#3b2a1a" },
