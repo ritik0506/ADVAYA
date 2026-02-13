@@ -39,7 +39,7 @@ const Navbar = () => {
   return (
     <>
       {/* NAVBAR */}
-      <nav className="fixed top-0 left-0 right-0 z-[100] px-4 md:px-12 py-2 flex justify-between items-center bg-black/40 backdrop-blur-xl border-b border-[#f3cf7a]/10">
+      <nav className="fixed top-0 left-0 right-0 z-[100] px-4 md:px-12 py-5 flex justify-between items-center bg-black/40 backdrop-blur-xl border-b border-[#f3cf7a]/10">
 
         {/* LEFT SIDE: LOGO STACK */}
         <div className="flex-1 flex justify-start -ml-3 md:-ml-10">
