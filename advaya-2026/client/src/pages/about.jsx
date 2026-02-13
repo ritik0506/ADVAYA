@@ -2,6 +2,14 @@
 
 import React from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
+import {
+  YagnaReveal,
+  DivineManifest,
+  SplitText,
+  GoldenDivider,
+  ScrollText,
+  SPRING,
+} from "../components/animations/MythologyMotion";
 
 /* ---------------- SECTION HEADING ---------------- */
 const SectionHeading = ({ children, subtitle, number }) => (
@@ -9,24 +17,24 @@ const SectionHeading = ({ children, subtitle, number }) => (
     <motion.div
       initial={{ width: 0 }}
       whileInView={{ width: "4rem" }}
-      transition={{ duration: 1, ease: "easeOut" }}
+      transition={{ duration: 0.8, ease: [0.76, 0, 0.24, 1] }}
       className="h-[2px] bg-gradient-to-r from-blue-500 to-amber-500 mb-6 shadow-[0_0_10px_rgba(59,130,246,0.5)]"
     />
     <div className="flex items-center gap-4 mb-4">
       <span className="text-blue-500 font-mono text-xs tracking-tighter">
         {number}
       </span>
-      <motion.span
-        initial={{ opacity: 0, x: -10 }}
-        whileInView={{ opacity: 1, x: 0 }}
-        className="text-[10px] uppercase tracking-[0.6em] text-white/50 font-bold"
-      >
-        {subtitle}
-      </motion.span>
+      <YagnaReveal delay={0.1} y={15}>
+        <span className="text-[10px] uppercase tracking-[0.6em] text-white/50 font-bold">
+          {subtitle}
+        </span>
+      </YagnaReveal>
     </div>
-    <h2 className="text-5xl md:text-8xl font-serif italic text-white leading-[0.95] tracking-tight">
-      {children}
-    </h2>
+    <DivineManifest delay={0.15}>
+      <h2 className="text-5xl md:text-8xl font-serif italic text-white leading-[0.95] tracking-tight">
+        {children}
+      </h2>
+    </DivineManifest>
   </div>
 );
 
@@ -52,7 +60,7 @@ export default function About() {
   <motion.div
     initial={{ opacity: 0, scale: 0.92 }}
     animate={{ opacity: 1, scale: 1 }}
-    transition={{ duration: 1.8, ease: [0.16, 1, 0.3, 1] }}
+    transition={{ ...SPRING.heavy }}
     className="text-center -mt-10 flex flex-col items-center"
   >
     {/* MAIN LOGO CONTAINER */}
@@ -124,9 +132,11 @@ export default function About() {
           <SectionHeading number="// 01" subtitle="The Identity">
             The Digital <br /> Crucible
           </SectionHeading>
-          <p className="max-w-3xl text-xl text-gray-400 italic">
-            Crafted by the Department of MCA at RVITM, Advaya is where elite minds converge to redefine the digital frontier.
-          </p>
+          <YagnaReveal delay={0.2} y={30}>
+            <p className="max-w-3xl text-xl text-gray-400 italic">
+              Crafted by the Department of MCA at RVITM, Advaya is where elite minds converge to redefine the digital frontier.
+            </p>
+          </YagnaReveal>
         </section>
 
         {/* SECTION 02 — FIXED */}
@@ -137,23 +147,27 @@ export default function About() {
             </SectionHeading>
 
             <div className="grid md:grid-cols-2 gap-16 mt-16">
-              <div className="p-10 rounded-3xl border border-blue-500/20 bg-blue-500/5">
-                <h3 className="text-xs uppercase tracking-[0.5em] text-blue-400 mb-6">
-                  Vision
-                </h3>
-                <p className="text-3xl font-serif italic">
-                  To be the quantum leap between academic theory and industry disruption.
-                </p>
-              </div>
+              <YagnaReveal delay={0.1}>
+                <div className="p-10 rounded-3xl border border-blue-500/20 bg-blue-500/5">
+                  <h3 className="text-xs uppercase tracking-[0.5em] text-blue-400 mb-6">
+                    Vision
+                  </h3>
+                  <p className="text-3xl font-serif italic">
+                    To be the quantum leap between academic theory and industry disruption.
+                  </p>
+                </div>
+              </YagnaReveal>
 
-              <div className="p-10 rounded-3xl border border-amber-500/20 bg-amber-500/5">
-                <h3 className="text-xs uppercase tracking-[0.5em] text-amber-400 mb-6">
-                  Purpose
-                </h3>
-                <p className="text-3xl font-serif italic">
-                  Igniting leadership through high-stakes technical competition.
-                </p>
-              </div>
+              <YagnaReveal delay={0.3}>
+                <div className="p-10 rounded-3xl border border-amber-500/20 bg-amber-500/5">
+                  <h3 className="text-xs uppercase tracking-[0.5em] text-amber-400 mb-6">
+                    Purpose
+                  </h3>
+                  <p className="text-3xl font-serif italic">
+                    Igniting leadership through high-stakes technical competition.
+                  </p>
+                </div>
+              </YagnaReveal>
             </div>
           </div>
         </section>

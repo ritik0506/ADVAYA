@@ -1,10 +1,20 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
+import { motion } from "framer-motion";
 import { useParams, useNavigate } from "react-router-dom";
 import { fetchAllEvents } from "../services/getallevents";
 import {  registerWarrior } from "../services/registerapi";
 import { Plus, Trash2, School, Shield, Zap, Swords } from "lucide-react";
+import {
+  DivineManifest,
+  SplitText,
+  YagnaReveal,
+  staggerContainer,
+  staggerItem,
+  SPRING,
+  EASE,
+} from "../components/animations/MythologyMotion";
 
 const BACKEND_CATEGORY_MAP = {
   PG: "PG",
@@ -114,19 +124,30 @@ export default function Register() {
 
       <div className="max-w-3xl mx-auto relative z-10">
         {/* HEADER */}
-        <div className="text-center mb-16 space-y-6">
-          <h1 className="text-6xl md:text-8xl font-black tracking-tighter uppercase italic bg-gradient-to-b from-white via-[#f3cf7a] to-[#b8860b] bg-clip-text text-transparent drop-shadow-[0_10px_30px_rgba(243,207,122,0.3)]">
-            {event.name}
-          </h1>
-          <div className="inline-flex items-center gap-3 px-6 py-2 rounded-full border-2 border-blue-500/40 bg-blue-500/10 backdrop-blur-xl text-blue-400 text-[10px] font-black tracking-[0.4em] uppercase">
-            <Zap size={14} className="fill-blue-400" /> {event.displayCategory} • ₹{event.fee}
+        <DivineManifest>
+          <div className="text-center mb-16 space-y-6">
+            <SplitText
+              text={event.name}
+              as="h1"
+              animation="wave"
+              className="text-6xl md:text-8xl font-black tracking-tighter uppercase italic bg-gradient-to-b from-white via-[#f3cf7a] to-[#b8860b] bg-clip-text text-transparent drop-shadow-[0_10px_30px_rgba(243,207,122,0.3)]"
+            />
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ ...SPRING.snappy, delay: 0.4 }}
+              className="inline-flex items-center gap-3 px-6 py-2 rounded-full border-2 border-blue-500/40 bg-blue-500/10 backdrop-blur-xl text-blue-400 text-[10px] font-black tracking-[0.4em] uppercase"
+            >
+              <Zap size={14} className="fill-blue-400" /> {event.displayCategory} • ₹{event.fee}
+            </motion.div>
           </div>
-        </div>
+        </DivineManifest>
 
         <form onSubmit={handleSubmit} className="space-y-12">
           
           {/* PERMANENT BORDERED TEAM SECTION */}
-          <div className="relative">
+          <YagnaReveal>
+            <div className="relative">
             {/* The Permanent Dual-Tone Border Rim */}
             <div className="absolute -inset-[2px] bg-gradient-to-br from-[#f3cf7a]/60 via-blue-500/20 to-blue-500/60 rounded-3xl opacity-100" />
             
@@ -148,17 +169,25 @@ export default function Register() {
                 />
               </div>
             </div>
-          </div>
+            </div>
+          </YagnaReveal>
 
           {/* SQUAD ROSTER SECTION */}
-          <div className="space-y-8">
-            <h3 className="text-[10px] font-black text-[#f3cf7a] uppercase tracking-[0.5em] flex items-center gap-4">
-              <span className="h-[2px] w-12 bg-[#f3cf7a]"></span>
-              Squad Roster
-            </h3>
+          <motion.div
+            className="space-y-8"
+            variants={staggerContainer}
+            initial="hidden"
+            animate="show"
+          >
+            <YagnaReveal>
+              <h3 className="text-[10px] font-black text-[#f3cf7a] uppercase tracking-[0.5em] flex items-center gap-4">
+                <span className="h-[2px] w-12 bg-[#f3cf7a]"></span>
+                Squad Roster
+              </h3>
+            </YagnaReveal>
             
             {participants.map((p, idx) => (
-              <div key={idx} className="relative">
+              <motion.div key={idx} className="relative" variants={staggerItem}>
                 {/* Permanent Rim: Gold for Captain, Blue for Warriors */}
                 <div className={`absolute -inset-[1.5px] bg-gradient-to-r ${idx === 0 ? 'from-[#f3cf7a] via-[#f3cf7a]/40' : 'from-blue-500 via-blue-500/40'} to-transparent rounded-2xl opacity-80`} />
                 
@@ -185,9 +214,9 @@ export default function Register() {
                     <Input label="Mobile" value={p.mobile} onChange={(e) => handleParticipantChange(idx, "mobile", e.target.value)} />
                   </div>
                 </div>
-              </div>
+              </motion.div>
             ))}
-          </div>
+          </motion.div>
 
           {/* PERMANENTLY BORDERED CONTROLS */}
           <div className="flex flex-col gap-8 items-center pt-8">
@@ -201,9 +230,11 @@ export default function Register() {
               </button>
             )}
 
-            <button
+            <motion.button
               disabled={isSubmitting}
               className="relative w-full max-w-md group"
+              whileHover={{ scale: 1.02, transition: SPRING.snappy }}
+              whileTap={{ scale: 0.98 }}
             >
               {/* Bottom Depth Shadow */}
               <div className="absolute inset-0 bg-[#b8860b] rounded-xl translate-y-1.5" />
@@ -215,7 +246,7 @@ export default function Register() {
                   <>CONFIRM ENROLLMENT <Swords size={18}/></>
                 )}
               </div>
-            </button>
+            </motion.button>
           </div>
         </form>
       </div>

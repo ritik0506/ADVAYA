@@ -9,6 +9,7 @@ import ScrollTrigger from "gsap/ScrollTrigger";
 import { SECTIONS } from "../components/homecomponents/constant1";
 
 /* COMPONENTS */
+import { motion } from "framer-motion";
 import Hero from "../components/homecomponents/hero";
 import About from "../components/homecomponents/about";
 import {
@@ -16,6 +17,14 @@ import {
   MobileEventSection,
 } from "../components/homecomponents/EventSections";
 import FullEventScrollModalResponsive from "../components/homecomponents/ScrollFullscreen";
+import {
+  YagnaReveal,
+  DivineManifest,
+  GoldenDivider,
+  SplitText,
+  ScrollText,
+  TextShimmer,
+} from "../components/animations/MythologyMotion";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -191,23 +200,27 @@ export default function Home() {
 
       {/* ================= BEAUTIFUL TRANSITION SECTION ================= */}
       <section className="relative py-32 flex flex-col items-center justify-center text-center overflow-hidden md:pt-120">
-        
-        <div className="w-full h-px bg-gradient-to-r from-transparent via-[#f3cf7a]/60 to-transparent mb-16" />
+
+        <GoldenDivider width="w-full" className="mb-16" />
 
         <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute inset-0 " />
+          <div className="absolute inset-0" />
         </div>
 
         <div className="relative z-10 max-w-3xl px-6">
-          <h2 className="text-3xl md:text-5xl font-serif tracking-widest mb-6">
-            THE JOURNEY CONTINUES
-          </h2>
+          <DivineManifest>
+            <h2 className="text-3xl md:text-5xl font-serif tracking-widest mb-6">
+              <SplitText text="THE JOURNEY CONTINUES" animation="wave" staggerDelay={0.04} />
+            </h2>
+          </DivineManifest>
 
-          <p className="text-[#f3cf7a]/70 text-lg leading-relaxed ">
-            Beyond every battlefield lies a new challenge. 
-            Stay prepared, stay relentless, and let your brilliance echo 
-            through the arenas of ADVAYA.
-          </p>
+          <YagnaReveal delay={0.3}>
+            <p className="text-[#f3cf7a]/70 text-lg leading-relaxed">
+              Beyond every battlefield lies a new challenge. 
+              Stay prepared, stay relentless, and let your brilliance echo 
+              through the arenas of <TextShimmer>ADVAYA</TextShimmer>.
+            </p>
+          </YagnaReveal>
         </div>
 
         <div className="absolute bottom-0 left-0 w-full h-24 bg-gradient-to-b from-transparent to-[#050505]" />

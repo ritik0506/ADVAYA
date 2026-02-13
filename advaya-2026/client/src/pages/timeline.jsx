@@ -2,6 +2,13 @@
 
 import React, { useRef } from "react";
 import { motion, useScroll, useSpring } from "framer-motion";
+import {
+  DivineManifest,
+  SplitText,
+  GoldenDivider,
+  SPRING,
+  EASE,
+} from "../components/animations/MythologyMotion";
 
 export default function Timeline() {
   const containerRef = useRef(null);
@@ -38,26 +45,25 @@ export default function Timeline() {
         
         {/* Compact Header */}
         <header className="text-center mb-12">
-          <motion.div 
-            initial={{ opacity: 0, y: 15 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-          >
+          <DivineManifest>
             <h2 className="text-[10px] tracking-[0.8em] uppercase text-blue-400 font-bold mb-3">
               Event Protocol
             </h2>
-            <h1 className="text-5xl md:text-7xl font-black uppercase tracking-tighter leading-tight text-transparent bg-clip-text bg-gradient-to-b from-white to-white/40">
-              Timeline
-            </h1>
-            <div className="h-[1px] w-20 bg-blue-500/50 mx-auto mt-4" />
-          </motion.div>
+            <SplitText
+              text="Timeline"
+              as="h1"
+              animation="wave"
+              className="text-5xl md:text-7xl font-black uppercase tracking-tighter leading-tight text-transparent bg-clip-text bg-gradient-to-b from-white to-white/40"
+            />
+            <GoldenDivider width="w-20" className="mx-auto mt-4" />
+          </DivineManifest>
         </header>
 
         {/* Scaled-Down Placeholder Card */}
         <motion.div 
           initial={{ opacity: 0, scale: 0.98 }}
           animate={{ opacity: 1, scale: 1 }}
-          transition={{ delay: 0.3, duration: 0.8 }}
+          transition={{ ...SPRING.gentle, delay: 0.3 }}
           className="relative max-w-2xl mx-auto group"
         >
           <div className="absolute inset-0 bg-blue-500/5 blur-[60px] rounded-full group-hover:bg-blue-500/10 transition-all duration-700" />
@@ -69,7 +75,7 @@ export default function Timeline() {
 
             <motion.h3 
               animate={{ opacity: [0.5, 1, 0.5] }}
-              transition={{ duration: 4, repeat: Infinity }}
+              transition={{ duration: 4, repeat: Infinity, ease: EASE.smooth }}
               className="text-lg md:text-xl font-black uppercase tracking-[0.4em] mb-2 text-white/90"
             >
               Transmission Pending
@@ -88,7 +94,7 @@ export default function Timeline() {
 
             <motion.div 
                className="mt-8 inline-flex items-center gap-2 px-4 py-2 rounded-full border border-white/5 bg-white/[0.02] text-[10px] font-bold uppercase tracking-widest text-blue-400/80"
-               whileHover={{ scale: 1.05 }}
+               whileHover={{ scale: 1.05, transition: SPRING.snappy }}
             >
               <span className="w-1.5 h-1.5 bg-blue-500 rounded-full animate-pulse" />
               Yet to be announced

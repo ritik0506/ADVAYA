@@ -2,9 +2,20 @@
 
 import React, { useState, useMemo, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
 import axios from "axios";
 import gsap from "gsap";
 import ScrollTrigger from "gsap/ScrollTrigger";
+import {
+  YagnaReveal,
+  DivineManifest,
+  GoldenDivider,
+  SplitText,
+  TextShimmer,
+  staggerContainer,
+  staggerItem,
+  SPRING,
+} from "../components/animations/MythologyMotion";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -56,15 +67,24 @@ export default function EventsPage() {
       
       <div className={`transition-all duration-700 ease-in-out ${selectedEvent ? 'blur-xl brightness-50 scale-95' : ''}`}>
         
-        {/* HERO SECTION - Moderate Height */}
+        {/* HERO SECTION with motion entrance */}
         <section className="h-[35vh] flex flex-col items-center justify-center text-center px-4 relative pt-28">
-          <h1 className="text-7xl lg:text-9xl font-serif italic font-black text-[#f3cf7a] leading-none tracking-tighter drop-shadow-[0_10px_30px_rgba(243,207,122,0.2)]">
-            EVENTS
-          </h1>
-          <div className="mt-6 flex flex-col items-center gap-3">
-            <p className="text-[10px] tracking-[0.6em] text-[#f3cf7a] uppercase opacity-50 font-bold italic">Step into the Battleground of the Gods</p>
-            <div className="w-px h-12 bg-gradient-to-b from-[#f3cf7a] to-transparent opacity-20"></div>
-          </div>
+          
+          <DivineManifest>
+            <h1 className="text-7xl lg:text-9xl font-serif italic font-black text-[#f3cf7a] leading-none tracking-tighter drop-shadow-[0_10px_30px_rgba(243,207,122,0.2)]">
+              <SplitText text="EVENTS" animation="wave" staggerDelay={0.06} />
+            </h1>
+          </DivineManifest>
+          <YagnaReveal delay={0.4} y={20}>
+            <div className="mt-6 flex flex-col items-center gap-3">
+              <p className="text-[10px] tracking-[0.6em] text-[#f3cf7a] uppercase opacity-50 font-bold italic">Step into the Battleground of the Gods</p>
+              <motion.div 
+                className="w-px h-12 bg-gradient-to-b from-[#f3cf7a] to-transparent opacity-20"
+                animate={{ scaleY: [0.6, 1, 0.6], opacity: [0.1, 0.3, 0.1] }}
+                transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+              />
+            </div>
+          </YagnaReveal>
         </section>
 
         {/* RENDER ARENAS - Balanced spacing */}
@@ -139,33 +159,48 @@ function EventArena({ title, events, onSelect }) {
 
   return (
     <section className="relative py-12 border-b border-white/5 overflow-hidden">
-      {/* Title - "Little larger" gap below */}
-      <h2 className="text-center text-4xl lg:text-6xl font-serif font-black text-[#f3cf7a] mb-14 uppercase italic px-4">
-        {title}
-      </h2>
+      {/* Title with entrance animation */}
+      <DivineManifest>
+        <h2 className="text-center text-4xl lg:text-6xl font-serif font-black text-[#f3cf7a] mb-4 uppercase italic px-4">
+          <SplitText text={title} animation="rise" staggerDelay={0.04} />
+        </h2>
+      </DivineManifest>
+      <GoldenDivider width="w-32" className="mb-10" />
 
-      {/* Slider Container - Comfortable height */}
-      <div className="relative w-full h-[420px] lg:h-[480px] flex items-center justify-center perspective-[2500px]">
+      {/* Slider Container */}
+      <motion.div 
+        className="relative w-full h-[420px] lg:h-[480px] flex items-center justify-center perspective-[2500px]"
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        viewport={{ once: true }}
+        transition={{ ...SPRING.gentle, delay: 0.2 }}
+      >
         {events.map((event, index) => {
           let diff = index - activeIndex;
           if (diff > total / 2) diff -= total;
           if (diff < -total / 2) diff += total;
           return <EventCard key={event.eventId} event={event} isActive={index === activeIndex} position={diff} onClick={() => onSelect(event)} />;
         })}
-      </div>
+      </motion.div>
 
-      {/* Navigation - Balanced gap */}
-      <div className="flex flex-col items-center mt-8">
-        <div className="flex items-center gap-8">
-          <NavBtn dir="prev" onClick={() => setActiveIndex((p) => (p - 1 + total) % total)} />
-          <div className="flex gap-2">
-            {events.map((_, i) => (
-              <div key={i} className={`h-1 rounded-full transition-all duration-700 ${activeIndex === i ? "w-14 bg-[#f3cf7a]" : "w-3 bg-white/10"}`} />
-            ))}
+      {/* Navigation */}
+      <YagnaReveal delay={0.4} y={20}>
+        <div className="flex flex-col items-center mt-8">
+          <div className="flex items-center gap-8">
+            <NavBtn dir="prev" onClick={() => setActiveIndex((p) => (p - 1 + total) % total)} />
+            <div className="flex gap-2">
+              {events.map((_, i) => (
+                <motion.div 
+                  key={i} 
+                  className={`h-1 rounded-full transition-all duration-700 ${activeIndex === i ? "w-14 bg-[#f3cf7a]" : "w-3 bg-white/10"}`}
+                  layout
+                />
+              ))}
+            </div>
+            <NavBtn dir="next" onClick={() => setActiveIndex((p) => (p + 1) % total)} />
           </div>
-          <NavBtn dir="next" onClick={() => setActiveIndex((p) => (p + 1) % total)} />
         </div>
-      </div>
+      </YagnaReveal>
     </section>
   );
 }

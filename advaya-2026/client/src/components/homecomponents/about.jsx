@@ -1,9 +1,16 @@
 "use client";
 
 import React from "react";
+import {
+  YagnaReveal,
+  GoldenDivider,
+  SplitText,
+  HoverText,
+  ScrollText,
+} from "../animations/MythologyMotion";
 
 /* -------------------------------------------------------------------------- */
-/* ABOUT BLOCK COMPONENT — TRUE EDGE LOCKED ELEPHANTS                         */
+/* ABOUT BLOCK COMPONENT — TRUE EDGE LOCKED ELEPHANTS + MOTION               */
 /* -------------------------------------------------------------------------- */
 const AboutBlock = ({ title, children, side, imgSrc }) => (
   <div className="relative group w-full min-h-[75vh] md:min-h-[90vh] flex justify-center items-center overflow-hidden">
@@ -38,25 +45,31 @@ const AboutBlock = ({ title, children, side, imgSrc }) => (
       />
     </div>
 
-    {/* --- TEXT CONTENT --- */}
+    {/* --- TEXT CONTENT with scroll-linked motion --- */}
     <div className="relative z-10 flex flex-col items-center text-center max-w-4xl px-6">
-      <h2 className="text-4xl md:text-8xl font-serif mb-6 md:mb-10 text-white 
+      <ScrollText effect="parallax" speed={0.15}>
+        <HoverText className="text-4xl md:text-8xl font-serif mb-6 md:mb-10 text-white 
                      group-hover:text-[#f3cf7a] transition-all duration-700 
                      uppercase tracking-[0.1em] md:tracking-[0.15em] leading-none">
-        {title}
-      </h2>
+          <SplitText
+            text={title}
+            animation="rise"
+            staggerDelay={0.04}
+            charClassName="group-hover:text-[#f3cf7a] transition-colors duration-500"
+          />
+        </HoverText>
+      </ScrollText>
 
-      <div className="h-[1px] w-24 md:w-40 bg-[#f3cf7a] mb-8 md:mb-12 
-                      group-hover:w-72 md:group-hover:w-96 
-                      transition-all duration-1000 ease-in-out 
-                      shadow-[0_0_25px_#f3cf7a]" />
+      <GoldenDivider width="w-24 md:w-40" className="mb-8 md:mb-12" />
 
-      <p className="text-lg md:text-2xl leading-[1.8] md:leading-[2] 
-                    text-gray-300 font-serif italic text-justify md:text-center">
-        <span className="group-hover:text-white transition-colors duration-500">
-          {children}
-        </span>
-      </p>
+      <YagnaReveal delay={0.3} y={40}>
+        <p className="text-lg md:text-2xl leading-[1.8] md:leading-[2] 
+                      text-gray-300 font-serif italic text-justify md:text-center">
+          <span className="group-hover:text-white transition-colors duration-500">
+            {children}
+          </span>
+        </p>
+      </YagnaReveal>
     </div>
   </div>
 );
@@ -70,6 +83,8 @@ export default function About() {
       id="about"
       className="relative w-full min-h-screen pt-24 md:pt-40 pb-40 md:pb-60 bg-[#050505] overflow-hidden"
     >
+      {/* 🕉️ Subtle floating particles across the about section — removed */}
+
       <style jsx global>{`
         @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Playfair+Display:ital,wght@0,400;1,400&display=swap');
         html, body { margin: 0; padding: 0; overflow-x: hidden; }

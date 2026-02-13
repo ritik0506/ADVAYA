@@ -3,6 +3,16 @@
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Mail, Phone, HelpCircle, ChevronDown, MessageCircle } from "lucide-react";
+import {
+  YagnaReveal,
+  DivineManifest,
+  SplitText,
+  GoldenDivider,
+  staggerContainer,
+  staggerItem,
+  SPRING,
+  EASE,
+} from "../components/animations/MythologyMotion";
 
 const ContactCard = ({ item, index }) => (
   <motion.a
@@ -10,7 +20,7 @@ const ContactCard = ({ item, index }) => (
     initial={{ opacity: 0, y: 20 }}
     whileInView={{ opacity: 1, y: 0 }}
     viewport={{ once: true }}
-    transition={{ delay: index * 0.1 }}
+    transition={{ ...SPRING.gentle, delay: index * 0.1 }}
     className="group relative overflow-hidden bg-[#0b0b0b] border border-[#f3cf7a]/10 p-8 rounded-2xl flex flex-col items-center text-center transition-all duration-500 hover:border-[#f3cf7a]/40"
   >
     <div className="absolute inset-0 bg-gradient-to-b from-[#f3cf7a]/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
@@ -56,7 +66,7 @@ const FAQItem = ({ faq, index }) => {
             initial={{ height: 0, opacity: 0 }}
             animate={{ height: "auto", opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+            transition={{ duration: 0.4, ease: EASE.expo }}
             className="overflow-hidden"
           >
             <p className="pb-8 text-[#f3cf7a]/60 leading-relaxed max-w-3xl font-light italic">
@@ -122,28 +132,18 @@ export default function Support() {
       <div className="relative z-10 pt-32 pb-20 px-6">
         {/* Editorial Header */}
         <header className="max-w-4xl mx-auto text-center mb-32">
-          <motion.span 
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="text-[10px] uppercase tracking-[0.8em] text-[#f3cf7a]/50"
-          >
-            Concierge Services
-          </motion.span>
-          <motion.h1 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2 }}
-            className="text-6xl md:text-8xl font-serif italic text-white mt-4 tracking-tighter"
-          >
-            How can we <br />
-            <span className="text-[#f3cf7a]">assist you?</span>
-          </motion.h1>
-          <motion.div 
-            initial={{ width: 0 }}
-            animate={{ width: 80 }}
-            transition={{ delay: 0.5, duration: 1 }}
-            className="h-px bg-[#f3cf7a] mx-auto mt-12 opacity-30"
-          />
+          <YagnaReveal y={15}>
+            <span className="text-[10px] uppercase tracking-[0.8em] text-[#f3cf7a]/50">
+              Concierge Services
+            </span>
+          </YagnaReveal>
+          <DivineManifest delay={0.15}>
+            <h1 className="text-6xl md:text-8xl font-serif italic text-white mt-4 tracking-tighter">
+              How can we <br />
+              <span className="text-[#f3cf7a]"><SplitText text="assist you?" animation="wave" staggerDelay={0.05} /></span>
+            </h1>
+          </DivineManifest>
+          <GoldenDivider width="w-20" className="mt-12 opacity-30" />
         </header>
 
         {/* Contact Matrix */}

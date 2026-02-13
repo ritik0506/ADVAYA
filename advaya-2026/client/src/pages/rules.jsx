@@ -2,6 +2,12 @@
 
 import React, { useRef } from "react";
 import { motion, useScroll, useTransform, useSpring } from "framer-motion";
+import {
+  DivineManifest,
+  SplitText,
+  GoldenDivider,
+  SPRING,
+} from "../components/animations/MythologyMotion";
 
 const ruleData = [
   { title: "Identification", text: "All participants must carry their college identification cards at all times." },
@@ -58,10 +64,10 @@ const TimelineItem = ({ index, title, text }) => (
     {/* Content Card */}
     <motion.div 
       variants={{
-        initial: { opacity: 0, x: 25, filter: "blur(10px)" },
+        initial: { opacity: 0, x: 25, filter: "blur(6px)" },
         active: { opacity: 1, x: 0, filter: "blur(0px)" }
       }}
-      transition={{ duration: 0.7 }}
+      transition={SPRING.gentle}
       className="flex-1 group"
     >
       <div className="relative p-6 rounded-2xl border border-white/5 bg-white/[0.02] backdrop-blur-md transition-all duration-500 group-hover:border-blue-500/30 group-hover:bg-white/[0.05]">
@@ -109,15 +115,15 @@ export default function Rules() {
 
         {/* Header */}
         <header className="max-w-4xl mx-auto text-center mb-32">
-          <motion.div initial={{ opacity: 0, scale: 0.95 }} whileInView={{ opacity: 1, scale: 1 }}>
+          <DivineManifest>
             <h2 className="text-xs tracking-[1em] uppercase text-blue-400 font-bold mb-4">
               Official Guidelines
             </h2>
             <h1 className="text-6xl md:text-9xl font-black uppercase tracking-tighter mb-6 bg-gradient-to-b from-white to-white/30 bg-clip-text text-transparent">
-              The Rules
+              <SplitText text="The Rules" animation="rise" staggerDelay={0.05} />
             </h1>
-            <div className="h-[2px] w-32 bg-blue-500 mx-auto rounded-full shadow-[0_0_15px_rgba(59,130,246,0.8)]" />
-          </motion.div>
+            <GoldenDivider width="w-32" />
+          </DivineManifest>
         </header>
 
         {/* Timeline Section */}

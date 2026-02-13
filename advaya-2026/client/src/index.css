@@ -2,6 +2,11 @@
 
 @import "tailwindcss";
 
+/* ═══════════════════════════════════════════════════════════════════════════
+   🕉️ ADVAYA 2026 — INDIAN MYTHOLOGY MOTION SYSTEM
+   Sacred CSS Animations & Effects
+   ═══════════════════════════════════════════════════════════════════════════ */
+
 /* --- CUSTOM SCROLLBAR --- */
 
 /* 1. The Width and Track (Background) */
@@ -43,4 +48,244 @@
 * {
   scrollbar-width: thin;
   scrollbar-color: #f3cf7a #020308;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   SACRED GOLDEN GLOW — Breathing divine light
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+@keyframes sacred-glow {
+  0%, 100% {
+    box-shadow: 0 0 20px rgba(243, 207, 122, 0.1),
+                0 0 40px rgba(243, 207, 122, 0.05);
+  }
+  50% {
+    box-shadow: 0 0 40px rgba(243, 207, 122, 0.25),
+                0 0 80px rgba(243, 207, 122, 0.1);
+  }
+}
+
+.sacred-glow {
+  animation: sacred-glow 4s ease-in-out infinite;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   DIVINE SHIMMER — Text/element shimmer like sacred gold
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+@keyframes divine-shimmer {
+  0% {
+    background-position: -200% center;
+  }
+  100% {
+    background-position: 200% center;
+  }
+}
+
+.divine-shimmer {
+  background: linear-gradient(
+    90deg,
+    #f3cf7a 0%,
+    #fff8e1 25%,
+    #f3cf7a 50%,
+    #b08d32 75%,
+    #f3cf7a 100%
+  );
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: divine-shimmer 4s linear infinite;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   SACRED FLOAT — Gentle levitation like divine offering
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+@keyframes sacred-float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-12px);
+  }
+}
+
+.sacred-float {
+  animation: sacred-float 6s ease-in-out infinite;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   TEMPLE BELL — Gentle swaying motion
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+@keyframes temple-bell {
+  0%, 100% {
+    transform: rotate(0deg);
+  }
+  25% {
+    transform: rotate(3deg);
+  }
+  75% {
+    transform: rotate(-3deg);
+  }
+}
+
+.temple-bell {
+  animation: temple-bell 4s ease-in-out infinite;
+  transform-origin: top center;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   CHAKRA SPIN — Rotating sacred wheel
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+@keyframes chakra-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.chakra-spin {
+  animation: chakra-spin 30s linear infinite;
+}
+
+.chakra-spin-reverse {
+  animation: chakra-spin 40s linear infinite reverse;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   SACRED PULSE — Concentric ring expansion
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+@keyframes sacred-pulse {
+  0% {
+    transform: scale(1);
+    opacity: 0.6;
+  }
+  100% {
+    transform: scale(2.5);
+    opacity: 0;
+  }
+}
+
+.sacred-pulse::before,
+.sacred-pulse::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border: 1px solid rgba(243, 207, 122, 0.2);
+  border-radius: 50%;
+  animation: sacred-pulse 3s ease-out infinite;
+}
+
+.sacred-pulse::after {
+  animation-delay: 1.5s;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   GOLDEN LINE DRAW — Horizontal line draws itself
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+@keyframes line-draw {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+.golden-line-draw {
+  transform-origin: center;
+  animation: line-draw 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   SMOKE RISE — Elements fade up like havan smoke
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+@keyframes smoke-rise {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+    filter: blur(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
+}
+
+.smoke-rise {
+  animation: smoke-rise 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   GOLDEN BORDER TRAVEL — Snake-like border animation
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+@keyframes border-travel {
+  0% {
+    background-position: 0% 0%;
+  }
+  100% {
+    background-position: 300% 0%;
+  }
+}
+
+.golden-border-travel {
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    #f3cf7a 20%,
+    #fff8e1 50%,
+    #f3cf7a 80%,
+    transparent 100%
+  );
+  background-size: 33% 100%;
+  animation: border-travel 3s linear infinite;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   SMOOTH PAGE TRANSITIONS — Global transition polish
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* Smooth transition for all interactive elements */
+a, button, input, textarea, select {
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+/* Prevent layout shift during animations */
+.will-change-transform {
+  will-change: transform;
+}
+
+.will-change-opacity {
+  will-change: opacity;
+}
+
+/* GPU acceleration for smooth animations */
+.gpu-accelerated {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  perspective: 1000px;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   SMOOTH SCROLL — Site-wide smooth scrolling
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+html {
+  scroll-behavior: smooth;
+}
+
+/* Selection styling */
+::selection {
+  background: rgba(243, 207, 122, 0.3);
+  color: #fff;
 }
