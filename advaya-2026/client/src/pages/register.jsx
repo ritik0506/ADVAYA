@@ -1,20 +1,11 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { useParams, useNavigate } from "react-router-dom";
 import { fetchAllEvents } from "../services/getallevents";
-import {  registerWarrior } from "../services/registerapi";
-import { Plus, Trash2, School, Shield, Zap, Swords } from "lucide-react";
-import {
-  DivineManifest,
-  SplitText,
-  YagnaReveal,
-  staggerContainer,
-  staggerItem,
-  SPRING,
-  EASE,
-} from "../components/animations/MythologyMotion";
+import { registerWarrior } from "../services/registerapi";
+import { Plus, Trash2, School, Shield, Zap, Swords, Trophy, Crown, Sparkles } from "lucide-react";
 
 const BACKEND_CATEGORY_MAP = {
   PG: "PG",
@@ -35,218 +26,161 @@ export default function Register() {
 
   useEffect(() => {
     async function loadEvent() {
-      const events = await fetchAllEvents();
-      const found = events.find((e) => e.eventId === eventId);
-      if (!found) return navigate("/home");
-      const backendCategory = BACKEND_CATEGORY_MAP[found.category];
-      if (!backendCategory) return navigate("/home");
+      try {
+        const events = await fetchAllEvents();
+        if (!events || !Array.isArray(events)) return navigate("/home");
+        const found = events.find((e) => e.eventId === eventId);
+        if (!found) return navigate("/home");
 
-      setEvent({
-        eventId: found.eventId,
-        name: found.mythologyName,
-        displayCategory: found.category,
-        backendCategory,
-        fee: Number(found.fee),
-        minTeamSize: found.teamSize?.min ?? 1,
-        maxTeamSize: found.teamSize?.max ?? found.teamSize?.min ?? 1,
-      });
+        const backendCategory = BACKEND_CATEGORY_MAP[found.category];
+        setEvent({
+          eventId: found.eventId,
+          name: found.mythologyName,
+          displayCategory: found.category,
+          backendCategory,
+          fee: Number(found.fee),
+          minTeamSize: found.teamSize?.min ?? 1,
+          maxTeamSize: found.teamSize?.max ?? found.teamSize?.min ?? 1,
+        });
+      } catch (error) {
+        navigate("/home");
+      }
     }
     loadEvent();
   }, [eventId, navigate]);
 
-  /* Logic remains same as previous version */
   const handleParticipantChange = (index, field, value) => {
     const updated = [...participants];
     updated[index][field] = value;
     setParticipants(updated);
-    setToast(null);
   };
 
   const addMember = () => {
-    if (participants.length >= event.maxTeamSize) return;
-    setParticipants([...participants, { name: "", email: "", mobile: "" }]);
+    if (participants.length < event.maxTeamSize) {
+      setParticipants([...participants, { name: "", email: "", mobile: "" }]);
+    }
   };
 
   const removeMember = (index) => {
-    if (participants.length <= event.minTeamSize) return;
-    setParticipants(participants.filter((_, i) => i !== index));
-  };
-
-  const validateForm = () => {
-    setToast(null);
-    if (!formData.teamName.trim()) return setToast({ type: "error", message: "Team Name is required" }), false;
-    if (!formData.collegeName.trim()) return setToast({ type: "error", message: "College Name is required" }), false;
-    for (let p of participants) {
-      if (!p.name || !p.email || !p.mobile) return setToast({ type: "error", message: "Please fill all details" }), false;
+    if (participants.length > event.minTeamSize) {
+      setParticipants(participants.filter((_, i) => i !== index));
     }
-    return true;
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!validateForm()) return;
+    if (!formData.teamName || !formData.collegeName) {
+      return setToast({ type: "error", message: "Details required for the Royal Decree." });
+    }
     setIsSubmitting(true);
     try {
-      await registerWarrior({
-        eventName: event.name,
-        category: event.backendCategory,
-        registrationFee: event.fee,
-        teamName: formData.teamName.trim(),
-        collegeName: formData.collegeName.trim(),
-        teamSize: participants.length,
-        participants,
-      });
-
-      setToast({ type: "success", message: "Registered Successfully!" });
-      setTimeout(() => navigate("/home"), 1500);
+      await registerWarrior({ ...formData, participants, eventName: event.name, category: event.backendCategory, registrationFee: event.fee, teamSize: participants.length });
+      setToast({ type: "success", message: "Your name is gilded in history!" });
+      setTimeout(() => navigate("/home"), 2000);
     } catch (err) {
-      setToast({ type: "error", message: err.message || "Registration failed" });
+      setToast({ type: "error", message: err.message || "The heavens are silent. Try again." });
       setIsSubmitting(false);
     }
   };
 
-  if (!event) return (
-    <div className="min-h-screen bg-[#020308] flex items-center justify-center">
-      <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-[#f3cf7a]"></div>
-    </div>
-  );
+  if (!event) return <LoadingScreen />;
 
   return (
-    <div className="min-h-screen bg-[#020308] text-gray-100 px-4 pt-32 pb-20 relative overflow-hidden font-sans selection:bg-blue-500 selection:text-white">
+    <div className="min-h-screen relative bg-transparent text-[#fdf4d7] px-5 pt-24 md:pt-32 pb-20 overflow-x-hidden font-serif">
       
-      {/* 🌌 BACKGROUND GLOWS */}
-      <div className="fixed inset-0 pointer-events-none z-0">
-        <div className="absolute top-[-15%] right-[-10%] w-[60%] h-[60%] bg-[#f3cf7a]/10 blur-[120px] rounded-full" />
-        <div className="absolute bottom-[-10%] left-[-10%] w-[50%] h-[50%] bg-blue-600/5 blur-[100px] rounded-full" />
+      {/* Background Atmosphere */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-[-10%] right-[-5%] w-[80%] h-[40%] bg-yellow-600/10 blur-[100px] rounded-full" />
+        <div className="absolute bottom-[-10%] left-[-5%] w-[80%] h-[40%] bg-amber-900/15 blur-[100px] rounded-full" />
       </div>
 
-      {toast && <Toast {...toast} onClose={() => setToast(null)} />}
+      <AnimatePresence>
+        {toast && <Toast {...toast} onClose={() => setToast(null)} />}
+      </AnimatePresence>
 
-      <div className="max-w-3xl mx-auto relative z-10">
-        {/* HEADER */}
-        <DivineManifest>
-          <div className="text-center mb-16 space-y-6">
-            <SplitText
-              text={event.name}
-              as="h1"
-              animation="wave"
-              className="text-6xl md:text-8xl font-black tracking-tighter uppercase italic bg-gradient-to-b from-white via-[#f3cf7a] to-[#b8860b] bg-clip-text text-transparent drop-shadow-[0_10px_30px_rgba(243,207,122,0.3)]"
-            />
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ ...SPRING.snappy, delay: 0.4 }}
-              className="inline-flex items-center gap-3 px-6 py-2 rounded-full border-2 border-blue-500/40 bg-blue-500/10 backdrop-blur-xl text-blue-400 text-[10px] font-black tracking-[0.4em] uppercase"
-            >
-              <Zap size={14} className="fill-blue-400" /> {event.displayCategory} • ₹{event.fee}
-            </motion.div>
+      <div className="max-w-4xl mx-auto relative z-10">
+        
+        {/* HERO SECTION */}
+        <motion.div 
+          initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }}
+          className="text-center mb-12 md:mb-20"
+        >
+          <div className="flex justify-center mb-5">
+             <Crown className="text-amber-400/80 animate-pulse w-10 h-10 md:w-12 md:h-12" strokeWidth={1.5} />
           </div>
-        </DivineManifest>
+          <h1 className="text-4xl md:text-7xl font-bold tracking-tight uppercase bg-gradient-to-b from-[#fff8e1] via-[#d4af37] to-[#8a6d3b] bg-clip-text text-transparent px-2">
+            {event.name}
+          </h1>
+          <div className="mt-6 flex flex-wrap justify-center gap-3">
+            <Badge text={event.displayCategory} />
+            <Badge text={`Dakshina: ₹${event.fee}`} />
+          </div>
+        </motion.div>
 
-        <form onSubmit={handleSubmit} className="space-y-12">
-          
-          {/* PERMANENT BORDERED TEAM SECTION */}
-          <YagnaReveal>
-            <div className="relative">
-            {/* The Permanent Dual-Tone Border Rim */}
-            <div className="absolute -inset-[2px] bg-gradient-to-br from-[#f3cf7a]/60 via-blue-500/20 to-blue-500/60 rounded-3xl opacity-100" />
-            
-            <div className="relative bg-[#050505] backdrop-blur-3xl p-8 rounded-3xl border border-white/10 shadow-[inset_0_0_20px_rgba(243,207,122,0.05)]">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <Input
-                  label="Team Name"
-                  icon={<Shield size={14} className="text-blue-400" />}
-                  placeholder="Enter team alias"
-                  value={formData.teamName}
-                  onChange={(e) => setFormData({ ...formData, teamName: e.target.value })}
-                />
-                <Input
-                  label="College Name"
-                  icon={<School size={14} className="text-[#f3cf7a]" />}
-                  placeholder="Institution Name"
-                  value={formData.collegeName}
-                  onChange={(e) => setFormData({ ...formData, collegeName: e.target.value })}
-                />
-              </div>
+        <form onSubmit={handleSubmit} className="space-y-10 md:space-y-16">
+          {/* CLAN SECTION */}
+          <SectionTitle title="The Royal Lineage" />
+          <GoldenCard>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
+              <GoldenInput label="Clan Name" icon={<Shield size={16} />} value={formData.teamName} onChange={(e) => setFormData({ ...formData, teamName: e.target.value })} />
+              <GoldenInput label="Gurukul (Institution)" icon={<School size={16} />} value={formData.collegeName} onChange={(e) => setFormData({ ...formData, collegeName: e.target.value })} />
             </div>
-            </div>
-          </YagnaReveal>
+          </GoldenCard>
 
-          {/* SQUAD ROSTER SECTION */}
-          <motion.div
-            className="space-y-8"
-            variants={staggerContainer}
-            initial="hidden"
-            animate="show"
-          >
-            <YagnaReveal>
-              <h3 className="text-[10px] font-black text-[#f3cf7a] uppercase tracking-[0.5em] flex items-center gap-4">
-                <span className="h-[2px] w-12 bg-[#f3cf7a]"></span>
-                Squad Roster
-              </h3>
-            </YagnaReveal>
-            
+          {/* WARRIORS SECTION */}
+          <SectionTitle title="Chosen Warriors" />
+          <div className="space-y-6 md:space-y-10">
             {participants.map((p, idx) => (
-              <motion.div key={idx} className="relative" variants={staggerItem}>
-                {/* Permanent Rim: Gold for Captain, Blue for Warriors */}
-                <div className={`absolute -inset-[1.5px] bg-gradient-to-r ${idx === 0 ? 'from-[#f3cf7a] via-[#f3cf7a]/40' : 'from-blue-500 via-blue-500/40'} to-transparent rounded-2xl opacity-80`} />
-                
-                <div className="relative bg-[#080808] p-8 rounded-2xl border border-white/5 shadow-2xl">
+              <motion.div key={idx} initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+                <GoldenCard isHighlight={idx === 0}>
                   <div className="flex justify-between items-center mb-8">
-                    <span className={`text-[10px] font-black uppercase tracking-[0.3em] flex items-center gap-2 ${idx === 0 ? 'text-[#f3cf7a]' : 'text-blue-400'}`}>
-                      {idx === 0 ? <><Zap size={14} className="fill-[#f3cf7a]"/> Captain</> : `Warrior ${idx + 1}`}
+                    <span className="text-[10px] font-black uppercase tracking-[0.3em] text-amber-500/60 flex items-center gap-2">
+                      <div className="w-6 h-[1px] bg-amber-500/30" />
+                      {idx === 0 ? "The Mahasenapati" : `Warrior ${idx + 1}`}
                     </span>
-                    
-                    {participants.length > event.minTeamSize && idx >= event.minTeamSize && (
-                      <button
-                        type="button"
-                        onClick={() => removeMember(idx)}
-                        className="text-gray-500 hover:text-red-500 p-2 hover:bg-red-500/10 rounded-full transition-all border border-transparent hover:border-red-500/30"
-                      >
-                        <Trash2 size={16} />
+                    {participants.length > event.minTeamSize && (
+                      <button type="button" onClick={() => removeMember(idx)} className="text-red-400/40 hover:text-red-400 transition-colors">
+                        <Trash2 size={14} />
                       </button>
                     )}
                   </div>
-
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <Input label="Full Name" value={p.name} onChange={(e) => handleParticipantChange(idx, "name", e.target.value)} />
-                    <Input label="Email" type="email" value={p.email} onChange={(e) => handleParticipantChange(idx, "email", e.target.value)} />
-                    <Input label="Mobile" value={p.mobile} onChange={(e) => handleParticipantChange(idx, "mobile", e.target.value)} />
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <GoldenInput label="Name" value={p.name} onChange={(e) => handleParticipantChange(idx, "name", e.target.value)} />
+                    <GoldenInput label="Email" type="email" value={p.email} onChange={(e) => handleParticipantChange(idx, "email", e.target.value)} />
+                    <GoldenInput label="Mobile" value={p.mobile} onChange={(e) => handleParticipantChange(idx, "mobile", e.target.value)} />
                   </div>
-                </div>
+                </GoldenCard>
               </motion.div>
             ))}
-          </motion.div>
+          </div>
 
-          {/* PERMANENTLY BORDERED CONTROLS */}
-          <div className="flex flex-col gap-8 items-center pt-8">
+          {/* ACTION SECTION */}
+          <div className="flex flex-col items-center gap-8 pt-6">
             {participants.length < event.maxTeamSize && (
               <button
-                type="button"
-                onClick={addMember}
-                className="group flex items-center gap-3 px-10 py-3 rounded-full border-2 border-blue-500/60 bg-blue-500/10 text-blue-400 text-[10px] font-black uppercase tracking-widest transition-all shadow-[0_0_15px_rgba(59,130,246,0.2)] hover:bg-blue-500/20"
+                type="button" onClick={addMember}
+                className="text-amber-500/70 hover:text-amber-300 font-bold uppercase tracking-[0.2em] text-[9px] border-b border-amber-500/10 pb-1 transition-all"
               >
-                <Plus size={14} /> Add Warrior
+                + Summon Warrior
               </button>
             )}
 
-            <motion.button
-              disabled={isSubmitting}
-              className="relative w-full max-w-md group"
-              whileHover={{ scale: 1.02, transition: SPRING.snappy }}
-              whileTap={{ scale: 0.98 }}
-            >
-              {/* Bottom Depth Shadow */}
-              <div className="absolute inset-0 bg-[#b8860b] rounded-xl translate-y-1.5" />
-              {/* Main Button with Permanent Border */}
-              <div className="relative z-10 py-5 bg-gradient-to-r from-[#f3cf7a] to-[#ffde8a] text-black font-black uppercase tracking-[0.3em] rounded-xl border-2 border-white/40 shadow-2xl flex items-center justify-center gap-3 transition-transform active:translate-y-1">
-                {isSubmitting ? (
-                  <div className="h-5 w-5 border-2 border-black/30 border-t-black animate-spin rounded-full" />
-                ) : (
-                  <>CONFIRM ENROLLMENT <Swords size={18}/></>
-                )}
-              </div>
-            </motion.button>
+            {/* SMALL REFINED BUTTON FOR BOTH MOBILE & DESKTOP */}
+            <div className="w-full flex justify-center mt-4">
+              <motion.button
+                whileHover={{ scale: 1.03 }}
+                whileTap={{ scale: 0.97 }}
+                type="submit" disabled={isSubmitting}
+                className="relative w-auto min-w-[240px] px-8 py-3.5 overflow-hidden rounded-lg bg-gradient-to-b from-[#d4af37] to-[#b8860b] text-[#2a1e00] font-black uppercase tracking-[0.15em] shadow-lg group"
+              >
+                {/* Subtle Shimmer */}
+                <div className="absolute top-0 -inset-full h-full w-1/2 z-5 block transform -skew-x-12 bg-gradient-to-r from-transparent via-white/30 to-transparent group-hover:animate-shimmer" />
+                
+                <span className="relative z-10 text-[10px] md:text-[11px] flex items-center justify-center gap-2">
+                  {isSubmitting ? "Enshrining..." : "Enter the Hall of Fame"}
+                </span>
+              </motion.button>
+            </div>
           </div>
         </form>
       </div>
@@ -254,39 +188,70 @@ export default function Register() {
   );
 }
 
-function Input({ label, icon, ...props }) {
+/* ================= REFINED COMPONENTS ================= */
+
+function SectionTitle({ title }) {
   return (
-    <div className="flex flex-col gap-2 w-full">
-      <label className="text-[10px] font-black text-[#f3cf7a] uppercase tracking-[0.2em] flex items-center gap-2 ml-1">
+    <div className="relative flex items-center justify-center gap-4 mb-4">
+      <div className="h-[0.5px] flex-grow bg-gradient-to-r from-transparent to-amber-500/20 max-w-[50px]" />
+      <h2 className="text-lg md:text-xl font-medium tracking-widest text-[#fdf4d7]/90 uppercase">{title}</h2>
+      <div className="h-[0.5px] flex-grow bg-gradient-to-l from-transparent to-amber-500/20 max-w-[50px]" />
+    </div>
+  );
+}
+
+function Badge({ text }) {
+  return (
+    <div className="px-4 py-1.5 rounded-sm border border-amber-500/20 bg-amber-500/5 text-[9px] font-bold uppercase tracking-widest text-amber-400/80">
+      {text}
+    </div>
+  );
+}
+
+function GoldenCard({ children, isHighlight = false }) {
+  return (
+    <div className={`relative bg-[#080808] border ${isHighlight ? 'border-amber-500/30' : 'border-white/5'} rounded-xl p-7 md:p-10 shadow-2xl`}>
+      {children}
+    </div>
+  );
+}
+
+function GoldenInput({ label, icon, ...props }) {
+  return (
+    <div className="flex flex-col gap-2 group">
+      <label className="text-[9px] font-bold uppercase tracking-widest text-amber-500/40 flex items-center gap-2 group-focus-within:text-amber-500/70 transition-colors">
         {icon} {label}
       </label>
-      <div className="relative">
-        {/* Permanent Border Container for Input */}
-        <div className="absolute -inset-[1px] bg-gradient-to-r from-white/10 to-blue-500/20 rounded-xl" />
-        <input
-          className="relative w-full px-5 py-4 bg-[#0a0a0a] border border-white/10 rounded-xl focus:border-blue-500 transition-all outline-none text-white text-sm placeholder:text-gray-800"
-          {...props}
-        />
-      </div>
+      <input
+        {...props}
+        className="px-0 py-1 bg-transparent border-b border-white/5 text-[#fdf4d7] focus:outline-none focus:border-amber-500/50 transition-all text-sm font-light"
+      />
+    </div>
+  );
+}
+
+function LoadingScreen() {
+  return (
+    <div className="min-h-screen flex items-center justify-center bg-transparent">
+      <div className="w-8 h-8 border-t border-amber-500/50 rounded-full animate-spin" />
     </div>
   );
 }
 
 function Toast({ message, type, onClose }) {
   useEffect(() => {
-    const t = setTimeout(onClose, 3000);
+    const t = setTimeout(onClose, 4000);
     return () => clearTimeout(t);
   }, [onClose]);
 
   return (
-    <div className={`fixed top-10 right-10 px-8 py-5 rounded-2xl z-[100] border-2 shadow-2xl animate-in slide-in-from-right duration-500 ${
-      type === "success"
-        ? "bg-[#050505] border-green-500 text-green-400 shadow-green-500/10"
-        : "bg-[#050505] border-red-500 text-red-400 shadow-red-500/10"
-    }`}>
-      <p className="font-black text-[10px] uppercase tracking-widest flex items-center gap-3">
-        {message}
-      </p>
-    </div>
+    <motion.div
+      initial={{ y: -40, opacity: 0, x: "-50%" }} animate={{ y: 0, opacity: 1, x: "-50%" }}
+      className={`fixed top-6 left-1/2 z-[100] px-6 py-3 rounded-md border backdrop-blur-xl ${
+        type === "success" ? "bg-amber-500/10 border-amber-500/40 text-amber-100" : "bg-red-900/30 border-red-500/40 text-red-100"
+      }`}
+    >
+      <span className="text-[9px] font-black tracking-[0.2em] uppercase">{message}</span>
+    </motion.div>
   );
 }

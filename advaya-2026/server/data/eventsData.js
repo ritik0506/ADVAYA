@@ -1,11 +1,11 @@
 const eventsData = [
   /**
    * ADVAYA 2026 - Static Events Data
-   * Source: RVITM MCA Department - ADVAYA 2026
-   * Used directly by backend API (NO DATABASE)
+   * Updated with Event Heads & Prize Money
    */
 
   // ==================== PG TECHNICAL EVENTS ====================
+
   {
     eventId: 'code-kurukshetra',
     mythologyName: 'Code Kurukshetra',
@@ -14,20 +14,29 @@ const eventsData = [
     description:
       'Code Kurukshetra is a high-intensity coding battlefield where participants face logical challenges, debugging rounds, and time-bound problem solving. This event tests algorithmic thinking, coding accuracy, and the ability to perform under pressure just like warriors in a digital Kurukshetra.',
     rules: [
-      'Each team must consist of exactly 2 members.',
-      'Participants must not use any electronic gadgets such as mobile phones, smartwatches, laptops, or any other smart devices during any round of the event.',
-      'Participants are strictly prohibited from using or supporting any unfair means during the event.',
-      'Any form of malpractice or rule violation observed at any stage will lead to immediate disqualification of the team.',
-      'Participants must maintain discipline and decorum throughout the event.',
-      'In case of any disputes or clarifications, participants should approach the event coordinators politely and peacefully.',
-      'Participants are expected to have knowledge of C, C++, Java, or Python.',
-      'Teams must adhere strictly to the time limits specified for each round.'
-    ],
+  "Only one team from the institute is allowed.",
+  "Each team must consist max of 2 members.",
+  "Participants must not use any electronic gadgets such as mobile phones, smartwatches, laptops, or any other smart devices during any round of the event.",
+  "Participants are strictly prohibited from using or supporting any unfair means during the event.",
+  "Any form of malpractice or rule violation observed at any stage will lead to immediate disqualification of the team.",
+  "Participants must maintain discipline and decorum throughout the event.",
+  "In case of any disputes or clarifications, participants should approach the event coordinators politely and peacefully.",
+  "Participants are expected to have knowledge of any of programming languages from the following: C, C++, Java, JavaScript, Python.",
+  "Teams must adhere strictly to the time limits specified for each round to ensure the smooth flow of the event."
+],
     teamSize: { min: 2, max: 2 },
     fee: 250,
     image: './codekurukshetra.jpg',
     duration: 'TBA',
     registrationOpen: true,
+    eventHeads: [
+      { name: 'PRASHANTH M', phone: '6360849260' },
+      { name: 'LEKHASHREE', phone: '9980559994' }
+    ],
+    prizes: {
+      first: 2000,
+      second: 1500
+    }
   },
 
   {
@@ -36,23 +45,33 @@ const eventsData = [
     actualName: 'Web Development',
     category: 'PG',
     description:
-      'Web Astra is a creative and technical web development challenge where participants showcase their skills in UI/UX design and front-end development. The event is conducted in two rounds, starting with designing intuitive and visually appealing interfaces, followed by implementing functional web solutions based on the given problem statement.',
-    rules: [
-      'Each team must consist of exactly 2 members.',
-      'The event will be conducted in two rounds.',
-      'Round 1 focuses on UI/UX design using tools such as Figma or Canva.',
-      'Round 2 involves web development based on the problem statement provided by the coordinators.',
-      'Participants must not use unauthorized electronic gadgets unless permitted by the event coordinators.',
-      'Participants are strictly prohibited from copying designs, templates, or code from external sources or other teams.',
-      'Any form of unfair means or malpractice will result in immediate disqualification.',
-      'Teams must strictly adhere to the time limits specified for each round.',
-      'The decision of the judges and event coordinators shall be final and binding.'
-    ],
+      'Web Astra is a creative and technical web development challenge where participants showcase their skills in UI/UX design and front-end development. The event is conducted in two rounds, starting with designing intuitive and visually appealing interfaces, followed by implementing functional web solutions based on the given problem statement. ',
+   rules: [
+  'Only one team from the institute is allowed.',
+  'Each team must consist max of 2 members.',
+  'The event will be conducted in two rounds.',
+  'Round 1 focuses on UI/UX design using tools such as Figma or Canva.',
+  'Round 2 involves web development based on the problem statement provided by the coordinators.',
+  'Participants must carry their own laptops for this particular event no systems will be provided by our end.',
+  'Participants are strictly prohibited from copying designs, templates, or code from external sources or any AI tools.',
+  'Any form of unfair means or malpractice will result in immediate disqualification.',
+  'Teams must strictly adhere to the time limits specified for each round to ensure smooth conduct of the event.',
+  'The decision of the judges and event coordinators is final and binding.'
+],
+
     teamSize: { min: 2, max: 2 },
     fee: 250,
     image: '/webtech.jpg',
     duration: 'TBA',
     registrationOpen: true,
+    eventHeads: [
+      { name: 'SAKET SAGAR', phone: '8789131743' },
+      { name: 'SADANAND KAJI', phone: '7892358529' }
+    ],
+    prizes: {
+      first: 2000,
+      second: 1500
+    }
   },
 
   {
@@ -61,22 +80,32 @@ const eventsData = [
     actualName: 'IT Quiz',
     category: 'PG',
     description:
-      'Brahma Bits is a knowledge-driven IT quiz designed to test participants’ understanding of core computer science concepts, emerging technologies, and general IT awareness. The event consists of multiple rounds that challenge the participants’ speed, accuracy, and depth of technical knowledge.',
-    rules: [
-      'Each team must consist of exactly 2 members.',
-      'The event will be conducted in multiple rounds with elimination based on performance.',
-      'The quiz may include technical questions, logical reasoning, rapid-fire rounds, and visual or audio-based questions.',
-      'Participants must not use any electronic gadgets or reference materials during the event.',
-      'Participants are strictly prohibited from using or supporting any unfair means.',
-      'Any form of malpractice or misbehavior will lead to immediate disqualification.',
-      'Teams must answer within the time limits specified for each round.',
-      'In case of disputes, participants should approach the coordinators politely.'
-    ],
+      'Brahma Bits is a knowledge-driven IT quiz designed to test participants understanding of core computer science concepts, emerging technologies, and general IT awareness. The event consists of multiple rounds that challenge the participants speed, accuracy, and depth of technical knowledge.',
+   rules: [
+  'Only one team from the institute is allowed.',
+  'Each team must consist max of 2 members.',
+  'The event will be conducted in multiple rounds, with elimination at each stage based on performance.',
+  'Teams must answer within the time limits specified for each round.',
+  'The quiz may include questions related to computer science, programming concepts, current technology trends, logical reasoning and IT-related current affairs.',
+  'Participants must not use any electronic gadgets such as mobile phones, smartwatches, laptops or any reference materials during the event.',
+  'Any form of malpractice or misbehaviour will lead to immediate disqualification of the team.',
+  'The decision of the quiz master and event Coordinators is final and binding.'
+],
+
     teamSize: { min: 2, max: 2 },
     fee: 250,
     image: '/itquiz.png',
     duration: 'TBA',
     registrationOpen: true,
+    eventHeads: [
+      { name: 'LASYA R GOWDA', phone: '9108831174' },
+      { name: 'SOWJANYA V', phone: '8892890612' },
+      { name: 'BABY G.M', phone: '8197400476' }
+    ],
+    prizes: {
+      first: 2000,
+      second: 1000
+    }
   },
 
   {
@@ -84,49 +113,67 @@ const eventsData = [
     mythologyName: 'Data Vishleshana',
     actualName: 'Data Sprint',
     category: 'PG',
-    description:
-      'Data Vishleshana is an analytical challenge where participants work on a raw dataset and transform it into meaningful insights and visual interpretations using Python and basic machine learning techniques. The event evaluates participants’ data understanding, analytical skills, and clarity of conclusions.',
-    rules: [
-      'Each team must consist of exactly 2 members.',
-      'Participants should have a basic understanding of Python programming and Jupyter Notebook.',
-      'The dataset and problem statement will be provided at the start of the event.',
-      'Participants must perform data cleaning, analysis, and visualization within the given time.',
-      'Use of external datasets, pre-trained models, or AI tools is strictly prohibited.',
-      'Unauthorized electronic gadgets and unfair means are prohibited.',
-      'Any rule violation will lead to immediate disqualification.',
-      'Teams must strictly adhere to the time limits.',
-      'In case of disputes, approach the coordinators politely.'
-    ],
+   description: 'Data Vishleshana is an analytical challenge where participants work on a raw dataset and transform it into meaningful insights and visual interpretations using Python and basic machine learning techniques, evaluating their analytical skills and clarity of conclusions.',
+rules: [
+  'Only one team from the institute is allowed.',
+  'Each team must consist max of 2 members.',
+  'Participants should have a basic understanding of Python programming and Jupyter Notebook.',
+  'The dataset and problem statement will be provided by the event coordinators at the start of the event.',
+  'Participants are expected to perform data cleaning, analysis, and visualization within the given time.',
+  'Use of external datasets or pre-trained models and AI Tools is strictly prohibited.',
+  'Participants must not use unauthorized electronic gadgets or any unfair means during the event.',
+  'Any form of malpractice or rule violation will lead to immediate disqualification.',
+  'Teams must strictly adhere to the time limits specified for the event.'
+],
     teamSize: { min: 2, max: 2 },
     fee: 250,
     image: '/datasciencesprint.jpg',
     duration: 'TBA',
     registrationOpen: true,
+    eventHeads: [
+      { name: 'KABIR AHMED', phone: '9066228810' },
+      { name: 'NANDHUPRIYA', phone: '7548822996' }
+    ],
+    prizes: {
+      first: 2000,
+      second: 1000
+    }
   },
 
   // ==================== UG TECHNICAL EVENTS ====================
+
   {
     eventId: 'gandhari-mode',
     mythologyName: 'Gandhari Mode',
     actualName: 'Blind Coding',
     category: 'UG',
-    description:
-      'Gandhari Mode is a unique coding challenge where participants write code without seeing the screen, relying entirely on logic, syntax knowledge, and memory. Accuracy is given higher priority than speed.',
-    rules: [
-      'Each team must consist of exactly 2 members.',
-      'Multiple rounds with elimination based on performance.',
-      'Participants must write code without viewing the screen.',
-      'Accuracy is given more importance than speed.',
-      'No electronic gadgets or reference materials allowed.',
-      'Physical writing of code on paper is prohibited.',
-      'Unfair means lead to disqualification.',
-      'Strict adherence to time limits is mandatory.'
-    ],
+description: 'Gandhari Mode is a unique coding challenge where participants code without seeing the screen, relying entirely on logic, syntax knowledge, and memory, with accuracy prioritized over speed through multiple rounds testing coding precision and consistency.',
+rules: [
+  'Only one team from the institute is allowed.',
+  'Each team must consist max of 2 members.',
+  'The event will be conducted in multiple rounds, with elimination based on performance in each round.',
+  'Participants must write code without viewing the screen during the coding process.',
+  'Points will be Granted based on Accuracy of the code.',
+  'Coding languages allowed are C, C++, Java, JavaScript and Python.',
+  'Participants must not use any electronic gadgets such as mobile phones, smartwatches, or reference materials during the event.',
+  'Any form of unfair means or external assistance or Physical writing of code on paper will lead to immediate disqualification.',
+  'Participants must strictly adhere to the time limits specified for each round.'
+],
+
     teamSize: { min: 2, max: 2 },
     fee: 250,
     image: '/blindcoding.png',
     duration: 'TBA',
     registrationOpen: true,
+    eventHeads: [
+      { name: 'RITIK KUMAR', phone: '8210924812' },
+       { name: 'CHAITANYA', phone: '9148177152' }
+
+    ],
+    prizes: {
+      first: 2000,
+      second: 0
+    }
   },
 
   {
@@ -134,24 +181,34 @@ const eventsData = [
     mythologyName: 'Web Shilpa Chakra',
     actualName: 'Web Designing',
     category: 'UG',
-    description:
-      'Web Shilpa Chakra is a creative web designing battle where participants build visually appealing web pages using basic HTML and CSS. Evaluation is based on creativity, layout, responsiveness, and completeness.',
-    rules: [
-      'Each team must consist of exactly 2 members.',
-      'The event will be conducted in two rounds.',
-      'Participants must have knowledge of basic HTML and CSS.',
-      'Use of AI tools, pre-written code, and templates is strictly prohibited.',
-      'Designs will be evaluated on creativity, layout, styling, and completeness.',
-      'Unauthorized gadgets and external resources are prohibited.',
-      'Unfair means will lead to disqualification.',
-      'Strict adherence to time limits.',
-      'Judges’ decision is final and binding.'
-    ],
+   description: 'Web Shilpa Chakra is a creative web designing battle where participants build visually appealing web pages using basic HTML, CSS, and JavaScript, evaluated in two rounds based on design structure, creativity, responsiveness, and adherence to requirements.',
+rules: [
+  'Only one team from the institute is allowed.',
+  'Each team must consist max of 2 members.',
+  'The event will be conducted in two rounds with evaluation after each round.',
+  'Participants are required to have knowledge of basic HTML, CSS and JavaScript for designing the web pages.',
+  'Use of AI tools, pre-written codes, and templates is strictly prohibited.',
+  'Designs will be evaluated by judges based on creativity, layout, styling and completeness.',
+  'Participants must carry their own laptops during the event; no systems will be provided by our end.',
+  'Any form of unfair means or malpractice will lead to immediate disqualification.',
+  'Teams must strictly adhere to the time limits specified for each round.',
+  'The decision of the judges and event coordinators is final and binding.'
+],
+
     teamSize: { min: 2, max: 2 },
     fee: 250,
     image: '/webdesign.jpg',
     duration: 'TBA',
     registrationOpen: true,
+    eventHeads: [
+      { name: 'SAHANA R', phone: '8431615806' },
+      { name: 'SOUMYA M', phone: '7348881039' },
+      { name: 'YOGESH T', phone: '8792046432' }
+    ],
+    prizes: {
+      first: 2000,
+      second: 1000
+    }
   },
 
   {
@@ -159,21 +216,31 @@ const eventsData = [
     mythologyName: 'Bits Vedha',
     actualName: 'IT Quiz',
     category: 'UG',
-    description:
-      'Bits Vedha is a competitive IT quiz designed to evaluate knowledge of computer fundamentals, programming concepts, technology trends, and IT current affairs.',
-    rules: [
-      'Each team must consist of exactly 2 members.',
-      'Multiple rounds with elimination.',
-      'No electronic gadgets or reference materials allowed.',
-      'Unfair means lead to disqualification.',
-      'Teams must answer within specified time limits.',
-      'Quiz master’s decision is final and binding.'
-    ],
+  description: "Bits Vedha is a competitive IT quiz testing participants' knowledge of computer concepts, technology trends, and analytical decision-making through multiple rounds.",
+rules: [
+  'Only one team per institute.',
+  'Maximum 2 members per team.',
+  'Multiple elimination rounds based on performance.',
+  'Quiz covers computer fundamentals, programming, tech trends, and IT current affairs.',
+  'No electronic gadgets or reference materials allowed.',
+  'No unfair means or malpractice allowed.',
+  'Teams must adhere to round time limits.',
+  'Decision of quiz master and coordinators is final.'
+],
+
     teamSize: { min: 2, max: 2 },
     fee: 250,
     image: '/itquiz.png',
     duration: 'TBA',
     registrationOpen: true,
+    eventHeads: [
+      { name: 'LASYA R GOWDA', phone: '9108831174' },
+      { name: 'HARI KRISHNA', phone: '7408285663' }
+    ],
+    prizes: {
+      first: 2000,
+      second: 1000
+    }
   },
 
   {
@@ -181,72 +248,101 @@ const eventsData = [
     mythologyName: 'Maya Loop',
     actualName: 'Tech Illusion',
     category: 'UG',
-    description:
-      'Maya Loop is a fun yet mind-bending technical event that challenges observation skills, logical thinking, and awareness of modern technology.',
-    rules: [
-      'Each team may consist of 1 or 2 members.',
-      'Multiple rounds; details revealed during the event.',
-      'Participants must rely on logic and observation.',
-      'Mobile phones and electronic gadgets are prohibited unless permitted.',
-      'Unfair means lead to disqualification.',
-      'Strict adherence to time limits.',
-      'Coordinator’s decision is final and binding.'
-    ],
+   description: 'Maya Loop is a mind-bending technical event testing observation, logic, and awareness of modern technology through illusions.',
+rules: [
+  'Only one team per institute.',
+  'Maximum 2 members per team.',
+  'Participants must rely on observation, logic, and quick thinking.',
+  'No mobile phones or electronic gadgets unless permitted.',
+  'Any unfair means leads to immediate disqualification.',
+  'Strict adherence to time limits is required.',
+  'Decision of event coordinators is final.'
+],
     teamSize: { min: 1, max: 2 },
     fee: 250,
     image: '/techillusion.jpg',
     duration: 'TBA',
     registrationOpen: true,
+    eventHeads: [
+      { name: 'SPOORTHI CM', phone: '8792294875' },
+      { name: 'KRUTHIKA R', phone: '9986709506' }
+    ],
+    prizes: {
+      first: 2000,
+      second: 1000
+    }
   },
 
   // ==================== COMBINED ====================
+
   {
     eventId: 'shastrartha-vada',
     mythologyName: 'Shastrartha Vada',
     actualName: 'IT Debate',
     category: 'Combined',
-    description:
-      'Shastrartha Vāda is a competitive IT debate event where participants engage in versus-against debates on contemporary IT topics.',
-    rules: [
-      'Each team must consist of exactly 2 members.',
-      'Multiple rounds with versus-against format.',
-      'Topics related to IT and emerging technologies.',
-      'Evaluation based on communication, clarity, confidence, and logic.',
-      'No electronic gadgets allowed during debate.',
-      'Professional conduct must be maintained.',
-      'Unfair practices lead to disqualification.',
-      'Strict adherence to time limits.',
-      'Judges’ decision is final and binding.'
-    ],
+  description: 'Shastrartha Vāda is a competitive IT debate where participants engage in topic-based debates testing communication skills, technical awareness, and logical argumentation.',
+rules: [
+  'Only one team per institute.',
+  'Maximum 2 members per team.',
+  'Multiple rounds with versus-against debates.',
+  'Topics on IT, emerging technologies, and digital trends.',
+  'Judged on communication, clarity, confidence, and validity.',
+  'No mobile phones or electronic gadgets.',
+  'Maintain professional conduct and respect.',
+  'Unfair practices lead to disqualification.',
+  'Strict adherence to round time limits.',
+  'Judges and coordinators decision is final.'
+],
     teamSize: { min: 2, max: 2 },
     fee: 250,
     image: '/itdebate.png',
     duration: 'TBA',
     registrationOpen: true,
+    eventHeads: [
+      { name: 'PRASANNA HEGADE', phone: '7349159981' },
+      { name: 'DHANANJAYA M R', phone: '8197668469' }
+    ],
+    prizes: {
+      first: 2000,
+      second: 1000
+    }
   },
 
   // ==================== NON-TECH ====================
+
   {
     eventId: 'ranabhoomi-arena',
     mythologyName: 'Ranabhoomi Arena',
     actualName: 'Mobile Gaming (BGMI)',
     category: 'Non-Tech',
-    description:
-      'Ranabhoomi Arena is a competitive BGMI tournament emphasizing teamwork, strategy, coordination, and fair play.',
-    rules: [
-      'Each team must consist of exactly 4 members.',
-      'No cheating, hacks, mod apps, or emulators allowed.',
-      'Players must bring their own accessories.',
-      'All maps/resources must be downloaded in advance.',
-      'Wi-Fi will not be provided.',
-      'Maintain discipline and sportsmanship.',
-      'Coordinator’s decision is final.'
-    ],
+   description: 'Ranabhoomi Arena is a competitive mobile gaming event (BGMI) where teams battle in a virtual battlefield, emphasizing teamwork, strategy, coordination, and fair play.',
+
+rules: [
+  'Only one team per institute.',
+  'Each team must consist of exactly 4 members.',
+  'No cheating, exploiting bugs, or foul play. Violation leads to disqualification.',
+  'Participants should play the game with bare hands.',
+  'Use of unfair means, hacks, modded apps, or emulators is strictly prohibited.',
+  'Players must bring all necessary accessories (chargers, headphones, power banks, etc.).',
+  'All maps and required resource packs must be downloaded in advance.',
+  'Wi-Fi will not be provided; participants must use their own mobile data or internet connection.',
+  'Participants must maintain discipline and sportsmanship throughout the event.'
+],
+
     teamSize: { min: 4, max: 4 },
     fee: 400,
     image: '/mobilegaming.png',
     duration: 'TBA',
     registrationOpen: true,
+    eventHeads: [
+      { name: 'PRAJWAL', phone: '9353756447' },
+      { name: 'NARESH', phone: '8431163840' },
+      { name: 'SHREYAS K C', phone: '7353094781' }
+    ],
+    prizes: {
+      first: 2500,
+      second: 1500
+    }
   },
 
   {
@@ -254,21 +350,31 @@ const eventsData = [
     mythologyName: 'Bids Sabha',
     actualName: 'IPL Auction',
     category: 'Non-Tech',
-    description:
-      'Bids Sabha is an IPL auction-style strategic event where teams build their dream cricket squad within a fixed budget.',
-    rules: [
-      'Each team must consist of exactly 4 members.',
-      'Auction-based rounds following IPL format.',
-      'Fixed virtual budget provided.',
-      'Unfair means lead to disqualification.',
-      'Strict adherence to bidding rules.',
-      'Coordinator’s decision is final.'
-    ],
+   description: "Bids Sabha is a strategic IPL auction-style event where participants act as team owners and build their dream cricket teams within a fixed budget, testing analytical thinking, planning skills, and understanding of player value and team balance.",
+
+rules: [
+  'Only one team per institute.',
+  'Maximum 4 participants per team.',
+  'Event conducted in auction-based rounds following IPL rules.',
+  'Each team gets a fixed virtual budget for bidding.',
+  'Teams must plan bids carefully to form balanced teams.',
+  'No unfair means, external assistance, or rule manipulation.',
+  'Participants must maintain discipline and sportsmanship.',
+  'Teams must follow auction rules and time limits strictly.'
+],
     teamSize: { min: 4, max: 4 },
     fee: 500,
     image: '/iplauction.png',
     duration: 'TBA',
     registrationOpen: true,
+    eventHeads: [
+      { name: 'VENKATESH E', phone: '7676660137' },
+      { name: 'VINAY', phone: '7619555815' }
+    ],
+    prizes: {
+      first: 4000,
+      second: 0
+    }
   },
 
   {
@@ -276,22 +382,31 @@ const eventsData = [
     mythologyName: 'Nidhi 404',
     actualName: 'Treasure Hunt',
     category: 'Non-Tech',
-    description:
-      'Nidhi 404 is an adventurous treasure hunt involving clues, riddles, and location-based challenges.',
-    rules: [
-      'Each team must consist of 4 to 5 members.',
-      'Multiple rounds with elimination.',
-      'Clues may include puzzles and riddles.',
-      'No unfair means or external assistance.',
-      'Mobile phones prohibited unless permitted.',
-      'Strict adherence to time limits.',
-      'Coordinator’s decision is final.'
-    ],
+   description: 'Nidhi 404 is a treasure hunt testing logical thinking, teamwork, problem-solving, and quick decision-making under time pressure.',
+
+rules: [
+  'Only one team per institute.',
+  'Maximum 5 members per team.',
+  'Multiple rounds with progressive elimination based on clue-solving.',
+  'Clues may include logical puzzles, riddles, technical hints, and location-based challenges.',
+  'No unfair means or external assistance allowed.',
+  'Use of mobile phones or electronic gadgets is prohibited unless permitted.',
+  'Strict adherence to rules and time limits for each round.',
+  'Misbehaviour, rule violation, or malpractice leads to immediate disqualification.'
+],
     teamSize: { min: 4, max: 5 },
     fee: 500,
     image: '/tresurehunt.png',
     duration: 'TBA',
     registrationOpen: true,
+    eventHeads: [
+      { name: 'SHRADDHA PANDEY', phone: '9742848958' },
+      { name: 'RAHUL', phone: '6204030779' }
+    ],
+    prizes: {
+      first: 3000,
+      second: 0
+    }
   },
 
   {
@@ -299,22 +414,32 @@ const eventsData = [
     mythologyName: 'Drishti POV',
     actualName: 'Mobile Photography',
     category: 'Non-Tech',
-    description:
-      'Drishti POV is a photography event where participants capture creative photographs using only mobile phones.',
-    rules: [
-      'Individual participation allowed.',
-      'Only mobile phones permitted.',
-      'No DSLR or professional cameras.',
-      'Photos must be captured during the event.',
-      'Editing or filters not allowed unless permitted.',
-      'Plagiarism leads to disqualification.',
-      'Judges’ decision is final.'
-    ],
+   description: "Drishti POV is a mobile photography event emphasizing creativity, perspective, composition, and storytelling, evaluated by judges.",
+
+rules: [
+  'Only one participant per institute.',
+  'Individual participation only.',
+  'Use only mobile phones for photography.',
+  'No DSLRs, mirrorless cameras, or professional equipment allowed.',
+  'Photos must be captured during the event; no pre-saved images.',
+  'Editing or filters not allowed unless permitted by coordinators.',
+  'Judges will evaluate based on creativity, composition, theme, and clarity.',
+  'Plagiarism or unfair means will lead to disqualification.',
+  'Judges’ and coordinators’ decision is final.'
+],
     teamSize: { min: 1, max: 1 },
     fee: 250,
     image: '/photography.png',
     duration: 'TBA',
     registrationOpen: true,
+    eventHeads: [
+      { name: 'SANKET S', phone: '8494880084' },
+      { name: 'BHAGYASHREE', phone: '8073978788' }
+    ],
+    prizes: {
+      first: 2000,
+      second: 1000
+    }
   },
 
   {
@@ -322,23 +447,31 @@ const eventsData = [
     mythologyName: 'Rahasya Mintz',
     actualName: 'Surprise Event',
     category: 'Non-Tech',
-    description:
-      'Rahasya Mintz is a fun-filled surprise event. Complete details will be revealed only at the time of the event.',
-    rules: [
-      'Each team must consist of exactly 2 participants.',
-      'No details disclosed prior to the event.',
-      'Participants cannot back out once registered.',
-      'Follow coordinator instructions strictly.',
-      'Unfair means lead to disqualification.',
-      'Maintain discipline and sportsmanship.',
-      'Coordinator’s decision is final.'
-    ],
+   description: "Rahasya Mintz is a surprise event where details are revealed only at the event, encouraging participants to stay curious and enjoy unexpected twists.",
+rules: [
+  'Only one team from the institute is allowed.',
+  'Each team must consist max of 2 participants.',
+  'No details or clues about the event will be disclosed prior to the event.',
+  'Once registered, participants are not allowed to back out of the event.',
+  'The event is purely fun-oriented and non-technical.',
+  'Participants must follow the instructions given by the event coordinators during the event.',
+  'Any form of misbehaviour or unfair means will lead to immediate disqualification.',
+  'Participants must maintain discipline and sportsmanship throughout the event.'
+],
     teamSize: { min: 2, max: 2 },
     fee: 250,
     image: '/surpriseevents.png',
     duration: 'TBA',
     registrationOpen: true,
-  },
+    eventHeads: [
+      { name: 'ASHWINI BALAGANUR', phone: '6363739404' },
+      { name: 'YASHAWINI A', phone: '9480674009' }
+    ],
+    prizes: {
+      first: 2000,
+      second: 1000
+    }
+  }
 ];
 
 export default eventsData;

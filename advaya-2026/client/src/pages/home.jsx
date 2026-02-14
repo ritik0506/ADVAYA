@@ -17,14 +17,6 @@ import {
   MobileEventSection,
 } from "../components/homecomponents/EventSections";
 import FullEventScrollModalResponsive from "../components/homecomponents/ScrollFullscreen";
-import {
-  YagnaReveal,
-  DivineManifest,
-  GoldenDivider,
-  SplitText,
-  ScrollText,
-  TextShimmer,
-} from "../components/animations/MythologyMotion";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -38,6 +30,24 @@ export default function Home() {
   const [openScrollId, setOpenScrollId] = useState(null);
   const [selectedEvent, setSelectedEvent] = useState(null);
 
+  /* ================= PRIZE POPUP ================= */
+  const [showPrizePopup, setShowPrizePopup] = useState(true);
+  const [isClosing, setIsClosing] = useState(false);
+
+  const handleClose = () => {
+    setIsClosing(true);
+    setTimeout(() => {
+      setShowPrizePopup(false);
+      setIsClosing(false);
+    }, 300);
+  };
+
+  useEffect(() => {
+    if (!showPrizePopup) return;
+    const timer = setTimeout(() => handleClose(), 20000);
+    return () => clearTimeout(timer);
+  }, [showPrizePopup]);
+
   /* ================= FETCH EVENTS ================= */
   useEffect(() => {
     const fetchEvents = async () => {
@@ -47,7 +57,7 @@ export default function Home() {
         );
         setAllEvents(res.data || []);
       } catch (err) {
-        console.error("Home events fetch failed:", err);
+        console.error("Failed to fetch events:", err);
       } finally {
         setLoading(false);
       }
@@ -55,7 +65,7 @@ export default function Home() {
     fetchEvents();
   }, []);
 
-  /* ================= MAP EVENTS ================= */
+  /* ================= MAP EVENTS INTO SECTIONS ================= */
   const enrichedSections = useMemo(() => {
     if (!allEvents.length) return [];
     return SECTIONS.map((section) => ({
@@ -140,10 +150,9 @@ export default function Home() {
     setOpenScrollId((prev) => (prev === id ? null : id));
   };
 
-  /* ================= LOADING SCREEN ================= */
   if (loading) {
     return (
-      <div className="h-screen flex items-center justify-center bg-[#050505]">
+      <div className="h-screen flex items-center justify-center ">
         <div className="text-[#f3cf7a] animate-pulse font-serif italic text-2xl tracking-[0.2em]">
           SUMMONING THE ARENAS...
         </div>
@@ -151,10 +160,8 @@ export default function Home() {
     );
   }
 
-  /* ================= MAIN RENDER ================= */
   return (
-    <div className="relative bg-[#050505] text-[#f3cf7a] h-auto overflow-x-hidden">
-      
+    <div className="relative bg-transparent text-[#f3cf7a] overflow-x-hidden">
       {/* Background Glow */}
       <div className="fixed inset-0 z-0 pointer-events-none">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_rgba(176,141,50,0.05)_0%,_transparent_80%)]" />
@@ -164,9 +171,10 @@ export default function Home() {
         <Hero />
         <About />
 
+        {/* ================= EVENTS ================= */}
         <div id="events" className="relative">
           {isMobile ? (
-            <div className="pb-0 space-y-32">
+            <div className="space-y-32">
               {enrichedSections.map((section, i) => (
                 <MobileEventSection
                   key={i}
@@ -180,7 +188,7 @@ export default function Home() {
               ))}
             </div>
           ) : (
-            <div className="pb-0 mb-0">
+            <div>
               {enrichedSections.map((section, i) => (
                 <DesktopEventSection
                   key={i}
@@ -196,41 +204,73 @@ export default function Home() {
             </div>
           )}
         </div>
+
+        {/* ================= TEAM REGISTRATION ================= */}
+        <section className="relative py-34 mt-32 flex flex-col items-center justify-center text-center overflow-hidden bg-transparent">
+          <div className="w-full h-px bg-gradient-to-r from-transparent via-[#f3cf7a]/60 to-transparent mb-16" />
+          <div className="absolute inset-0 pointer-events-none">
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_rgba(176,141,50,0.08)_0%,_transparent_75%)] animate-pulse" />
+          </div>
+          <div className="relative z-10 max-w-3xl px-6">
+            <h2 className="text-3xl md:text-5xl font-serif tracking-[0.25em] mb-6">
+              REGISTER YOUR COLLEGE
+            </h2>
+            <p className="text-[#f3cf7a]/70 text-base md:text-lg leading-relaxed mb-10">
+              Unite your warriors. Form your squad. Step into the arena
+              and carve your legacy in ADVAYA 2026.
+            </p>
+            <button
+              onClick={() => window.location.href = "/registercollege"}
+              className="relative px-10 py-4 border border-[#f3cf7a] text-[#f3cf7a]
+                         tracking-[0.2em] transition-all duration-500
+                         hover:bg-[#f3cf7a] hover:text-[#050505]
+                         hover:shadow-[0_0_25px_rgba(243,207,122,0.6)]
+                         rounded-lg"
+            >
+              REGISTER YOUR TEAM
+            </button>
+          </div>
+          <div className="absolute bottom-0 left-0 w-full h-24 bg-gradient-to-b from-transparent to-[#050505]" />
+        </section>
       </main>
 
-      {/* ================= BEAUTIFUL TRANSITION SECTION ================= */}
-      <section className="relative py-32 flex flex-col items-center justify-center text-center overflow-hidden md:pt-120">
-
-        <GoldenDivider width="w-full" className="mb-16" />
-
-        <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute inset-0" />
+      {/* ================= ₹45,000 PRIZE POPUP ================= */}
+      {showPrizePopup && (
+        <div className="fixed bottom-4 right-4 md:bottom-6 md:right-6 z-[9999]">
+          <div
+            className={`relative bg-[#0b0b0b] border border-[#f3cf7a]/70
+              shadow-[0_0_35px_rgba(243,207,122,0.4)]
+              px-4 py-3 md:px-6 md:py-5
+              w-[200px] md:w-[340px]
+              backdrop-blur-md rounded-xl
+              transition-all duration-300 ease-out
+              ${isClosing ? "scale-75 opacity-0" : "scale-100 opacity-100"}`}
+          >
+            <button
+              onClick={handleClose}
+              className="absolute top-1 right-2 text-[#f3cf7a]/70 
+                         hover:text-[#f3cf7a] text-sm md:text-lg transition"
+            >
+              ✕
+            </button>
+            <div className="text-center">
+              <h3 className="text-[10px] md:text-sm tracking-[0.3em] text-[#f3cf7a]/70 mb-2">
+                PRIZE POOL
+              </h3>
+              <div className="text-xl md:text-4xl font-serif tracking-widest">
+                ₹ 45,000
+              </div>
+            </div>
+          </div>
         </div>
-
-        <div className="relative z-10 max-w-3xl px-6">
-          <DivineManifest>
-            <h2 className="text-3xl md:text-5xl font-serif tracking-widest mb-6">
-              <SplitText text="THE JOURNEY CONTINUES" animation="wave" staggerDelay={0.04} />
-            </h2>
-          </DivineManifest>
-
-          <YagnaReveal delay={0.3}>
-            <p className="text-[#f3cf7a]/70 text-lg leading-relaxed">
-              Beyond every battlefield lies a new challenge. 
-              Stay prepared, stay relentless, and let your brilliance echo 
-              through the arenas of <TextShimmer>ADVAYA</TextShimmer>.
-            </p>
-          </YagnaReveal>
-        </div>
-
-        <div className="absolute bottom-0 left-0 w-full h-24 bg-gradient-to-b from-transparent to-[#050505]" />
-      </section>
+      )}
 
       {/* ================= EVENT MODAL ================= */}
       {selectedEvent && (
         <FullEventScrollModalResponsive
           isOpen
           onClose={() => setSelectedEvent(null)}
+          {...selectedEvent}
           eventId={selectedEvent.eventId}
           eventName={selectedEvent.mythologyName}
           category={selectedEvent.category}
@@ -240,7 +280,7 @@ export default function Home() {
           registrationFee={selectedEvent.fee}
           teamSize={selectedEvent.teamSize}
           duration={selectedEvent.duration}
-          registrationOpen={selectedEvent.registrationOpen}
+          registrationOpen={selectedEvent.registrationOpen} // <-- all event info dynamically passed from backend
         />
       )}
     </div>

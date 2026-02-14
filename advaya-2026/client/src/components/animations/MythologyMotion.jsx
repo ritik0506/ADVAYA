@@ -318,7 +318,7 @@ export function GoldenDivider({ width = "w-64", className = "" }) {
     >
       <div className="absolute inset-0 bg-gradient-to-r from-transparent via-[#f3cf7a] to-transparent" />
       <motion.div
-        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-2 h-2 rotate-45 border border-[#f3cf7a] bg-[#050505]"
+        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-2 h-2 rotate-45 border border-[#f3cf7a] bg-transparent"
         initial={{ scale: 0, rotate: 0 }}
         whileInView={{ scale: 1, rotate: 45 }}
         viewport={{ once: true }}

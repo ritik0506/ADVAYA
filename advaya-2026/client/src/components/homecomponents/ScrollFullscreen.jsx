@@ -17,6 +17,8 @@ export default function FullEventScrollModalResponsive({
   teamSize,
   duration,
   registrationOpen,
+  eventHeads = [],   // <-- add eventHeads prop
+  prizes = {},       // <-- add prizes prop
 }) {
   const paperRef = useRef(null);
   const contentRef = useRef(null);
@@ -53,7 +55,7 @@ export default function FullEventScrollModalResponsive({
       .to(contentRef.current, { opacity: 1, duration: 0.4 }, "-=0.5");
 
     return () => tl.kill();
-  }, [isOpen, isMobile, description, rules, teamSize]);
+  }, [isOpen, isMobile, description, rules, teamSize, eventHeads, prizes]);
 
   // Close animation
   const handleClose = () => {
@@ -71,26 +73,23 @@ export default function FullEventScrollModalResponsive({
 
   if (!isOpen) return null;
 
-  // Responsive config
-  // Responsive config
-// Responsive config
-const CONFIG = isMobile
-  ? {
-      rodWidth: 500,  // Fixed width instead of dynamic calculation
-      paperWidth: 280,
-      rodHeight: 55,
-      padding: "30px 20px",
-      titleSize: "1.6rem",
-      overlap: -10,
-    }
-  : {
-      rodWidth: 800,  // Fixed width instead of dynamic calculation
-      paperWidth: 450,
-      rodHeight: 90,
-      padding: "25px 60px",
-      titleSize: "2.8rem",
-      overlap: -25,
-    };
+  const CONFIG = isMobile
+    ? {
+        rodWidth: 500,
+        paperWidth: 280,
+        rodHeight: 55,
+        padding: "30px 20px",
+        titleSize: "1.6rem",
+        overlap: -10,
+      }
+    : {
+        rodWidth: 800,
+        paperWidth: 450,
+        rodHeight: 90,
+        padding: "25px 60px",
+        titleSize: "2.8rem",
+        overlap: -25,
+      };
 
   return (
     <div className="fixed inset-0 z-[9999] bg-black/95 backdrop-blur-md overflow-y-auto scroll-smooth px-4 py-20">
@@ -177,6 +176,22 @@ const CONFIG = isMobile
                   </p>
                 </div>
 
+                {/* Event Heads */}
+                {eventHeads.length > 0 && (
+                  <div className="mb-12">
+                    <h4 className="font-black text-[11px] uppercase tracking-[0.5em] mb-4 text-center underline underline-offset-4 decoration-[#3b2a1a]/30">
+                      Keepers of the Arena
+                    </h4>
+                    <ul className="space-y-2 text-center">
+                      {eventHeads.map((head, idx) => (
+                        <li key={idx} className="italic font-medium text-[14px] md:text-[16px]">
+                          {head.name} — <span className="font-bold">{head.phone}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+
                 {/* Rules */}
                 <div className="border-t border-[#3b2a1a]/20 pt-10">
                   <h4 className="font-black text-[11px] uppercase tracking-[0.5em] mb-8 text-center underline underline-offset-8 decoration-[#3b2a1a]/30">
@@ -191,6 +206,19 @@ const CONFIG = isMobile
                     ))}
                   </ul>
                 </div>
+
+                {/* Prizes */}
+                {prizes && (prizes.first || prizes.second) && (
+                  <div className="mt-14 pt-10 border-t-2 border-double border-[#3b2a1a]/20">
+                    <h4 className="font-black text-[11px] uppercase tracking-[0.5em] mb-4 text-center underline underline-offset-4 decoration-[#3b2a1a]/30">
+                      Spoils of War
+                    </h4>
+                    <div className="flex justify-around text-center text-[#3b2a1a]/90 font-bold text-[14px] md:text-[16px]">
+                      {prizes.first && <div>🥇 ₹{prizes.first}</div>}
+                      {prizes.second && <div>🥈 ₹{prizes.second}</div>}
+                    </div>
+                  </div>
+                )}
 
                 {/* Registration */}
                 <div className="mt-14 pt-10 border-t-2 border-double border-[#3b2a1a]/20">

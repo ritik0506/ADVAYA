@@ -11,8 +11,10 @@ import {
   staggerItem,
 } from "../animations/MythologyMotion";
 
-const GAP_DESKTOP_HORIZONTAL = "1rem";
-const GAP_DESKTOP_VERTICAL = "1.4rem";
+const GAP_DESKTOP_HORIZONTAL = "4rem";
+const GAP_DESKTOP_VERTICAL = "3rem";
+
+/* ================= DESKTOP ================= */
 
 export function DesktopEventSection({
   section,
@@ -24,21 +26,32 @@ export function DesktopEventSection({
   setSelectedEvent,
 }) {
   return (
-    <section ref={sectionRef} className="min-h-[180vh] px-14 py-20 md:-mt-0">
+    <section
+      ref={sectionRef}
+      className="min-h-[160vh] px-14 py-20 md:mt-90 md:pt-40"
+    >
       <div className="flex gap-12 items-start">
-        {/* Left: Event Scrolls */}
+        
+        {/* LEFT SIDE — SCROLLS */}
         <div className="w-300">
+
           <WarriorEntry direction="left" delay={0.1}>
-            <h2 className="text-6xl font-serif italic text-white mt-4 uppercase tracking-tighter leading-none">
-              <SplitText text={section?.title || ""} animation="slide" staggerDelay={0.04} />
+            <h2 className="text-5xl font-serif italic text-white mt-1 uppercase tracking-tighter leading-none">
+              <SplitText
+                text={section?.title || ""}
+                animation="slide"
+                staggerDelay={0.04}
+              />
             </h2>
           </WarriorEntry>
 
-          <GoldenDivider width="w-32" className="!mx-0 mt-4 mb-2" />
+          <GoldenDivider width="w-132" className="!mx-0 mt-4 mb-2" />
 
           <motion.div
             className="grid grid-cols-2 pt-10 pb-20"
-            style={{ gap: `${GAP_DESKTOP_VERTICAL} ${GAP_DESKTOP_HORIZONTAL}` }}
+            style={{
+              gap: `${GAP_DESKTOP_VERTICAL} ${GAP_DESKTOP_HORIZONTAL}`,
+            }}
             variants={staggerContainer}
             initial="hidden"
             whileInView="show"
@@ -46,17 +59,17 @@ export function DesktopEventSection({
           >
             {section?.events?.map((event, idx) => {
               const id = `${sIdx}-${idx}`;
-              
+
               return (
-                <motion.div 
-                  key={id} 
-                  className="transition-transform hover:scale-105 duration-500"
+                <motion.div
+                  key={id}
                   variants={staggerItem}
+                  className="transition-transform hover:scale-105 duration-500"
                 >
                   <SmallScroll
                     rodText={event?.mythologyName?.toLowerCase() || ""}
-                    mythologyName={event?.mythologyName} 
-                    actualName={event?.actualName}    
+                    mythologyName={event?.mythologyName}
+                    actualName={event?.actualName}
                     isOpen={openScrollId === id}
                     onToggle={() => toggleScroll(id)}
                     onSeeMore={() => setSelectedEvent(event)}
@@ -67,10 +80,8 @@ export function DesktopEventSection({
           </motion.div>
         </div>
 
-        {/* Right: Video */}
-        <div 
-          className="w-340 sticky top-23 h-[75vh] flex items-center justify-center pointer-events-none"
-        >
+        {/* RIGHT SIDE — VIDEO */}
+        <div className="w-340 sticky top-23 h-[75vh] flex items-center justify-center pointer-events-none">
           <video
             ref={videoRef}
             src={section?.video}
@@ -81,10 +92,13 @@ export function DesktopEventSection({
               ${sIdx > 0 ? "h-[50vh] scale-90" : "h-full scale-125"}`}
           />
         </div>
+
       </div>
     </section>
   );
 }
+
+/* ================= MOBILE ================= */
 
 export function MobileEventSection({
   section,
@@ -96,9 +110,9 @@ export function MobileEventSection({
 }) {
   return (
     <div className="space-y-10 text-center">
-      <div 
-        className="relative h-[45vh] flex items-center justify-center"
-      >
+
+      {/* VIDEO */}
+      <div className="relative h-[45vh] flex items-center justify-center">
         <video
           ref={videoRef}
           src={section?.video}
@@ -110,16 +124,22 @@ export function MobileEventSection({
           }`}
         />
       </div>
-      
+
+      {/* TITLE */}
       <YagnaReveal>
-        <h2 className="text-4xl font-serif italic text-white uppercase tracking-tighter">
-          <SplitText text={section?.title || ""} animation="rise" staggerDelay={0.03} />
+        <h2 className="text-3xl font-serif italic text-white uppercase tracking-tighter">
+          <SplitText
+            text={section?.title || ""}
+            animation="rise"
+            staggerDelay={0.03}
+          />
         </h2>
       </YagnaReveal>
 
-      <GoldenDivider width="w-24" />
+      <GoldenDivider width="w-84" />
 
-      <motion.div 
+      {/* SCROLL LIST */}
+      <motion.div
         className="flex flex-col items-center space-y-12"
         variants={staggerContainer}
         initial="hidden"
@@ -128,12 +148,13 @@ export function MobileEventSection({
       >
         {section?.events?.map((event, idx) => {
           const id = `${sIdx}-${idx}`;
+
           return (
             <motion.div key={id} variants={staggerItem}>
               <SmallScroll
                 rodText={event?.mythologyName?.toLowerCase() || ""}
-                mythologyName={event?.mythologyName} 
-                actualName={event?.actualName}    
+                mythologyName={event?.mythologyName}
+                actualName={event?.actualName}
                 isOpen={openScrollId === id}
                 onToggle={() => toggleScroll(id)}
                 onSeeMore={() => setSelectedEvent(event)}
@@ -142,6 +163,7 @@ export function MobileEventSection({
           );
         })}
       </motion.div>
+
     </div>
   );
 }

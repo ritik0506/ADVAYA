@@ -55,80 +55,112 @@ export default function About() {
 
       <div className="relative z-10">
 
- {/* HERO */}
-<section className="min-h-screen flex items-center justify-center px-8 relative">
+       {/* HERO */}
+<section className="min-h-screen flex items-center justify-center px-6 md:px-8 relative">
   <motion.div
     initial={{ opacity: 0, scale: 0.92 }}
     animate={{ opacity: 1, scale: 1 }}
     transition={{ ...SPRING.heavy }}
-    className="text-center -mt-10 flex flex-col items-center"
+    className="text-center flex flex-col items-center"
   >
-    {/* MAIN LOGO CONTAINER */}
-    <div className="flex flex-col items-center">
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.3, duration: 1.5 }}
-        className="relative group mb-0" 
-      >
-        <img 
-          src="/logomain.png" 
-          alt="Advaya Logo" 
-          className="h-32 md:h-64 lg:h-80 w-auto object-contain drop-shadow-[0_0_30px_rgba(255,255,255,0.1)] transition-transform duration-700 group-hover:scale-105"
-        />
-        <div className="absolute inset-0 bg-white/5 blur-3xl rounded-full -z-10" />
-      </motion.div>
+    {/* MAIN LOGO */}
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: 0.3, duration: 1.2 }}
+      className="relative group"
+    >
+      <img
+        src="/logomain.png"
+        alt="Advaya Logo"
+        className="
+          h-44
+          sm:h-52
+          md:h-56
+          lg:h-72
+          w-auto object-contain
+          drop-shadow-[0_0_40px_rgba(59,130,246,0.35)]
+          transition-transform duration-700
+          group-hover:scale-105
+        "
+      />
 
-      {/* UNDERLINE - Pulled way up to touch the main logo */}
-<motion.div
-  initial={{ width: 0 }}
-  animate={{ width: "60%" }}
-  transition={{ delay: 0.5, duration: 1 }}
-  className="
-  h-[1px]
-  bg-gradient-to-r from-transparent via-blue-500 to-transparent
-  -mt-10
-  md:-mt-20
-  mb-6
-  shadow-[0_0_20px_rgba(59,130,246,0.8)]
-"
+      {/* Soft glow behind logo */}
+      <div className="absolute inset-0 bg-blue-500/10 blur-3xl rounded-full -z-10" />
+    </motion.div>
 
-/>
+    {/* ANIMATED UNDERLINE */}
+    <motion.div
+      initial={{ scaleX: 0 }}
+      animate={{ scaleX: 1 }}
+      transition={{ delay: 0.5, duration: 1 }}
+      style={{ transformOrigin: "center" }}
+      className="
+        h-[2px]
+        w-[70%]
+        md:w-[60%]
+        bg-gradient-to-r 
+        from-transparent 
+        via-blue-500
+        to-transparent
+        -mt-14
+        md:-mt-19
+        mb-5
+        shadow-[0_0_25px_rgba(59,130,246,0.9)]
+      "
+    />
 
+    {/* 2026 LOGO */}
+    <motion.div
+      initial={{ opacity: 0, y: 15 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: 0.7, duration: 1 }}
+      className="flex justify-center"
+    >
+      <img
+        src="./2026logo.png"
+        alt="2026 Logo"
+        className="
+          h-9
+          md:h-10
+          lg:h-12
+          w-auto
+          object-contain
+          opacity-90
+        "
+      />
+    </motion.div>
 
-    </div>
-
-    {/* SECONDARY LOGO & SUBTEXT */}
-    <div className="flex justify-center items-center gap-6 md:gap-8">
-      {/* 2026 Logo - Smaller */}
-<motion.div
-  initial={{ opacity: 0, x: -20 }}
-  animate={{ opacity: 1, x: 0 }}
-  transition={{ delay: 0.6, duration: 1.2 }}
->
-  <img 
-    src="./2026logo.png" 
-    alt="2026 Logo" 
-    className="h-8 md:h-10 lg:h-12 w-auto object-contain opacity-90"
-  />
-</motion.div>
-
-
-      <p className="text-left text-[9px] md:text-[10px] uppercase tracking-[0.4em] leading-relaxed text-white/40 border-l border-white/10 pl-6 md:pl-8">
-        Intercollege Level <br /> Technical Symposium
-      </p>
-    </div>
+    {/* SUBTITLE */}
+    <motion.p
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ delay: 0.9, duration: 1 }}
+      className="
+        mt-4
+        text-[9px]
+        md:text-[10px]
+        uppercase
+        tracking-[0.4em]
+        text-white/40
+        text-center
+      "
+    >
+      Intercollege Level <br /> Technical Symposium
+    </motion.p>
   </motion.div>
-  
+
+  {/* Scroll indicator */}
   <motion.div
     animate={{ y: [0, 10, 0] }}
     transition={{ duration: 2, repeat: Infinity }}
-    className="absolute bottom-10 w-px h-20 bg-gradient-to-b from-blue-500 to-transparent"
+    className="absolute bottom-10 w-px h-16 bg-gradient-to-b from-blue-500 to-transparent"
   />
 </section>
 
-        {/* SECTION 01 */}
-        <section className="max-w-7xl mx-auto px-8 md:px-24 py-40">
+
+        {/* SECTION 01 — Identity */}
+        <section className="max-w-7xl mx-auto px-8 md:px-24 py-24">
           <SectionHeading number="// 01" subtitle="The Identity">
             The Digital <br /> Crucible
           </SectionHeading>
@@ -139,31 +171,31 @@ export default function About() {
           </YagnaReveal>
         </section>
 
-        {/* SECTION 02 — FIXED */}
-        <section className="py-40 bg-white/[0.02]">
+        {/* SECTION 02 — Vision & Purpose */}
+        <section className="py-24 bg-white/[0.02]">
           <div className="max-w-7xl mx-auto px-8 md:px-24">
             <SectionHeading number="// 02" subtitle="Vision & Purpose">
               The Core <br /> Directive
             </SectionHeading>
 
-            <div className="grid md:grid-cols-2 gap-16 mt-16">
+            <div className="grid md:grid-cols-2 gap-12 mt-12">
               <YagnaReveal delay={0.1}>
-                <div className="p-10 rounded-3xl border border-blue-500/20 bg-blue-500/5">
-                  <h3 className="text-xs uppercase tracking-[0.5em] text-blue-400 mb-6">
+                <div className="p-8 rounded-3xl border border-blue-500/20 bg-blue-500/5">
+                  <h3 className="text-xs uppercase tracking-[0.5em] text-blue-400 mb-4">
                     Vision
                   </h3>
-                  <p className="text-3xl font-serif italic">
+                  <p className="text-2xl md:text-3xl font-serif italic">
                     To be the quantum leap between academic theory and industry disruption.
                   </p>
                 </div>
               </YagnaReveal>
 
               <YagnaReveal delay={0.3}>
-                <div className="p-10 rounded-3xl border border-amber-500/20 bg-amber-500/5">
-                  <h3 className="text-xs uppercase tracking-[0.5em] text-amber-400 mb-6">
+                <div className="p-8 rounded-3xl border border-amber-500/20 bg-amber-500/5">
+                  <h3 className="text-xs uppercase tracking-[0.5em] text-amber-400 mb-4">
                     Purpose
                   </h3>
-                  <p className="text-3xl font-serif italic">
+                  <p className="text-2xl md:text-3xl font-serif italic">
                     Igniting leadership through high-stakes technical competition.
                   </p>
                 </div>
@@ -172,33 +204,33 @@ export default function About() {
           </div>
         </section>
 
-        {/* SECTION 03 */}
-        <section className="py-48 relative overflow-hidden">
-          <motion.div
-            style={{ x: xTransform }}
-            className="absolute top-1/2 -translate-y-1/2 whitespace-nowrap text-[20rem] font-black uppercase italic opacity-[0.03]"
-          >
-          </motion.div>
+        {/* SECTION 03 — Eligibility */}
+        {/* SECTION 03 — Eligibility */}
+<section className="py-32 relative overflow-hidden">
+  <motion.div
+    style={{ x: xTransform }}
+    className="absolute top-1/2 -translate-y-1/2 whitespace-nowrap text-[20rem] font-black uppercase italic opacity-[0.03]"
+  />
+  <div className="max-w-7xl mx-auto px-8 md:px-24 relative z-10 text-center">
+    <SectionHeading number="// 03" subtitle="Eligibility">
+      The Circle <br /> of Merit
+    </SectionHeading>
 
-          <div className="max-w-7xl mx-auto px-8 md:px-24 relative z-10 text-center">
-            <SectionHeading number="// 03" subtitle="Eligibility">
-              The Circle <br /> of Merit
-            </SectionHeading>
+    <div className="flex justify-center gap-6 md:gap-16 mt-12 flex-wrap">
+      {["MCA", "BCA", "BSc"].map((dept) => (
+        <div
+          key={dept}
+          className="w-32 md:w-56 aspect-square rounded-full border border-white/10 flex items-center justify-center transition-all hover:border-blue-500/50 hover:bg-blue-500/5"
+        >
+          <span className="text-3xl md:text-7xl font-serif italic">
+            {dept}
+          </span>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
 
-            <div className="flex justify-center gap-20 mt-20">
-              {["MCA", "BCA", "BSc"].map((dept) => (
-                <div
-                  key={dept}
-                  className="w-40 h-40 md:w-56 md:h-56 rounded-full border border-white/10 flex items-center justify-center transition-all hover:border-blue-500/50 hover:bg-blue-500/5"
-                >
-                  <span className="text-5xl md:text-7xl font-serif italic">
-                    {dept}
-                  </span>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
 
       </div>
     </div>

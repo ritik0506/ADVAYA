@@ -11,6 +11,7 @@ import { notFound, errorHandler } from './middleware/errorMiddleware.js';
 import eventRoutes from './routes/Eventroutes.js'; 
 import registrationRoutes from './routes/registrationRoutes.js';
 import logRoutes from './routes/logRoutes.js';
+import teamRegistrationRoutes from "./routes/teamRegistrationRoutes.js";
 
 // Get directory path for ES modules
 const __filename = fileURLToPath(import.meta.url);
@@ -53,7 +54,7 @@ app.get('/', (req, res) => {
 app.use('/api/registration', registrationRoutes);
 app.use('/api/logs', logRoutes);
 app.use('/api/events', eventRoutes); 
-
+app.use("/api/team-registration", teamRegistrationRoutes);
 // Error handling
 app.use(notFound);
 app.use(errorHandler);

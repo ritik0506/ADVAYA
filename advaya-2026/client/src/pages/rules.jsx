@@ -31,12 +31,11 @@ const TimelineItem = ({ index, title, text }) => (
     whileInView="active"
     viewport={{ once: false, amount: 0.7, margin: "-10% 0px -10% 0px" }}
   >
-    {/* Node Container */}
+    {/* Node */}
     <div className="relative z-10 flex flex-col items-center">
       <div className="relative flex items-center justify-center w-5 h-5 mt-1">
-        
-        {/* GOLDEN GLOW: Breathing Aura */}
-        <motion.div 
+        {/* Golden Glow */}
+        <motion.div
           variants={{
             initial: { scale: 0.5, opacity: 0 },
             active: { scale: 3, opacity: 0.25 }
@@ -44,8 +43,7 @@ const TimelineItem = ({ index, title, text }) => (
           transition={{ duration: 1.5, repeat: Infinity, repeatType: "mirror" }}
           className="absolute w-full h-full rounded-full bg-amber-400 blur-lg"
         />
-
-        {/* GOLDEN CIRCLE: The Core */}
+        {/* Core Circle */}
         <motion.div
           variants={{
             initial: { backgroundColor: "#0f172a", borderColor: "rgba(255,255,255,0.1)", scale: 1 },
@@ -61,7 +59,7 @@ const TimelineItem = ({ index, title, text }) => (
       </div>
     </div>
 
-    {/* Content Card */}
+    {/* Content */}
     <motion.div 
       variants={{
         initial: { opacity: 0, x: 25, filter: "blur(6px)" },
@@ -116,23 +114,25 @@ export default function Rules() {
         {/* Header */}
         <header className="max-w-4xl mx-auto text-center mb-32">
           <DivineManifest>
-            <h2 className="text-xs tracking-[1em] uppercase text-blue-400 font-bold mb-4">
-              Official Guidelines
+            <h2 className="text-xs tracking-[1em] uppercase text-[#f3cf7a]/60 font-bold mb-6">
+              Sacred Decree
             </h2>
-            <h1 className="text-6xl md:text-9xl font-black uppercase tracking-tighter mb-6 bg-gradient-to-b from-white to-white/30 bg-clip-text text-transparent">
-              <SplitText text="The Rules" animation="rise" staggerDelay={0.05} />
+
+            {/* WARRIOR HEADING */}
+            <h1 className="text-6xl md:text-9xl font-serif italic font-black text-[#f3cf7a] tracking-tighter leading-none">
+              <SplitText text="RULES" animation="wave" staggerDelay={0.05} />
             </h1>
-            <GoldenDivider width="w-32" />
+
+            <GoldenDivider width="w-32" className="mt-8" />
           </DivineManifest>
         </header>
 
-        {/* Timeline Section */}
+        {/* Timeline */}
         <div ref={containerRef} className="relative max-w-3xl mx-auto">
-          
           {/* Static Track Line */}
           <div className="absolute left-[9px] top-4 w-[2px] h-[calc(100%-80px)] bg-white/[0.05]" />
 
-          {/* BLUE PROGRESS LINE */}
+          {/* Blue Progress Line */}
           <motion.div
             className="absolute left-[9px] top-4 w-[2px] bg-gradient-to-b from-blue-300 via-blue-500 to-blue-700 shadow-[0_0_20px_rgba(59,130,246,0.6)] origin-top z-0"
             style={{ height: lineHeight }}
@@ -145,8 +145,6 @@ export default function Rules() {
             ))}
           </div>
         </div>
-
-      
 
       </div>
     </div>

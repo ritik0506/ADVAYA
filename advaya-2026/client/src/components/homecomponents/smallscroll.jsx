@@ -91,13 +91,13 @@ export default function SmallScroll({
 
 const smallStyles = {
   PAPER_WIDTH: 170,
-  ROD_WIDTH: 340,
+  ROD_WIDTH: 480,
   TOP_ROD_OVERLAP: -3,
   BOTTOM_ROD_SEAL_OFFSET: -4,
 
   page: { display: "flex", justifyContent: "center", alignItems: "flex-start", padding: "8px 0" },
   scrollWrapper: { display: "flex", flexDirection: "column", alignItems: "center", marginBottom: "16px" },
-  rodContainer: { width: "340px", height: "38px", position: "relative", display: "flex", justifyContent: "center", alignItems: "center", cursor: "pointer", zIndex: 10 },
+  rodContainer: { width: "370px", height: "38px", position: "relative", display: "flex", justifyContent: "center", alignItems: "center", cursor: "pointer", zIndex: 10 },
   rodImage: { width: "100%", height: "100%", position: "absolute", filter: "drop-shadow(0 6px 10px rgba(0,0,0,0.7))" },
 rodText: {
   position: "relative",
@@ -110,7 +110,8 @@ rodText: {
   opacity: 1,
   pointerEvents: "none",
   textAlign: "center",
-  width: "100%",
+  width: "50%",
+   textTransform: "uppercase",
   textShadow: "0 1px 2px rgba(0,0,0,0.5)",
 },
 

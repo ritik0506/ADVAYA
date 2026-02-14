@@ -83,9 +83,9 @@ export default function Support() {
   const contacts = [
     {
       title: "Digital Correspondence",
-      value: "advaya2k26@gmail.com",
+      value: "advaya.rvitm@rvei.edu.in",
       icon: <Mail size={24} strokeWidth={1.5} />,
-      action: "mailto:advaya2k26@gmail.com",
+      action: "mailto:advaya.rvitm@rvei.edu.in",
     },
     {
       title: "Direct Line",
@@ -121,7 +121,7 @@ export default function Support() {
   ];
 
   return (
-    <div className="relative min-h-screen bg-[#050505] text-[#f3cf7a] selection:bg-[#f3cf7a] selection:text-black">
+    <div className="relative min-h-screen bg-transparent text-[#f3cf7a] selection:bg-[#f3cf7a] selection:text-black">
       
       {/* Background Ambience */}
       <div className="fixed inset-0 pointer-events-none">
