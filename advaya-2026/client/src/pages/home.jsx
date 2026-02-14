@@ -206,7 +206,7 @@ export default function Home() {
         </div>
 
         {/* ================= TEAM REGISTRATION ================= */}
-        <section className="relative py-34 mt-32 flex flex-col items-center justify-center text-center overflow-hidden bg-transparent">
+        <section className="relative py-34 mt-110 flex flex-col items-center justify-center text-center overflow-hidden bg-transparent">
           <div className="w-full h-px bg-gradient-to-r from-transparent via-[#f3cf7a]/60 to-transparent mb-16" />
           <div className="absolute inset-0 pointer-events-none">
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_rgba(176,141,50,0.08)_0%,_transparent_75%)] animate-pulse" />
