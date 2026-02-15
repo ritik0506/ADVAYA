@@ -227,3 +227,160 @@ export const sendRegistrationEmail = async (to, data) => {
 
   return getTransporter().sendMail(mailOptions);
 };
+
+/**
+ * Send college/team registration confirmation email to coordinator
+ * @param {string} to - Coordinator email address
+ * @param {Object} data - College registration details
+ */
+export const sendCollegeRegistrationEmail = async (to, data) => {
+  const {
+    collegeName, category, coordinatorName, coordinatorPhone,
+    totalParticipants, totalEvents, amountPaid,
+  } = data;
+
+  const safeCollege = escapeHtml(collegeName);
+  const safeCategory = escapeHtml(category);
+  const safeCoordinator = escapeHtml(coordinatorName);
+  const safePhone = escapeHtml(coordinatorPhone);
+  const safeParticipants = escapeHtml(String(totalParticipants));
+  const safeEvents = escapeHtml(String(totalEvents));
+  const safeFee = escapeHtml(String(amountPaid));
+
+  // Build pre-filled Google Form URL for college registration
+  const formBaseUrl = 'https://docs.google.com/forms/d/e/1FAIpQLSde1Iw5EV1fMRtSwAhTmu_XBEwJcsd_vjB9ty3E1-EMNM-zyQ/viewform';
+  const formParams = new URLSearchParams({
+    'usp': 'pp_url',
+    'emailAddress': data.coordinatorEmail || '',
+    'entry.1349434832': collegeName,
+    'entry.59479387': coordinatorName,
+  });
+  const formUrl = `${formBaseUrl}?${formParams.toString()}`;
+
+  const html = `
+    <div style="font-family: 'Segoe UI', Arial, sans-serif; max-width: 620px; margin: 0 auto; background: #0a0a0f; border: 2px solid #d4a84b; border-radius: 0;">
+      
+      <!-- ═══ TOP SACRED BORDER ═══ -->
+      <div style="background: linear-gradient(90deg, transparent, #d4a84b, #f3cf7a, #d4a84b, transparent); height: 3px;"></div>
+
+      <!-- ═══ HEADER ═══ -->
+      <div style="background: linear-gradient(180deg, #1a1505 0%, #0f0d08 50%, #0a0a0f 100%); padding: 40px 24px 30px; text-align: center; border-bottom: 1px solid #d4a84b33;">
+        <p style="color: #d4a84b; font-size: 14px; letter-spacing: 8px; margin: 0 0 8px;">॥ ⚔ ॥</p>
+        <h1 style="color: #f3cf7a; margin: 0; font-size: 28px; font-weight: 900; letter-spacing: 6px; text-transform: uppercase; text-shadow: 0 0 20px rgba(243,207,122,0.3);">
+          ADVAYA 2026
+        </h1>
+        <div style="width: 120px; height: 1px; background: linear-gradient(90deg, transparent, #d4a84b, transparent); margin: 16px auto;"></div>
+        <p style="color: #d4a84b; font-size: 11px; letter-spacing: 5px; text-transform: uppercase; margin: 0;">
+          🏛️ College Registration Confirmed 🏛️
+        </p>
+      </div>
+
+      <!-- ═══ BODY ═══ -->
+      <div style="padding: 32px 28px;">
+        
+        <p style="color: #c9b89e; font-size: 15px; margin: 0 0 8px; line-height: 1.6;">
+          Greetings, ${safeCoordinator}! 🙏
+        </p>
+        <p style="color: #8a7e6b; font-size: 14px; margin: 0 0 28px; line-height: 1.6;">
+          Your college has been enrolled for the grand arena. Rally your warriors — the battlefield awaits!
+        </p>
+
+        <!-- ═══ REGISTRATION DETAILS ═══ -->
+        <div style="border: 1px solid #d4a84b44; background: #0e0d0a; padding: 0; margin-bottom: 28px;">
+          <div style="background: #d4a84b15; border-bottom: 1px solid #d4a84b33; padding: 10px 20px;">
+            <p style="color: #d4a84b; font-size: 10px; letter-spacing: 4px; text-transform: uppercase; margin: 0; font-weight: 700;">
+              🏛️ College Enrollment Scroll
+            </p>
+          </div>
+          
+          <div style="padding: 20px;">
+            <table style="width: 100%; border-collapse: collapse;">
+              <tr>
+                <td style="padding: 8px 0; color: #6b6050; font-size: 12px; letter-spacing: 2px; text-transform: uppercase; width: 140px; vertical-align: top;">College</td>
+                <td style="padding: 8px 0; color: #f3cf7a; font-size: 15px; font-weight: 700;">${safeCollege}</td>
+              </tr>
+              <tr><td colspan="2" style="padding: 0;"><div style="height: 1px; background: #d4a84b15;"></div></td></tr>
+              <tr>
+                <td style="padding: 8px 0; color: #6b6050; font-size: 12px; letter-spacing: 2px; text-transform: uppercase; vertical-align: top;">Category</td>
+                <td style="padding: 8px 0; color: #e8dcc8; font-size: 14px; font-weight: 600;">${safeCategory}</td>
+              </tr>
+              <tr><td colspan="2" style="padding: 0;"><div style="height: 1px; background: #d4a84b15;"></div></td></tr>
+              <tr>
+                <td style="padding: 8px 0; color: #6b6050; font-size: 12px; letter-spacing: 2px; text-transform: uppercase; vertical-align: top;">Coordinator</td>
+                <td style="padding: 8px 0; color: #e8dcc8; font-size: 14px; font-weight: 600;">${safeCoordinator}</td>
+              </tr>
+              <tr><td colspan="2" style="padding: 0;"><div style="height: 1px; background: #d4a84b15;"></div></td></tr>
+              <tr>
+                <td style="padding: 8px 0; color: #6b6050; font-size: 12px; letter-spacing: 2px; text-transform: uppercase; vertical-align: top;">Sampark</td>
+                <td style="padding: 8px 0; color: #e8dcc8; font-size: 14px; font-weight: 600;">${safePhone}</td>
+              </tr>
+              <tr><td colspan="2" style="padding: 0;"><div style="height: 1px; background: #d4a84b15;"></div></td></tr>
+              <tr>
+                <td style="padding: 8px 0; color: #6b6050; font-size: 12px; letter-spacing: 2px; text-transform: uppercase; vertical-align: top;">Warriors</td>
+                <td style="padding: 8px 0; color: #e8dcc8; font-size: 14px; font-weight: 600;">${safeParticipants} members</td>
+              </tr>
+              <tr><td colspan="2" style="padding: 0;"><div style="height: 1px; background: #d4a84b15;"></div></td></tr>
+              <tr>
+                <td style="padding: 8px 0; color: #6b6050; font-size: 12px; letter-spacing: 2px; text-transform: uppercase; vertical-align: top;">Events</td>
+                <td style="padding: 8px 0; color: #e8dcc8; font-size: 14px; font-weight: 600;">${safeEvents} events</td>
+              </tr>
+              <tr><td colspan="2" style="padding: 0;"><div style="height: 1px; background: #d4a84b15;"></div></td></tr>
+              <tr>
+                <td style="padding: 8px 0; color: #6b6050; font-size: 12px; letter-spacing: 2px; text-transform: uppercase; vertical-align: top;">Dakshina</td>
+                <td style="padding: 8px 0; color: #f3cf7a; font-size: 16px; font-weight: 700;">₹${safeFee}</td>
+              </tr>
+            </table>
+          </div>
+        </div>
+
+        <!-- ═══ PAYMENT CTA ═══ -->
+        <div style="border: 1px solid #d4a84b66; background: linear-gradient(180deg, #1a1505, #0e0d0a); padding: 28px 24px; text-align: center; margin-bottom: 8px;">
+          <p style="color: #d4a84b; font-size: 10px; letter-spacing: 4px; text-transform: uppercase; margin: 0 0 8px; font-weight: 700;">
+            💰 Complete Your Dakshina
+          </p>
+          <p style="color: #8a7e6b; font-size: 13px; margin: 0 0 20px; line-height: 1.6;">
+            Your college enrollment is confirmed, but the offering must be made to seal your place in the arena.
+          </p>
+          <a href="https://wds-prd.rvei.edu.in:4430/sap/bc/ui5_ui5/sap/zeventregister/#/scode/ADVAYA-2026"
+             style="display: inline-block; background: linear-gradient(135deg, #d4a84b, #f3cf7a); color: #0a0a0f; text-decoration: none; padding: 14px 36px; font-size: 12px; font-weight: 900; letter-spacing: 3px; text-transform: uppercase; border: none;">
+            ⚔ PAY NOW ⚔
+          </a>
+          <p style="color: #4a4535; font-size: 11px; margin: 16px 0 0;">
+            Registration Fee: <strong style="color: #f3cf7a;">₹${safeFee}</strong>
+          </p>
+
+          <div style="width: 80px; height: 1px; background: #d4a84b33; margin: 20px auto;"></div>
+
+          <p style="color: #8a7e6b; font-size: 12px; margin: 0 0 16px; line-height: 1.6;">
+            After payment, fill the confirmation form with your transaction details:
+          </p>
+          <a href="${formUrl}"
+             style="display: inline-block; background: transparent; color: #f3cf7a; text-decoration: none; padding: 12px 32px; font-size: 11px; font-weight: 900; letter-spacing: 3px; text-transform: uppercase; border: 2px solid #d4a84b;">
+            📜 FILL PAYMENT FORM
+          </a>
+          <p style="color: #4a4535; font-size: 10px; margin: 12px 0 0; font-style: italic;">
+            Coordinator & College Name will be auto-filled
+          </p>
+        </div>
+      </div>
+
+      <!-- ═══ FOOTER ═══ -->
+      <div style="border-top: 1px solid #d4a84b33; padding: 20px 24px; text-align: center; background: #08080c;">
+        <p style="color: #d4a84b; font-size: 12px; letter-spacing: 3px; margin: 0 0 4px;">॥ धर्मो रक्षति रक्षितः ॥</p>
+        <p style="color: #4a4535; font-size: 10px; letter-spacing: 2px; margin: 0;">© 2026 ADVAYA · RV INSTITUTE OF TECHNOLOGY AND MANAGEMENT</p>
+      </div>
+
+      <!-- ═══ BOTTOM SACRED BORDER ═══ -->
+      <div style="background: linear-gradient(90deg, transparent, #d4a84b, #f3cf7a, #d4a84b, transparent); height: 3px;"></div>
+    </div>
+  `;
+
+  const mailOptions = {
+    from: `"⚔ Advaya 2026" <${process.env.EMAIL_USER}>`,
+    to,
+    subject: `🏛️ College Registration Confirmed — ${safeCollege} (${safeCategory}) | Advaya 2026`,
+    html,
+  };
+
+  return getTransporter().sendMail(mailOptions);
+};

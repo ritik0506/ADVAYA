@@ -84,7 +84,8 @@ export default function Register() {
     try {
       await registerWarrior({ ...formData, participants, eventName: event.name, category: finalCategory, registrationFee: event.fee, teamSize: participants.length });
       setToast({ type: "success", message: "Your name is gilded in history!" });
-      setTimeout(() => navigate("/home"), 2000);
+      setTimeout(() => setToast({ type: "warning", message: "📩 Check your email for payment details!" }), 1500);
+      setTimeout(() => navigate("/home"), 4500);
     } catch (err) {
       setToast({ type: "error", message: err.message || "The heavens are silent. Try again." });
       setIsSubmitting(false);
@@ -278,7 +279,9 @@ function Toast({ message, type, onClose }) {
     <motion.div
       initial={{ y: -40, opacity: 0, x: "-50%" }} animate={{ y: 0, opacity: 1, x: "-50%" }}
       className={`fixed top-6 left-1/2 z-[100] px-6 py-3 rounded-md border backdrop-blur-xl ${
-        type === "success" ? "bg-amber-500/10 border-amber-500/40 text-amber-100" : "bg-red-900/30 border-red-500/40 text-red-100"
+        type === "success" ? "bg-amber-500/10 border-amber-500/40 text-amber-100" :
+        type === "warning" ? "bg-orange-500/20 border-orange-400/60 text-orange-100 shadow-[0_0_20px_rgba(251,146,60,0.3)]" :
+        "bg-red-900/30 border-red-500/40 text-red-100"
       }`}
     >
       <span className="text-[9px] font-black tracking-[0.2em] uppercase">{message}</span>

@@ -1,5 +1,6 @@
 import TeamRegistration from "../models/TeamRegistration.js";
 import { google } from 'googleapis';
+import { sendCollegeRegistrationEmail } from '../utils/emailService.js';
 
 // =====================================================
 // GOOGLE SHEETS — SINGLETON AUTH (shared with registrationController)
@@ -127,6 +128,25 @@ export const createTeamRegistration = async (req, res, next) => {
         console.log(`✅ College registration appended to sheet: ${registration.collegeName}`);
       } catch (sheetError) {
         console.error('⚠️ Failed to write college registration to Google Sheets:', sheetError.message);
+      }
+    })();
+
+    // ================= EMAIL (async, non-blocking) =================
+    (async () => {
+      try {
+        await sendCollegeRegistrationEmail(registration.coordinatorEmail, {
+          collegeName: registration.collegeName,
+          category: registration.category,
+          coordinatorName: registration.coordinatorName,
+          coordinatorEmail: registration.coordinatorEmail,
+          coordinatorPhone: registration.coordinatorPhone,
+          totalParticipants: registration.totalParticipants,
+          totalEvents: registration.totalEvents,
+          amountPaid: registration.amountPaid,
+        });
+        console.log(`✅ College registration email sent to: ${registration.coordinatorEmail}`);
+      } catch (emailError) {
+        console.error('⚠️ Failed to send college registration email:', emailError.message);
       }
     })();
 

@@ -63,7 +63,8 @@ export default function TeamRegistrationPage() {
       setLoading(true);
       await api.post("/team-registration", formData);
       showToast("Royal Registration Successful!", "success");
-      setTimeout(() => navigate("/home"), 2000);
+      setTimeout(() => showToast("📩 Check your email for payment details!", "warning"), 1500);
+      setTimeout(() => navigate("/home"), 4500);
     } catch (err) {
       showToast(err.response?.data?.message || "Registration failed.");
     } finally {
@@ -83,7 +84,9 @@ export default function TeamRegistrationPage() {
       {/* TOAST */}
       {toast.show && (
         <div className={`fixed top-8 left-1/2 -translate-x-1/2 z-[100] px-8 py-3 rounded-full border backdrop-blur-xl shadow-2xl transition-all ${
-          toast.type === "success" ? "bg-amber-500/10 border-amber-500/40 text-amber-200" : "bg-red-900/30 border-red-500/40 text-red-200"
+          toast.type === "success" ? "bg-amber-500/10 border-amber-500/40 text-amber-200" :
+          toast.type === "warning" ? "bg-orange-500/20 border-orange-400/60 text-orange-100 shadow-[0_0_20px_rgba(251,146,60,0.3)]" :
+          "bg-red-900/30 border-red-500/40 text-red-200"
         }`}>
           <p className="text-[10px] font-black uppercase tracking-[0.2em]">{toast.message}</p>
         </div>
