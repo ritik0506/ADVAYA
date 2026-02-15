@@ -23,6 +23,7 @@ export default function Register() {
   const [formData, setFormData] = useState({ teamName: "", collegeName: "" });
   const [toast, setToast] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [selectedCategory, setSelectedCategory] = useState("");
 
   useEffect(() => {
     async function loadEvent() {
@@ -67,14 +68,20 @@ export default function Register() {
     }
   };
 
+  const isCombined = event?.backendCategory === "UG/PG";
+  const finalCategory = isCombined ? selectedCategory : event?.backendCategory;
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!formData.teamName || !formData.collegeName) {
       return setToast({ type: "error", message: "Details required for the Royal Decree." });
     }
+    if (isCombined && !selectedCategory) {
+      return setToast({ type: "error", message: "Select your division — UG or PG." });
+    }
     setIsSubmitting(true);
     try {
-      await registerWarrior({ ...formData, participants, eventName: event.name, category: event.backendCategory, registrationFee: event.fee, teamSize: participants.length });
+      await registerWarrior({ ...formData, participants, eventName: event.name, category: finalCategory, registrationFee: event.fee, teamSize: participants.length });
       setToast({ type: "success", message: "Your name is gilded in history!" });
       setTimeout(() => navigate("/home"), 2000);
     } catch (err) {
@@ -121,9 +128,26 @@ export default function Register() {
           {/* CLAN SECTION */}
           <SectionTitle title="The Royal Lineage" />
           <GoldenCard>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
+            <div className={`grid grid-cols-1 ${isCombined ? 'md:grid-cols-3' : 'md:grid-cols-2'} gap-8 md:gap-12`}>
               <GoldenInput label="Clan Name" icon={<Shield size={16} />} value={formData.teamName} onChange={(e) => setFormData({ ...formData, teamName: e.target.value })} />
               <GoldenInput label="Gurukul (Institution)" icon={<School size={16} />} value={formData.collegeName} onChange={(e) => setFormData({ ...formData, collegeName: e.target.value })} />
+              {isCombined && (
+                <div className="flex flex-col gap-2 group">
+                  <label className="text-[9px] font-bold uppercase tracking-widest text-amber-500/40 flex items-center gap-2 group-focus-within:text-amber-500/70 transition-colors">
+                    Division
+                  </label>
+                  <select
+                    value={selectedCategory}
+                    onChange={(e) => setSelectedCategory(e.target.value)}
+                    className="px-0 py-1 bg-[#080808] border-b border-white/5 text-[#fdf4d7] focus:outline-none focus:border-amber-500/50 transition-all text-sm font-light appearance-none cursor-pointer"
+                    style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23d4a84b' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E")`, backgroundRepeat: 'no-repeat', backgroundPosition: 'right 4px center' }}
+                  >
+                    <option value="" disabled style={{ background: '#0a0a0f', color: '#6b6050' }}>Select UG / PG</option>
+                    <option value="UG" style={{ background: '#0a0a0f', color: '#fdf4d7' }}>UG</option>
+                    <option value="PG" style={{ background: '#0a0a0f', color: '#fdf4d7' }}>PG</option>
+                  </select>
+                </div>
+              )}
             </div>
           </GoldenCard>
 
@@ -131,7 +155,12 @@ export default function Register() {
           <SectionTitle title="Chosen Warriors" />
           <div className="space-y-6 md:space-y-10">
             {participants.map((p, idx) => (
-              <motion.div key={idx} initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+              <motion.div
+                key={idx}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ type: "spring", stiffness: 100, damping: 30, mass: 1 }}
+              >
                 <GoldenCard isHighlight={idx === 0}>
                   <div className="flex justify-between items-center mb-8">
                     <span className="text-[10px] font-black uppercase tracking-[0.3em] text-amber-500/60 flex items-center gap-2">

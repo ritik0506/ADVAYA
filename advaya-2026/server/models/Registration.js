@@ -1,15 +1,11 @@
 import mongoose from 'mongoose';
-import { customAlphabet } from 'nanoid';
-
-// Create custom nanoid with only uppercase letters and numbers for team ID generation
-const nanoid = customAlphabet('ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789', 10);
 
 const registrationSchema = new mongoose.Schema(
   {
     teamId: {
       type: String,
       unique: true,
-      default: () => `TEAM-${nanoid()}`,
+      required: true,
     },
     eventName: {
       type: String,

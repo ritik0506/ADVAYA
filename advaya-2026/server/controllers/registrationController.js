@@ -1,5 +1,6 @@
 import Registration from '../models/Registration.js';
 import { google } from 'googleapis';
+import { sendRegistrationEmail } from '../utils/emailService.js';
 
 /**
  * EVENT NAME  →  GOOGLE SHEET TAB NAME
@@ -101,6 +102,37 @@ export const registerParticipant = async (req, res, next) => {
         message: 'Team name already exists for this event',
       });
     }
+    // ================= GENERATE TEAM ID =================
+    // Format: EventInitials + Category + "-" + Random 3-digit number
+    // e.g., Code Kurukshetra + UG → CKUG-482
+    const eventInitials = eventName
+      .split(/\s+/)
+      .map(word => word.charAt(0).toUpperCase())
+      .join('');
+    
+    const prefix = `${eventInitials}${category}`;
+
+    // Generate unique team ID (retry if collision)
+    let teamId;
+    let isUnique = false;
+    while (!isUnique) {
+      const randomNum = Math.floor(100 + Math.random() * 900); // 100–999
+      teamId = `${prefix}-${randomNum}`;
+      const existing = await Registration.findOne({ teamId });
+      if (!existing) isUnique = true;
+    }
+
+    // ================= DATABASE =================
+    const registration = await Registration.create({
+      teamId,
+      eventName,
+      category,
+      registrationFee,
+      collegeName: normalizedCollegeName,
+      teamName,
+      participants,
+      teamSize: teamSize || participants.length,
+    });
 
     // ================= PARTICIPANTS → COLUMNS =================
     // [P1 Name, P1 Mobile, P1 Email, P2 Name, ...]
@@ -123,12 +155,13 @@ export const registerParticipant = async (req, res, next) => {
 
     await googleSheets.spreadsheets.values.append({
       spreadsheetId,
-      range: `${sheetName}!A1`, // ✅ always start from column A
+      range: `${sheetName}!A1`,
       valueInputOption: 'USER_ENTERED',
       insertDataOption: 'INSERT_ROWS',
       resource: {
         values: [
           [
+            registration.teamId,
             eventName,
             category,
             registrationFee,
@@ -141,16 +174,25 @@ export const registerParticipant = async (req, res, next) => {
       },
     });
 
-    // ================= DATABASE =================
-    const registration = await Registration.create({
-      eventName,
-      category,
-      registrationFee,
-      collegeName: normalizedCollegeName,
-      teamName,
-      participants,
-      teamSize: teamSize || participants.length,
-    });
+    // Send confirmation email to captain (first participant) only
+    try {
+      const captain = participants[0];
+      const emailData = {
+        eventName,
+        category,
+        teamName,
+        teamId: registration.teamId,
+        collegeName,
+        registrationFee,
+        participants,
+      };
+
+      await sendRegistrationEmail(captain.email, emailData);
+      console.log(`✅ Confirmation email sent to captain: ${captain.email}`);
+    } catch (emailError) {
+      console.error('⚠️ Failed to send confirmation email:', emailError.message);
+      // Email failure does NOT affect registration response
+    }
 
     res.status(201).json({
       success: true,
