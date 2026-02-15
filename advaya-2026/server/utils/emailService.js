@@ -59,12 +59,16 @@ export const sendRegistrationEmail = async (to, data) => {
   const participantRows = participants
     .map(
       (p, i) =>
-        `<tr>
-          <td style="padding: 10px 12px; border-bottom: 1px solid #d4a84b15; color: #6b6050;">${i + 1}</td>
-          <td style="padding: 10px 12px; border-bottom: 1px solid #d4a84b15; color: #e8dcc8; font-weight: 600;">${escapeHtml(p.name)}</td>
-          <td style="padding: 10px 12px; border-bottom: 1px solid #d4a84b15; color: #8a7e6b;">${escapeHtml(p.email)}</td>
-          <td style="padding: 10px 12px; border-bottom: 1px solid #d4a84b15; color: #8a7e6b;">${escapeHtml(p.mobile)}</td>
-        </tr>`
+        `<div style="padding: 12px 0; ${i < participants.length - 1 ? 'border-bottom: 1px solid #d4a84b15;' : ''}">
+          <div style="display: flex; align-items: baseline; margin-bottom: 4px;">
+            <span style="color: #6b6050; font-size: 11px; margin-right: 8px;">${i + 1}.</span>
+            <span style="color: #e8dcc8; font-size: 14px; font-weight: 600; word-break: break-word;">${escapeHtml(p.name)}</span>
+          </div>
+          <div style="padding-left: 20px;">
+            <div style="color: #8a7e6b; font-size: 12px; word-break: break-all; line-height: 1.5;">${escapeHtml(p.email)}</div>
+            <div style="color: #8a7e6b; font-size: 12px; line-height: 1.5;">${escapeHtml(p.mobile)}</div>
+          </div>
+        </div>`
     )
     .join('');
 
@@ -159,27 +163,15 @@ export const sendRegistrationEmail = async (to, data) => {
             </p>
           </div>
 
-          <div style="padding: 16px;">
-            <table style="width: 100%; border-collapse: collapse; font-size: 13px;">
-              <thead>
-                <tr>
-                  <th style="padding: 10px 12px; border-bottom: 1px solid #d4a84b33; text-align: left; color: #6b6050; font-size: 10px; letter-spacing: 2px; text-transform: uppercase;">#</th>
-                  <th style="padding: 10px 12px; border-bottom: 1px solid #d4a84b33; text-align: left; color: #6b6050; font-size: 10px; letter-spacing: 2px; text-transform: uppercase;">Name</th>
-                  <th style="padding: 10px 12px; border-bottom: 1px solid #d4a84b33; text-align: left; color: #6b6050; font-size: 10px; letter-spacing: 2px; text-transform: uppercase;">Email</th>
-                  <th style="padding: 10px 12px; border-bottom: 1px solid #d4a84b33; text-align: left; color: #6b6050; font-size: 10px; letter-spacing: 2px; text-transform: uppercase;">Mobile</th>
-                </tr>
-              </thead>
-              <tbody>
-                ${participantRows}
-              </tbody>
-            </table>
+          <div style="padding: 8px 16px;">
+            ${participantRows}
           </div>
         </div>
 
         <!-- ═══ IMPORTANT NOTE ═══ -->
         <div style="border-left: 3px solid #d4a84b; background: #d4a84b08; padding: 16px 20px; margin-bottom: 28px;">
           <p style="color: #c9b89e; font-size: 13px; margin: 0; line-height: 1.7;">
-            🕉️ Guard your <strong style="color: #f3cf7a;">${safeTeamId}</strong> as a sacred mantra — you shall need it on the day of battle. For any queries, reach out to the organizing committee.
+            Guard your <strong style="color: #f3cf7a;">${safeTeamId}</strong> as a sacred mantra — you shall need it on the day of battle. For any queries, reach out to the organizing committee.
           </p>
         </div>
 
