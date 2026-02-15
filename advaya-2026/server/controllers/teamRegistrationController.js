@@ -1,4 +1,23 @@
 import TeamRegistration from "../models/TeamRegistration.js";
+import { google } from 'googleapis';
+
+// =====================================================
+// GOOGLE SHEETS — SINGLETON AUTH (shared with registrationController)
+// =====================================================
+let sheetsClient = null;
+
+async function getGoogleSheetsClient() {
+  if (sheetsClient) return sheetsClient;
+
+  const auth = new google.auth.GoogleAuth({
+    keyFile: './credentials.json',
+    scopes: ['https://www.googleapis.com/auth/spreadsheets'],
+  });
+
+  const client = await auth.getClient();
+  sheetsClient = google.sheets({ version: 'v4', auth: client });
+  return sheetsClient;
+}
 
 export const createTeamRegistration = async (req, res, next) => {
   try {
@@ -32,7 +51,85 @@ export const createTeamRegistration = async (req, res, next) => {
       coordinatorPhone, totalParticipants, totalEvents, amountPaid: 2499,
     });
 
+    // Respond immediately
     res.status(201).json({ success: true, message: "Team Registration Successful", data: registration });
+
+    // ================= GOOGLE SHEETS (async, non-blocking) =================
+    (async () => {
+      try {
+        const spreadsheetId = process.env.SPREADSHEET_ID;
+        if (!spreadsheetId) {
+          console.warn('⚠️ SPREADSHEET_ID not set — skipping sheet append');
+          return;
+        }
+
+        const googleSheets = await getGoogleSheetsClient();
+        const SHEET_TAB = 'College Registration';
+
+        // Try to append; if the tab doesn't exist yet, create it first
+        const appendRow = async () => {
+          await googleSheets.spreadsheets.values.append({
+            spreadsheetId,
+            range: `'${SHEET_TAB}'!A1`,
+            valueInputOption: 'USER_ENTERED',
+            insertDataOption: 'INSERT_ROWS',
+            resource: {
+              values: [
+                [
+                  registration.collegeName,
+                  registration.category,
+                  registration.coordinatorName,
+                  registration.coordinatorEmail,
+                  registration.coordinatorPhone,
+                  registration.totalParticipants,
+                  registration.totalEvents,
+                  registration.amountPaid,
+                  registration.status,
+                  new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' }),
+                ],
+              ],
+            },
+          });
+        };
+
+        try {
+          await appendRow();
+        } catch (appendErr) {
+          // If the tab doesn't exist, create it and retry
+          if (appendErr.message?.includes('Unable to parse range') || appendErr.code === 400) {
+            console.log(`📝 Creating '${SHEET_TAB}' tab in spreadsheet...`);
+            await googleSheets.spreadsheets.batchUpdate({
+              spreadsheetId,
+              resource: {
+                requests: [{
+                  addSheet: { properties: { title: SHEET_TAB } }
+                }],
+              },
+            });
+
+            // Add header row
+            await googleSheets.spreadsheets.values.update({
+              spreadsheetId,
+              range: `'${SHEET_TAB}'!A1`,
+              valueInputOption: 'USER_ENTERED',
+              resource: {
+                values: [['College Name', 'Category', 'Coordinator', 'Email', 'Phone', 'Participants', 'Events', 'Amount', 'Status', 'Registered At']],
+              },
+            });
+
+            // Retry the append
+            await appendRow();
+          } else {
+            throw appendErr;
+          }
+        }
+
+        console.log(`✅ College registration appended to sheet: ${registration.collegeName}`);
+      } catch (sheetError) {
+        console.error('⚠️ Failed to write college registration to Google Sheets:', sheetError.message);
+      }
+    })();
+
   } catch (error) {
     next(error);
   }

@@ -93,7 +93,7 @@ export default function TeamRegistrationPage() {
         
         {/* LEFT COLUMN: GUIDELINES */}
         <div className="lg:col-span-5 space-y-6 flex flex-col">
-          <div className="bg-[#0a0a0a] border border-amber-500/20 p-8 rounded-3xl flex-grow shadow-xl">
+          <div className="bg-[#12110d] border border-amber-500/25 p-8 rounded-3xl flex-grow shadow-xl">
             <div className="flex items-center gap-3 mb-6 text-amber-400">
               <Info size={20} />
               <h2 className="text-xl font-bold uppercase tracking-widest">Guidelines</h2>
@@ -117,7 +117,7 @@ export default function TeamRegistrationPage() {
 
         {/* RIGHT COLUMN: REGISTRATION FORM */}
         <div className="lg:col-span-7">
-          <div className="bg-[#0a0a0a] p-8 md:p-10 rounded-3xl border border-white/5 shadow-2xl">
+          <div className="bg-[#12110d] p-8 md:p-10 rounded-3xl border border-amber-500/15 shadow-2xl">
             <div className="text-center mb-8">
               <Crown className="text-amber-500/80 w-10 h-10 mx-auto mb-4" />
               <h1 className="text-3xl md:text-5xl font-bold tracking-tight uppercase bg-gradient-to-b from-[#fff8e1] via-[#d4af37] to-[#8a6d3b] bg-clip-text text-transparent">
@@ -141,7 +141,7 @@ export default function TeamRegistrationPage() {
                   </label>
                   <div 
                     onClick={() => setIsSelectOpen(!isSelectOpen)}
-                    className="w-full bg-black/40 border-b border-white/10 px-4 py-3 text-sm flex justify-between items-center cursor-pointer hover:border-amber-500/50 transition-all text-[#fdf4d7]"
+                    className="w-full bg-[#1a1710] border border-amber-500/20 rounded-md px-4 py-3 text-sm flex justify-between items-center cursor-pointer hover:border-amber-500/50 transition-all text-[#fdf4d7]"
                   >
                     <span>{formData.category === "UG" ? "Undergraduate (UG)" : "Postgraduate (PG)"}</span>
                     <ChevronDown size={14} className={`text-amber-500 transition-transform ${isSelectOpen ? 'rotate-180' : ''}`} />
@@ -205,13 +205,13 @@ function GuidelineItem({ text }) {
 function InputField({ label, icon, ...props }) {
   return (
     <div className="group">
-      <label className="flex items-center gap-2 text-[9px] font-black uppercase tracking-[0.2em] text-amber-500/40 mb-2">
+      <label className="flex items-center gap-2 text-[9px] font-black uppercase tracking-[0.2em] text-amber-500/50 mb-2">
         {icon} {label}
       </label>
       <input
         {...props}
         required
-        className="w-full bg-black/40 border-b border-white/10 rounded-t-lg px-4 py-3 text-[#fdf4d7] focus:outline-none focus:border-amber-500/50 transition-all text-sm font-light"
+        className="w-full bg-[#1a1710] border border-amber-500/20 rounded-md px-4 py-3 text-[#fdf4d7] placeholder:text-white/20 focus:outline-none focus:border-amber-500/60 focus:bg-[#1f1c14] transition-all text-sm font-light"
       />
     </div>
   );

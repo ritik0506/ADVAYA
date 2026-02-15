@@ -140,7 +140,7 @@ export default function Register() {
                   <select
                     value={selectedCategory}
                     onChange={(e) => setSelectedCategory(e.target.value)}
-                    className="px-0 py-1 bg-[#080808] border-b border-white/5 text-[#fdf4d7] focus:outline-none focus:border-amber-500/50 transition-all text-sm font-light appearance-none cursor-pointer"
+                    className="px-3 py-2 bg-[#1a1710] border border-amber-500/20 rounded-md text-[#fdf4d7] focus:outline-none focus:border-amber-500/60 focus:bg-[#1f1c14] transition-all text-sm font-light appearance-none cursor-pointer"
                     style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23d4a84b' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E")`, backgroundRepeat: 'no-repeat', backgroundPosition: 'right 4px center' }}
                   >
                     <option value="" disabled style={{ background: '#0a0a0f', color: '#6b6050' }}>Select UG / PG</option>
@@ -240,7 +240,7 @@ function Badge({ text }) {
 
 function GoldenCard({ children, isHighlight = false }) {
   return (
-    <div className={`relative bg-[#080808] border ${isHighlight ? 'border-amber-500/30' : 'border-white/5'} rounded-xl p-7 md:p-10 shadow-2xl`}>
+    <div className={`relative bg-[#12110d] border ${isHighlight ? 'border-amber-500/40' : 'border-amber-500/15'} rounded-xl p-7 md:p-10 shadow-2xl`}>
       {children}
     </div>
   );
@@ -249,12 +249,12 @@ function GoldenCard({ children, isHighlight = false }) {
 function GoldenInput({ label, icon, ...props }) {
   return (
     <div className="flex flex-col gap-2 group">
-      <label className="text-[9px] font-bold uppercase tracking-widest text-amber-500/40 flex items-center gap-2 group-focus-within:text-amber-500/70 transition-colors">
+      <label className="text-[9px] font-bold uppercase tracking-widest text-amber-500/50 flex items-center gap-2 group-focus-within:text-amber-500/80 transition-colors">
         {icon} {label}
       </label>
       <input
         {...props}
-        className="px-0 py-1 bg-transparent border-b border-white/5 text-[#fdf4d7] focus:outline-none focus:border-amber-500/50 transition-all text-sm font-light"
+        className="px-3 py-2 bg-[#1a1710] border border-amber-500/20 rounded-md text-[#fdf4d7] placeholder:text-white/20 focus:outline-none focus:border-amber-500/60 focus:bg-[#1f1c14] transition-all text-sm font-light"
       />
     </div>
   );
