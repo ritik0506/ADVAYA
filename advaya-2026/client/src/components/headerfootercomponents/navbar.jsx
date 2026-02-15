@@ -1,7 +1,7 @@
-"use client";
+
 
 import React, { useState, useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, Link } from "react-router-dom";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -71,10 +71,10 @@ const Navbar = () => {
         {/* CENTER: DESKTOP LINKS */}
         <div className="hidden md:flex items-center gap-10 flex-[2] justify-center">
           {navLinks.map((link) => (
-            <a
+            <Link
               key={link.name}
-              href={link.href}
-              onClick={(e) => handleScroll(e, link.href)}
+              to={link.href}
+              onClick={() => setIsOpen(false)}
               className={`relative text-[11px] tracking-[0.3em] font-bold transition-all duration-300 ${
                 location.pathname === link.href
                   ? "text-[#f3cf7a]"
@@ -89,18 +89,18 @@ const Navbar = () => {
                   transition: "width 0.3s",
                 }}
               />
-            </a>
+            </Link>
           ))}
         </div>
 
         {/* RIGHT SIDE */}
         <div className="flex-1 flex justify-end items-center gap-3 md:gap-6">
-          <a
-            href={registerLink.href}
+          <Link
+            to={registerLink.href}
             className="bg-gradient-to-br from-[#f3cf7a] via-[#b08d32] to-[#8a6d29] px-4 md:px-8 py-2 md:py-3 rounded-[2px] text-black text-[10px] md:text-xs font-black tracking-[0.1em] md:tracking-[0.2em] shadow-[0_0_15px_rgba(176,141,50,0.3)] hover:scale-105 transition-transform duration-300"
           >
             {registerLink.name}
-          </a>
+          </Link>
 
           {/* HAMBURGER */}
           <button
@@ -144,14 +144,14 @@ const Navbar = () => {
 
             <div className="flex flex-col gap-8">
               {navLinks.map((link) => (
-                <a
+                <Link
                   key={link.name}
-                  href={link.href}
-                  onClick={(e) => handleScroll(e, link.href)}
+                  to={link.href}
+                  onClick={() => setIsOpen(false)}
                   className="text-2xl tracking-[0.2em] font-serif italic text-white/70 hover:text-[#f3cf7a] transition-colors"
                 >
                   {link.name}
-                </a>
+                </Link>
               ))}
             </div>
 

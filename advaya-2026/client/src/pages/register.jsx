@@ -1,4 +1,3 @@
-"use client";
 
 import React, { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -19,7 +18,8 @@ export default function Register() {
   const navigate = useNavigate();
 
   const [event, setEvent] = useState(null);
-  const [participants, setParticipants] = useState([{ name: "", email: "", mobile: "" }]);
+  const [nextId, setNextId] = useState(1);
+  const [participants, setParticipants] = useState([{ id: 0, name: "", email: "", mobile: "" }]);
   const [formData, setFormData] = useState({ teamName: "", collegeName: "" });
   const [toast, setToast] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -58,7 +58,8 @@ export default function Register() {
 
   const addMember = () => {
     if (participants.length < event.maxTeamSize) {
-      setParticipants([...participants, { name: "", email: "", mobile: "" }]);
+      setParticipants([...participants, { id: nextId, name: "", email: "", mobile: "" }]);
+      setNextId(nextId + 1);
     }
   };
 
@@ -156,7 +157,7 @@ export default function Register() {
           <div className="space-y-6 md:space-y-10">
             {participants.map((p, idx) => (
               <motion.div
-                key={idx}
+                key={p.id}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ type: "spring", stiffness: 100, damping: 30, mass: 1 }}

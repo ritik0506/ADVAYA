@@ -1,6 +1,6 @@
-"use client";
 
-import { useRef, useEffect, useState, useMemo } from "react";
+import { useRef, useEffect, useState, useMemo, useCallback } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import gsap from "gsap";
 import ScrollTrigger from "gsap/ScrollTrigger";
@@ -27,6 +27,7 @@ export default function Home() {
   const [allEvents, setAllEvents] = useState([]);
   const [loading, setLoading] = useState(true);
   const [isMobile, setIsMobile] = useState(false);
+  const navigate = useNavigate();
   const [openScrollId, setOpenScrollId] = useState(null);
   const [selectedEvent, setSelectedEvent] = useState(null);
 
@@ -78,13 +79,21 @@ export default function Home() {
 
   /* ================= MOBILE CHECK ================= */
   useEffect(() => {
+    let resizeTimer;
     const checkMobile = () => {
-      setIsMobile(window.innerWidth < 1024);
-      setTimeout(() => ScrollTrigger.refresh(), 300);
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(() => {
+        setIsMobile(window.innerWidth < 1024);
+        ScrollTrigger.refresh();
+      }, 200);
     };
-    checkMobile();
+    // Initial check without debounce
+    setIsMobile(window.innerWidth < 1024);
     window.addEventListener("resize", checkMobile);
-    return () => window.removeEventListener("resize", checkMobile);
+    return () => {
+      clearTimeout(resizeTimer);
+      window.removeEventListener("resize", checkMobile);
+    };
   }, []);
 
   /* ================= GSAP SCROLL ================= */
@@ -220,7 +229,7 @@ export default function Home() {
               and carve your legacy in ADVAYA 2026.
             </p>
             <button
-              onClick={() => window.location.href = "/registercollege"}
+              onClick={() => navigate("/registercollege")}
               className="relative px-10 py-4 border border-[#f3cf7a] text-[#f3cf7a]
                          tracking-[0.2em] transition-all duration-500
                          hover:bg-[#f3cf7a] hover:text-[#050505]

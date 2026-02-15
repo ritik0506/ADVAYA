@@ -1,19 +1,12 @@
-"use client";
-
 import React, { useState, useMemo, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import axios from "axios";
-import gsap from "gsap";
-import ScrollTrigger from "gsap/ScrollTrigger";
 import {
   DivineManifest,
   GoldenDivider,
   SplitText,
-  SPRING,
 } from "../components/animations/MythologyMotion";
-
-gsap.registerPlugin(ScrollTrigger);
 
 const api = axios.create({
   baseURL: `${import.meta.env.VITE_API_BASE_URL}/api`,
@@ -106,7 +99,7 @@ export default function EventsPage() {
 
             {/* LEFT SIDE */}
 <div className="flex-1 p-6 md:p-12 overflow-y-auto custom-scrollbar flex flex-col
-                pb-32 lg:pb-0"> {/* added pb-32 for mobile spacing */}
+                pb-32 lg:pb-0">
               <div className="flex justify-end mb-4">
                 <button
                   onClick={() => setSelectedEvent(null)}
@@ -144,14 +137,12 @@ export default function EventsPage() {
 
               {/* MOBILE ONLY: Stats + Prizes + Event Heads BELOW rules */}
               <div className="flex flex-col gap-4 lg:hidden mt-6">
-                {/* STATS: Offerings, Min, Max */}
                 <div className="grid grid-cols-3 gap-2">
                   <StatBox label="Offerings" value={`₹${selectedEvent.fee}`} />
                   <StatBox label="Min Team" value={selectedEvent.teamSize?.min} />
                   <StatBox label="Max Team" value={selectedEvent.teamSize?.max} />
                 </div>
 
-                {/* PRIZES */}
                 {selectedEvent.prizes && (
                   <div>
                     <h4 className="text-[9px] font-black uppercase tracking-[0.4em] text-[#f3cf7a]/80 mb-2">
@@ -161,24 +152,19 @@ export default function EventsPage() {
                       {selectedEvent.prizes.first > 0 && (
                         <div className="p-3 bg-white/[0.03] rounded-2xl border border-white/5 text-center">
                           <p className="text-xs text-white/40">First Prize</p>
-                          <p className="text-xl font-serif text-[#f3cf7a]">
-                            ₹{selectedEvent.prizes.first}
-                          </p>
+                          <p className="text-xl font-serif text-[#f3cf7a]">₹{selectedEvent.prizes.first}</p>
                         </div>
                       )}
                       {selectedEvent.prizes.second > 0 && (
                         <div className="p-3 bg-white/[0.03] rounded-2xl border border-white/5 text-center">
                           <p className="text-xs text-white/40">Second Prize</p>
-                          <p className="text-xl font-serif text-[#f3cf7a]">
-                            ₹{selectedEvent.prizes.second}
-                          </p>
+                          <p className="text-xl font-serif text-[#f3cf7a]">₹{selectedEvent.prizes.second}</p>
                         </div>
                       )}
                     </div>
                   </div>
                 )}
 
-                {/* EVENT HEADS */}
                 {selectedEvent.eventHeads?.length > 0 && (
                   <div>
                     <h4 className="text-[9px] font-black uppercase tracking-[0.4em] text-[#f3cf7a]/80 mb-2">
@@ -186,20 +172,12 @@ export default function EventsPage() {
                     </h4>
                     <div className="space-y-2">
                       {selectedEvent.eventHeads.map((head, i) => (
-                        <div
-                          key={i}
-                          className="flex justify-between p-2 bg-white/[0.02] border border-white/5 rounded-2xl text-sm"
-                        >
+                        <div key={i} className="flex justify-between p-2 bg-white/[0.02] border border-white/5 rounded-2xl text-sm">
                           <div>
                             <p className="text-white font-semibold">{head.name}</p>
                             <p className="text-xs text-white/40">Event Coordinator</p>
                           </div>
-                          <a
-                            href={`tel:${head.phone}`}
-                            className="text-[#f3cf7a] font-semibold"
-                          >
-                            {head.phone}
-                          </a>
+                          <a href={`tel:${head.phone}`} className="text-[#f3cf7a] font-semibold">{head.phone}</a>
                         </div>
                       ))}
                     </div>
@@ -216,7 +194,6 @@ export default function EventsPage() {
                 <StatBox label="Max Team" value={selectedEvent.teamSize?.max} />
               </div>
 
-              {/* Prizes */}
               {selectedEvent.prizes && (
                 <div>
                   <h4 className="text-[9px] font-black uppercase tracking-[0.4em] text-[#f3cf7a]/80 mb-2">
@@ -226,24 +203,19 @@ export default function EventsPage() {
                     {selectedEvent.prizes.first > 0 && (
                       <div className="p-3 bg-white/[0.03] rounded-2xl border border-white/5 text-center">
                         <p className="text-xs text-white/40">First Prize</p>
-                        <p className="text-xl font-serif text-[#f3cf7a]">
-                          ₹{selectedEvent.prizes.first}
-                        </p>
+                        <p className="text-xl font-serif text-[#f3cf7a]">₹{selectedEvent.prizes.first}</p>
                       </div>
                     )}
                     {selectedEvent.prizes.second > 0 && (
                       <div className="p-3 bg-white/[0.03] rounded-2xl border border-white/5 text-center">
                         <p className="text-xs text-white/40">Second Prize</p>
-                        <p className="text-xl font-serif text-[#f3cf7a]">
-                          ₹{selectedEvent.prizes.second}
-                        </p>
+                        <p className="text-xl font-serif text-[#f3cf7a]">₹{selectedEvent.prizes.second}</p>
                       </div>
                     )}
                   </div>
                 </div>
               )}
 
-              {/* Event Heads */}
               {selectedEvent.eventHeads?.length > 0 && (
                 <div>
                   <h4 className="text-[9px] font-black uppercase tracking-[0.4em] text-[#f3cf7a]/80 mb-2">
@@ -251,27 +223,18 @@ export default function EventsPage() {
                   </h4>
                   <div className="space-y-2">
                     {selectedEvent.eventHeads.map((head, i) => (
-                      <div
-                        key={i}
-                        className="flex justify-between p-2 bg-white/[0.02] border border-white/5 rounded-2xl text-sm"
-                      >
+                      <div key={i} className="flex justify-between p-2 bg-white/[0.02] border border-white/5 rounded-2xl text-sm">
                         <div>
                           <p className="text-white font-semibold">{head.name}</p>
                           <p className="text-xs text-white/40">Event Coordinator</p>
                         </div>
-                        <a
-                          href={`tel:${head.phone}`}
-                          className="text-[#f3cf7a] font-semibold"
-                        >
-                          {head.phone}
-                        </a>
+                        <a href={`tel:${head.phone}`} className="text-[#f3cf7a] font-semibold">{head.phone}</a>
                       </div>
                     ))}
                   </div>
                 </div>
               )}
 
-              {/* Desktop Enlist Button */}
               <button
                 onClick={() => {
                   setSelectedEvent(null);
@@ -283,7 +246,7 @@ export default function EventsPage() {
               </button>
             </div>
 
-            {/* ================= MOBILE FIXED BUTTON ================= */}
+            {/* MOBILE FIXED BUTTON */}
             <div className="lg:hidden fixed bottom-0 left-0 w-full p-4 bg-[#0d0d0d]/90 backdrop-blur-sm border-t border-white/10 z-50">
               <button
                 onClick={() => {
@@ -316,16 +279,35 @@ function StatBox({ label, value }) {
 
 function EventArena({ title, events, onSelect }) {
   const [activeIndex, setActiveIndex] = useState(0);
+  const [userInteracted, setUserInteracted] = useState(false);
   const total = events.length;
-  if (!total) return null;
 
-  // Auto infinite rotation
+  // Auto rotation — pauses when user interacts
   useEffect(() => {
+    if (!total || userInteracted) return;
     const interval = setInterval(() => {
       setActiveIndex((p) => (p + 1) % total);
     }, 4000);
     return () => clearInterval(interval);
-  }, [total]);
+  }, [total, userInteracted]);
+
+  // Resume auto-rotation after 8s of no interaction
+  useEffect(() => {
+    if (!userInteracted) return;
+    const timer = setTimeout(() => setUserInteracted(false), 8000);
+    return () => clearTimeout(timer);
+  }, [userInteracted]);
+
+  if (!total) return null;
+
+  const handleNav = (direction) => {
+    setUserInteracted(true);
+    if (direction === "prev") {
+      setActiveIndex((p) => (p - 1 + total) % total);
+    } else {
+      setActiveIndex((p) => (p + 1) % total);
+    }
+  };
 
   return (
     <section className="relative py-12 border-b border-white/5 overflow-hidden">
@@ -355,13 +337,9 @@ function EventArena({ title, events, onSelect }) {
         })}
       </motion.div>
 
-      {/* Manual navigation */}
       <div className="flex flex-col items-center mt-8">
         <div className="flex items-center gap-8">
-          <NavBtn
-            dir="prev"
-            onClick={() => setActiveIndex((p) => (p - 1 + total) % total)}
-          />
+          <NavBtn dir="prev" onClick={() => handleNav("prev")} />
           <div className="flex gap-2">
             {events.map((_, i) => (
               <motion.div
@@ -373,10 +351,7 @@ function EventArena({ title, events, onSelect }) {
               />
             ))}
           </div>
-          <NavBtn
-            dir="next"
-            onClick={() => setActiveIndex((p) => (p + 1) % total)}
-          />
+          <NavBtn dir="next" onClick={() => handleNav("next")} />
         </div>
       </div>
     </section>
@@ -410,7 +385,7 @@ function EventCard({ event, isActive, position, onClick }) {
     <div
       style={styles}
       onClick={onClick}
-      className="absolute cursor-pointer w-[250px] h-[390px] lg:w-[290px] lg:h-[390px] transition-all duration-1000 ease-out "
+      className="absolute cursor-pointer w-[250px] h-[390px] lg:w-[290px] lg:h-[390px] transition-all duration-1000 ease-out"
     >
       <div
         className={`group relative w-full h-full bg-[#0d0d0d] border rounded-[2.5rem] overflow-hidden transition-all duration-700 isolate ${
@@ -428,6 +403,7 @@ function EventCard({ event, isActive, position, onClick }) {
             src={event.image}
             className="w-full h-full object-cover opacity-30 group-hover:scale-110 transition-transform duration-[2.5s]"
             alt={event.mythologyName}
+            loading="lazy"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-transparent to-transparent" />
         </div>

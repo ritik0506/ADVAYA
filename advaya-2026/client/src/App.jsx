@@ -1,22 +1,32 @@
-"use client";
 
-import React from "react";
-import { Routes, Route, useLocation } from "react-router-dom";
+import React, { Suspense } from "react";
+import { Routes, Route, useLocation, Link } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
 
 import Navbar from "./components/headerfootercomponents/navbar";
-import SecondVideo from "./components/mainpagecomponents/initialpage";
-import EventsPage from "./pages/events";
-import Rules from "./pages/rules";
-import Support from "./pages/support";
-import About from "./pages/about";
-import Home from "./pages/home";
-import Timeline from "./pages/timeline";
-import Register from "./pages/register";
-import TeamRegistrationPage from "./pages/fullteamregister";
 import Footer from "./components/headerfootercomponents/footer";
-
 import { EASE } from "./components/animations/MythologyMotion";
+
+// Lazy-loaded pages — each becomes a separate chunk
+const SecondVideo = React.lazy(() => import("./components/mainpagecomponents/initialpage"));
+const Home = React.lazy(() => import("./pages/home"));
+const EventsPage = React.lazy(() => import("./pages/events"));
+const Rules = React.lazy(() => import("./pages/rules"));
+const Support = React.lazy(() => import("./pages/support"));
+const About = React.lazy(() => import("./pages/about"));
+const Timeline = React.lazy(() => import("./pages/timeline"));
+const Register = React.lazy(() => import("./pages/register"));
+const TeamRegistrationPage = React.lazy(() => import("./pages/fullteamregister"));
+
+function LoadingFallback() {
+  return (
+    <div className="h-screen w-full flex items-center justify-center bg-black">
+      <div className="text-[#f3cf7a] animate-pulse font-serif italic text-xl tracking-[0.2em]">
+        Loading...
+      </div>
+    </div>
+  );
+}
 
 /* ═══════════════════════════════════════════════════════════════
    Page Transition Wrapper — Dual-Curtain Temple Door Reveal
@@ -69,8 +79,9 @@ function App() {
 
       {showHeaderFooter && <Navbar />}
 
-      <AnimatePresence mode="wait">
-        <Routes location={location} key={location.pathname}>
+      <Suspense fallback={<LoadingFallback />}>
+        <AnimatePresence mode="wait">
+          <Routes location={location} key={location.pathname}>
 
           {/* Landing Page */}
           <Route path="/" element={<SecondVideo />} />
@@ -149,17 +160,27 @@ function App() {
             }
           />
 
-          {/* Fallback */}
+          {/* 404 Not Found */}
           <Route
             path="*"
             element={
               <PageWrapper>
-                <Home />
+                <div className="min-h-screen flex flex-col items-center justify-center text-center px-6">
+                  <h1 className="text-8xl font-serif font-black text-[#f3cf7a] mb-4">404</h1>
+                  <p className="text-white/50 text-lg mb-8">This path has not been charted, warrior.</p>
+                  <Link
+                    to="/home"
+                    className="px-8 py-3 border border-[#f3cf7a] text-[#f3cf7a] hover:bg-[#f3cf7a] hover:text-black transition-all uppercase tracking-[0.2em] text-sm font-bold"
+                  >
+                    Return to the Sanctum
+                  </Link>
+                </div>
               </PageWrapper>
             }
           />
         </Routes>
-      </AnimatePresence>
+        </AnimatePresence>
+      </Suspense>
 
       {showHeaderFooter && <Footer />}
     </div>

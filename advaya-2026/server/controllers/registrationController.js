@@ -1,6 +1,7 @@
 import Registration from '../models/Registration.js';
 import { google } from 'googleapis';
 import { sendRegistrationEmail } from '../utils/emailService.js';
+import eventsData from '../data/eventsData.js';
 
 /**
  * EVENT NAME  →  GOOGLE SHEET TAB NAME
@@ -33,6 +34,33 @@ const COMBINED_EVENT_SHEET_MAP = {
 };
 
 // =====================================================
+// GOOGLE SHEETS — SINGLETON AUTH (reused across requests)
+// =====================================================
+let sheetsClient = null;
+
+async function getGoogleSheetsClient() {
+  if (sheetsClient) return sheetsClient;
+
+  const auth = new google.auth.GoogleAuth({
+    keyFile: './credentials.json',
+    scopes: ['https://www.googleapis.com/auth/spreadsheets'],
+  });
+
+  const client = await auth.getClient();
+  sheetsClient = google.sheets({ version: 'v4', auth: client });
+  return sheetsClient;
+}
+
+// =====================================================
+// HELPER — look up event data from server-side source
+// =====================================================
+function getEventData(eventName) {
+  return eventsData.find(
+    (e) => e.mythologyName === eventName
+  );
+}
+
+// =====================================================
 // REGISTER PARTICIPANT
 // =====================================================  
 export const registerParticipant = async (req, res, next) => {
@@ -40,15 +68,13 @@ export const registerParticipant = async (req, res, next) => {
     const {
       eventName,
       category,
-      registrationFee,
       collegeName,
       teamName,
       participants,
-      teamSize
     } = req.body;
 
     // Normalize college name
-    const normalizedCollegeName = collegeName.trim().toLowerCase();
+    const normalizedCollegeName = collegeName?.trim().toLowerCase();
 
     // ================= VALIDATION =================
     if (
@@ -75,6 +101,27 @@ export const registerParticipant = async (req, res, next) => {
       }
     }
 
+    // ================= SERVER-SIDE FEE & TEAM SIZE VALIDATION =================
+    const eventData = getEventData(eventName);
+    if (!eventData) {
+      return res.status(400).json({
+        success: false,
+        message: `Unknown event: ${eventName}`,
+      });
+    }
+
+    // Use server-side fee (never trust client-sent fee)
+    const registrationFee = eventData.fee;
+
+    // Validate team size against event rules
+    const teamSize = participants.length;
+    if (teamSize < eventData.teamSize.min || teamSize > eventData.teamSize.max) {
+      return res.status(400).json({
+        success: false,
+        message: `Team size must be between ${eventData.teamSize.min} and ${eventData.teamSize.max} for ${eventName}`,
+      });
+    }
+
     // ================= SHEET RESOLUTION =================
     // Check fixed map first, then combined map with category
     let sheetName = EVENT_SHEET_MAP[eventName];
@@ -89,25 +136,28 @@ export const registerParticipant = async (req, res, next) => {
       });
     }
 
-    // ================= DUPLICATE CHECKS =================
-    // For combined events, check duplicates per category (same college can register separately for UG and PG)
-    const existingRegistrations = await Registration.countDocuments({
-      eventName,
-      category,
-      collegeName: normalizedCollegeName,
-    });
+    // ================= DUPLICATE CHECKS (parallel) =================
+    const [existingRegistrations, existingTeam] = await Promise.all([
+      // For combined events, check duplicates per category
+      Registration.countDocuments({
+        eventName,
+        category,
+        collegeName: normalizedCollegeName,
+      }),
+      // Check team name uniqueness per event + category
+      Registration.findOne({
+        eventName,
+        category,
+        teamName,
+      }),
+    ]);
 
     if (existingRegistrations >= 1) {
       return res.status(400).json({
         success: false,
-        message: `${collegeName} has already registered for ${eventName}`,
+        message: `${collegeName} has already registered for ${eventName} (${category})`,
       });
     }
-
-    const existingTeam = await Registration.findOne({
-      eventName,
-      teamName,
-    });
 
     if (existingTeam) {
       return res.status(400).json({
@@ -115,6 +165,7 @@ export const registerParticipant = async (req, res, next) => {
         message: 'Team name already exists for this event',
       });
     }
+
     // ================= GENERATE TEAM ID =================
     // Format: EventInitials + Category + "-" + Random 3-digit number
     // e.g., Code Kurukshetra + UG → CKUG-482
@@ -125,14 +176,26 @@ export const registerParticipant = async (req, res, next) => {
     
     const prefix = `${eventInitials}${category}`;
 
-    // Generate unique team ID (retry if collision)
+    // Generate unique team ID (with max retries to prevent infinite loop)
     let teamId;
     let isUnique = false;
-    while (!isUnique) {
+    const MAX_RETRIES = 20;
+
+    for (let attempt = 0; attempt < MAX_RETRIES; attempt++) {
       const randomNum = Math.floor(100 + Math.random() * 900); // 100–999
       teamId = `${prefix}-${randomNum}`;
       const existing = await Registration.findOne({ teamId });
-      if (!existing) isUnique = true;
+      if (!existing) {
+        isUnique = true;
+        break;
+      }
+    }
+
+    if (!isUnique) {
+      return res.status(503).json({
+        success: false,
+        message: 'Unable to generate a unique Team ID. Please try again.',
+      });
     }
 
     // ================= DATABASE =================
@@ -144,7 +207,7 @@ export const registerParticipant = async (req, res, next) => {
       collegeName: normalizedCollegeName,
       teamName,
       participants,
-      teamSize: teamSize || participants.length,
+      teamSize,
     });
 
     // ================= PARTICIPANTS → COLUMNS =================
@@ -155,64 +218,65 @@ export const registerParticipant = async (req, res, next) => {
       p.email
     ]);
 
-    // ================= GOOGLE SHEETS =================
-    const auth = new google.auth.GoogleAuth({
-      keyFile: './credentials.json',
-      scopes: ['https://www.googleapis.com/auth/spreadsheets'],
-    });
-
-    const client = await auth.getClient();
-    const googleSheets = google.sheets({ version: 'v4', auth: client });
-
-    const spreadsheetId = '1XV5FcKDoA4mhk46auDANnh68yf0c_G9nOJ91XLANPVs';
-
-    await googleSheets.spreadsheets.values.append({
-      spreadsheetId,
-      range: `'${sheetName}'!A1`,
-      valueInputOption: 'USER_ENTERED',
-      insertDataOption: 'INSERT_ROWS',
-      resource: {
-        values: [
-          [
-            registration.teamId,
-            eventName,
-            category,
-            registrationFee,
-            teamName,
-            collegeName,
-            teamSize || participants.length,
-            ...participantColumns
-          ],
-        ],
-      },
-    });
-
-    // Send confirmation email to captain (first participant) only
-    try {
-      const captain = participants[0];
-      const emailData = {
-        eventName,
-        category,
-        teamName,
-        teamId: registration.teamId,
-        collegeName,
-        registrationFee,
-        participants,
-      };
-
-      await sendRegistrationEmail(captain.email, emailData);
-      console.log(`✅ Confirmation email sent to captain: ${captain.email}`);
-    } catch (emailError) {
-      console.error('⚠️ Failed to send confirmation email:', emailError.message);
-      // Email failure does NOT affect registration response
-    }
-
+    // ================= RESPOND FIRST, THEN DO ASYNC WORK =================
     res.status(201).json({
       success: true,
       message: 'Registration successful',
       teamId: registration.teamId,
       data: registration,
     });
+
+    // ================= GOOGLE SHEETS (async, non-blocking) =================
+    (async () => {
+      try {
+        const googleSheets = await getGoogleSheetsClient();
+        const spreadsheetId = process.env.SPREADSHEET_ID;
+
+        await googleSheets.spreadsheets.values.append({
+          spreadsheetId,
+          range: `'${sheetName}'!A1`,
+          valueInputOption: 'USER_ENTERED',
+          insertDataOption: 'INSERT_ROWS',
+          resource: {
+            values: [
+              [
+                registration.teamId,
+                eventName,
+                category,
+                registrationFee,
+                teamName,
+                normalizedCollegeName,
+                teamSize,
+                ...participantColumns
+              ],
+            ],
+          },
+        });
+      } catch (sheetError) {
+        console.error('⚠️ Failed to write to Google Sheets:', sheetError.message);
+      }
+    })();
+
+    // ================= EMAIL (async, non-blocking) =================
+    (async () => {
+      try {
+        const captain = participants[0];
+        const emailData = {
+          eventName,
+          category,
+          teamName,
+          teamId: registration.teamId,
+          collegeName,
+          registrationFee,
+          participants,
+        };
+
+        await sendRegistrationEmail(captain.email, emailData);
+        console.log(`✅ Confirmation email sent to captain: ${captain.email}`);
+      } catch (emailError) {
+        console.error('⚠️ Failed to send confirmation email:', emailError.message);
+      }
+    })();
 
   } catch (error) {
     if (error.name === 'ValidationError') {

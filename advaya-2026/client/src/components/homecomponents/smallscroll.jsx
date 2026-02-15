@@ -1,4 +1,4 @@
-"use client";
+
 
 import { useRef, useEffect } from "react";
 import { gsap } from "gsap";
@@ -37,7 +37,7 @@ export default function SmallScroll({
       <div style={smallStyles.scrollWrapper}>
         {/* Top Rod */}
         <div style={smallStyles.rodContainer} onClick={onToggle}>
-          <img src="/assests/scrolltop1.png" style={smallStyles.rodImage} alt="" />
+          <img src="/assests/scrolltop1.png" style={smallStyles.rodImage} alt="" loading="lazy" />
           <span style={smallStyles.rodText}>{rodText}</span>
         </div>
 
@@ -82,7 +82,7 @@ export default function SmallScroll({
           }}
           onClick={onToggle}
         >
-          <img src="/assests/scrolltop1.png" style={smallStyles.rodImage} alt="" />
+          <img src="/assests/scrolltop1.png" style={smallStyles.rodImage} alt="" loading="lazy" />
         </div>
       </div>
     </div>

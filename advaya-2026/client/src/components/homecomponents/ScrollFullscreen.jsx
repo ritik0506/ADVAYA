@@ -1,4 +1,4 @@
-"use client";
+
 
 import { useRef, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
@@ -28,12 +28,20 @@ export default function FullEventScrollModalResponsive({
 
   const [isMobile, setIsMobile] = useState(false);
 
-  // Detect mobile
+  // Detect mobile (debounced)
   useEffect(() => {
-    const checkMobile = () => setIsMobile(window.innerWidth < 1024);
-    checkMobile();
+    let resizeTimer;
+    const checkMobile = () => {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(() => setIsMobile(window.innerWidth < 1024), 200);
+    };
+    // Initial check without debounce
+    setIsMobile(window.innerWidth < 1024);
     window.addEventListener("resize", checkMobile);
-    return () => window.removeEventListener("resize", checkMobile);
+    return () => {
+      clearTimeout(resizeTimer);
+      window.removeEventListener("resize", checkMobile);
+    };
   }, []);
 
   // Animate open
@@ -113,6 +121,7 @@ export default function FullEventScrollModalResponsive({
             src="/assests/scrolltop1.png"
             className="absolute w-full h-full object-contain drop-shadow-[0_15px_15px_rgba(0,0,0,0.8)]"
             alt="Scroll Rod Top"
+            loading="lazy"
           />
           <span className="relative z-10 font-serif font-black text-[10px] md:text-[14px] tracking-[0.3em] text-black uppercase text-center">
             {eventName}
@@ -260,6 +269,7 @@ export default function FullEventScrollModalResponsive({
             src="/assests/scrolltop1.png"
             className="absolute w-full h-full object-contain drop-shadow-[-20px_0_20px_rgba(0,0,0,0.8)]"
             alt="Scroll Rod Bottom"
+            loading="lazy"
           />
         </div>
 

@@ -1,4 +1,4 @@
-"use client";
+
 
 import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
@@ -9,26 +9,8 @@ import {
   SPRING,
 } from "../animations/MythologyMotion";
 
-export default function Hero() {
-  const [windowWidth, setWindowWidth] = useState(typeof window !== "undefined" ? window.innerWidth : 1024);
-
-  useEffect(() => {
-    const handleResize = () => setWindowWidth(window.innerWidth);
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
-
-  // Responsive border dimensions
-  const isMobile = windowWidth < 768; // Tailwind md breakpoint
-  const width = isMobile ? 300 : 450;
-  const height = isMobile ? 120 : 180;
-  const strokeWidth = isMobile ? 1.5 : 2;
-  const borderRadius = height / 2;
-
-  const flatWidth = width - height;
-  const perimeter = 2 * flatWidth + Math.PI * height;
-
-  /* ================= COUNTDOWN ================= */
+/* ================= COUNTDOWN (isolated to prevent Hero re-renders) ================= */
+function Countdown() {
   const targetDate = new Date("2026-02-24T00:00:00");
 
   const calculateTimeLeft = () => {
@@ -49,6 +31,51 @@ export default function Hero() {
     const timer = setInterval(() => setTimeLeft(calculateTimeLeft()), 1000);
     return () => clearInterval(timer);
   }, []);
+
+  return (
+    <div className="mt-18 flex justify-center gap-6 md:gap-10 z-10">
+      {Object.entries(timeLeft).map(([label, value]) => (
+        <div key={label} className="flex flex-col items-center">
+          <div
+            className="text-3xl md:text-5xl font-serif text-[#f3cf7a]
+                       drop-shadow-[0_0_15px_rgba(243,207,122,0.7)]"
+          >
+            {String(value).padStart(2, "0")}
+          </div>
+          <div className="text-xs md:text-sm uppercase tracking-widest text-white/60">
+            {label}
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+export default function Hero() {
+  const [windowWidth, setWindowWidth] = useState(typeof window !== "undefined" ? window.innerWidth : 1024);
+
+  useEffect(() => {
+    let resizeTimer;
+    const handleResize = () => {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(() => setWindowWidth(window.innerWidth), 200);
+    };
+    window.addEventListener("resize", handleResize);
+    return () => {
+      clearTimeout(resizeTimer);
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
+  // Responsive border dimensions
+  const isMobile = windowWidth < 768; // Tailwind md breakpoint
+  const width = isMobile ? 300 : 450;
+  const height = isMobile ? 120 : 180;
+  const strokeWidth = isMobile ? 1.5 : 2;
+  const borderRadius = height / 2;
+
+  const flatWidth = width - height;
+  const perimeter = 2 * flatWidth + Math.PI * height;
 
   return (
     <div className="flex flex-col items-center justify-center mb-32 mt-2 relative min-h-[600px]">
@@ -131,21 +158,7 @@ export default function Hero() {
       </div>
 
       {/* ================= COUNTDOWN ================= */}
-      <div className="mt-18 flex justify-center gap-6 md:gap-10 z-10">
-        {Object.entries(timeLeft).map(([label, value]) => (
-          <div key={label} className="flex flex-col items-center">
-            <div
-              className="text-3xl md:text-5xl font-serif text-[#f3cf7a]
-                         drop-shadow-[0_0_15px_rgba(243,207,122,0.7)]"
-            >
-              {String(value).padStart(2, "0")}
-            </div>
-            <div className="text-xs md:text-sm uppercase tracking-widest text-white/60">
-              {label}
-            </div>
-          </div>
-        ))}
-      </div>
+      <Countdown />
 
       {/* ================= TEXT SECTION ================= */}
         <GoldenDivider width="w-64 md:w-96" className="mb-8" />

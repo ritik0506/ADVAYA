@@ -16,6 +16,19 @@ function getTransporter() {
 }
 
 /**
+ * Escape HTML special characters to prevent XSS in email bodies
+ */
+function escapeHtml(str) {
+  if (!str) return '';
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
+/**
  * Send registration confirmation email to a participant
  * @param {string} to - Recipient email address
  * @param {Object} data - Registration details
@@ -23,6 +36,15 @@ function getTransporter() {
 export const sendRegistrationEmail = async (to, data) => {
   const { eventName, category, teamName, teamId, collegeName, registrationFee, participants } = data;
   const captainName = participants[0]?.name || '';
+
+  // Escape all user-provided values before inserting into HTML
+  const safeEventName = escapeHtml(eventName);
+  const safeCategory = escapeHtml(category);
+  const safeTeamName = escapeHtml(teamName);
+  const safeTeamId = escapeHtml(teamId);
+  const safeCollegeName = escapeHtml(collegeName);
+  const safeCaptainName = escapeHtml(captainName);
+  const safeFee = escapeHtml(String(registrationFee));
 
   // Build pre-filled Google Form URL
   const formBaseUrl = 'https://docs.google.com/forms/d/e/1FAIpQLSd475mrbrrFWLOTk50WyeLJBboyYweTI-Sn2IJbJEqMDTXTJw/viewform';
@@ -39,9 +61,9 @@ export const sendRegistrationEmail = async (to, data) => {
       (p, i) =>
         `<tr>
           <td style="padding: 10px 12px; border-bottom: 1px solid #d4a84b15; color: #6b6050;">${i + 1}</td>
-          <td style="padding: 10px 12px; border-bottom: 1px solid #d4a84b15; color: #e8dcc8; font-weight: 600;">${p.name}</td>
-          <td style="padding: 10px 12px; border-bottom: 1px solid #d4a84b15; color: #8a7e6b;">${p.email}</td>
-          <td style="padding: 10px 12px; border-bottom: 1px solid #d4a84b15; color: #8a7e6b;">${p.mobile}</td>
+          <td style="padding: 10px 12px; border-bottom: 1px solid #d4a84b15; color: #e8dcc8; font-weight: 600;">${escapeHtml(p.name)}</td>
+          <td style="padding: 10px 12px; border-bottom: 1px solid #d4a84b15; color: #8a7e6b;">${escapeHtml(p.email)}</td>
+          <td style="padding: 10px 12px; border-bottom: 1px solid #d4a84b15; color: #8a7e6b;">${escapeHtml(p.mobile)}</td>
         </tr>`
     )
     .join('');
@@ -96,32 +118,32 @@ export const sendRegistrationEmail = async (to, data) => {
             <table style="width: 100%; border-collapse: collapse;">
               <tr>
                 <td style="padding: 8px 0; color: #6b6050; font-size: 12px; letter-spacing: 2px; text-transform: uppercase; width: 140px; vertical-align: top;">Team ID</td>
-                <td style="padding: 8px 0; color: #f3cf7a; font-size: 15px; font-weight: 700; font-family: 'Courier New', monospace; letter-spacing: 1px;">${teamId}</td>
+                <td style="padding: 8px 0; color: #f3cf7a; font-size: 15px; font-weight: 700; font-family: 'Courier New', monospace; letter-spacing: 1px;">${safeTeamId}</td>
               </tr>
               <tr><td colspan="2" style="padding: 0;"><div style="height: 1px; background: #d4a84b15;"></div></td></tr>
               <tr>
                 <td style="padding: 8px 0; color: #6b6050; font-size: 12px; letter-spacing: 2px; text-transform: uppercase; vertical-align: top;">Event</td>
-                <td style="padding: 8px 0; color: #e8dcc8; font-size: 14px; font-weight: 600;">${eventName}</td>
+                <td style="padding: 8px 0; color: #e8dcc8; font-size: 14px; font-weight: 600;">${safeEventName}</td>
               </tr>
               <tr><td colspan="2" style="padding: 0;"><div style="height: 1px; background: #d4a84b15;"></div></td></tr>
               <tr>
                 <td style="padding: 8px 0; color: #6b6050; font-size: 12px; letter-spacing: 2px; text-transform: uppercase; vertical-align: top;">Category</td>
-                <td style="padding: 8px 0; color: #e8dcc8; font-size: 14px; font-weight: 600;">${category}</td>
+                <td style="padding: 8px 0; color: #e8dcc8; font-size: 14px; font-weight: 600;">${safeCategory}</td>
               </tr>
               <tr><td colspan="2" style="padding: 0;"><div style="height: 1px; background: #d4a84b15;"></div></td></tr>
               <tr>
                 <td style="padding: 8px 0; color: #6b6050; font-size: 12px; letter-spacing: 2px; text-transform: uppercase; vertical-align: top;">Team Name</td>
-                <td style="padding: 8px 0; color: #e8dcc8; font-size: 14px; font-weight: 600;">${teamName}</td>
+                <td style="padding: 8px 0; color: #e8dcc8; font-size: 14px; font-weight: 600;">${safeTeamName}</td>
               </tr>
               <tr><td colspan="2" style="padding: 0;"><div style="height: 1px; background: #d4a84b15;"></div></td></tr>
               <tr>
                 <td style="padding: 8px 0; color: #6b6050; font-size: 12px; letter-spacing: 2px; text-transform: uppercase; vertical-align: top;">College</td>
-                <td style="padding: 8px 0; color: #e8dcc8; font-size: 14px; font-weight: 600;">${collegeName}</td>
+                <td style="padding: 8px 0; color: #e8dcc8; font-size: 14px; font-weight: 600;">${safeCollegeName}</td>
               </tr>
               <tr><td colspan="2" style="padding: 0;"><div style="height: 1px; background: #d4a84b15;"></div></td></tr>
               <tr>
                 <td style="padding: 8px 0; color: #6b6050; font-size: 12px; letter-spacing: 2px; text-transform: uppercase; vertical-align: top;">Dakshina</td>
-                <td style="padding: 8px 0; color: #f3cf7a; font-size: 16px; font-weight: 700;">₹${registrationFee}</td>
+                <td style="padding: 8px 0; color: #f3cf7a; font-size: 16px; font-weight: 700;">₹${safeFee}</td>
               </tr>
             </table>
           </div>
@@ -133,7 +155,7 @@ export const sendRegistrationEmail = async (to, data) => {
           <!-- Warriors header -->
           <div style="background: #d4a84b15; border-bottom: 1px solid #d4a84b33; padding: 10px 20px;">
             <p style="color: #d4a84b; font-size: 10px; letter-spacing: 4px; text-transform: uppercase; margin: 0; font-weight: 700;">
-              �️ Warriors of the Arena
+              🛡️ Warriors of the Arena
             </p>
           </div>
 
@@ -157,7 +179,7 @@ export const sendRegistrationEmail = async (to, data) => {
         <!-- ═══ IMPORTANT NOTE ═══ -->
         <div style="border-left: 3px solid #d4a84b; background: #d4a84b08; padding: 16px 20px; margin-bottom: 28px;">
           <p style="color: #c9b89e; font-size: 13px; margin: 0; line-height: 1.7;">
-            🕉️ Guard your <strong style="color: #f3cf7a;">${teamId}</strong> as a sacred mantra — you shall need it on the day of battle. For any queries, reach out to the organizing committee.
+            🕉️ Guard your <strong style="color: #f3cf7a;">${safeTeamId}</strong> as a sacred mantra — you shall need it on the day of battle. For any queries, reach out to the organizing committee.
           </p>
         </div>
 
@@ -174,7 +196,7 @@ export const sendRegistrationEmail = async (to, data) => {
             ⚔ PAY NOW ⚔
           </a>
           <p style="color: #4a4535; font-size: 11px; margin: 16px 0 0;">
-            Registration Fee: <strong style="color: #f3cf7a;">₹${registrationFee}</strong>
+            Registration Fee: <strong style="color: #f3cf7a;">₹${safeFee}</strong>
           </p>
 
           <!-- Divider -->
@@ -207,7 +229,7 @@ export const sendRegistrationEmail = async (to, data) => {
   const mailOptions = {
     from: `"⚔ Advaya 2026" <${process.env.EMAIL_USER}>`,
     to,
-    subject: `⚔ ${eventName} — Registration Confirmed | Advaya 2026`,
+    subject: `⚔ ${safeEventName} — Registration Confirmed | Advaya 2026`,
     html,
   };
 

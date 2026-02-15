@@ -1,14 +1,12 @@
 import SystemLog from '../models/SystemLog.js';
 import logger from '../middleware/logger.js';
 
-// @desc    Create a new log entry
-// @route   POST /api/logs
-// @access  Public
+const VALID_LEVELS = ['info', 'warning', 'error', 'debug'];
+
 export const createLog = async (req, res, next) => {
   try {
     const { level, message, context } = req.body;
 
-    // Validate required fields
     if (!level || !message) {
       return res.status(400).json({
         success: false,
@@ -16,7 +14,13 @@ export const createLog = async (req, res, next) => {
       });
     }
 
-    // Create system log entry
+    if (!VALID_LEVELS.includes(level)) {
+      return res.status(400).json({
+        success: false,
+        message: `Invalid log level. Must be one of: ${VALID_LEVELS.join(', ')}`,
+      });
+    }
+
     const systemLog = await SystemLog.create({
       level,
       message,
@@ -24,7 +28,6 @@ export const createLog = async (req, res, next) => {
       source: 'frontend',
     });
 
-    // Also log to Winston
     logger[level](message, { context });
 
     res.status(201).json({
@@ -37,20 +40,18 @@ export const createLog = async (req, res, next) => {
   }
 };
 
-// @desc    Get all logs
-// @route   GET /api/logs
-// @access  Private/Admin
 export const getAllLogs = async (req, res, next) => {
   try {
     const { level, source, limit = 100 } = req.query;
-
     const filter = {};
     if (level) filter.level = level;
     if (source) filter.source = source;
 
+    const parsedLimit = Math.min(parseInt(limit) || 100, 500);
+
     const logs = await SystemLog.find(filter)
       .sort({ createdAt: -1 })
-      .limit(parseInt(limit));
+      .limit(parsedLimit);
 
     res.status(200).json({
       success: true,
@@ -62,9 +63,6 @@ export const getAllLogs = async (req, res, next) => {
   }
 };
 
-// @desc    Get error logs
-// @route   GET /api/logs/errors
-// @access  Private/Admin
 export const getErrorLogs = async (req, res, next) => {
   try {
     const errorLogs = await SystemLog.find({ level: 'error' })

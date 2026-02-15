@@ -2,12 +2,12 @@ import mongoose from 'mongoose';
 
 const connectDB = async () => {
   try {
-    console.log("MONGO_URI:", process.env.MONGO_URI);
-    const conn = await mongoose.connect('mongodb://localhost:27017/advaya');
+    const mongoURI = process.env.MONGO_URI || 'mongodb://localhost:27017/advaya';
+    const conn = await mongoose.connect(mongoURI);
     console.log(`📡 MongoDB Connected: ${conn.connection.host}`);
   } catch (error) {
     console.error(`❌ MongoDB Connection Error: ${error.message}`);
-    console.warn('⚠️  Server will continue without database. Please check your MongoDB configuration.');
+    process.exit(1);
   }
 };
 

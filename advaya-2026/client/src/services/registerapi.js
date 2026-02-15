@@ -6,19 +6,12 @@ const apiClient = axios.create({
     "Content-Type": "application/json",
   },
 });
-export const registerWarrior = async (registrationData) => {
-  console.log("🚀 [Frontend API] Initiating request to backend...", registrationData);
-  const startTime = Date.now();
 
+export const registerWarrior = async (registrationData) => {
   try {
     const response = await apiClient.post("/api/registration", registrationData);
-
-    const duration = Date.now() - startTime;
-    console.log(`✅ [Frontend API] Success! Server took ${duration}ms. Response:`, response.data);
-
     return response.data;
   } catch (error) {
-    console.error("❌ [Frontend API] Error occurred:", error.response?.data || error.message);
     const message =
       error.response?.data?.message ||
       error.message ||
@@ -26,5 +19,3 @@ export const registerWarrior = async (registrationData) => {
     throw new Error(message);
   }
 };
-
-
