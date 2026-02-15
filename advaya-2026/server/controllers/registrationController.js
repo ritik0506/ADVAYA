@@ -16,18 +16,25 @@ const EVENT_SHEET_MAP = {
   "Web Shilpa Chakra": "Web ShilpaChakra(UG)",
   "Bits Vedha": "Bits Vedha(UG)",
   "Maya Loop": "Maya Loop(UG)",
+};
 
-  "Bids Sabha": "Bids Sabha(UG&PG)",
-  "Nidhi 404": "Nidhi 404(UG&PG)",
-  "Ranabhoomi Arena": "Ranabhoomi Arena(UG&PG)",
-  "Drishti POV": "Drishti Pov(UG&PG)",
-  "Rahasya Mintz": "RahasyaMintz(UG&PG)",
-  "Shastrartha Vada": "Shastrartha Vada(UG&PG)"
+/**
+ * COMBINED EVENTS → separate UG / PG tabs
+ * These events have two sheet tabs each, resolved by the category
+ * the user selects on the frontend (UG or PG)
+ */
+const COMBINED_EVENT_SHEET_MAP = {
+  "Bids Sabha":        { UG: "Bids Sabha(UG&PG)",         PG: "Bids Sabha(UG&PG)" },
+  "Nidhi 404":         { UG: "Nidhi 404(UG&PG)",          PG: "Nidhi 404(UG&PG)" },
+  "Ranabhoomi Arena":  { UG: "Ranabhoomi Arena(UG&PG)",   PG: "Ranabhoomi Arena(UG&PG)" },
+  "Drishti POV":       { UG: "Drishti Pov(UG&PG)",     PG: "Drishti Pov(UG&PG)" },
+  "Rahasya Mintz":     { UG: "RahasyaMintz(UG&PG)",       PG: "RahasyaMintz(UG&PG)" },
+  "Shastrartha Vada":  { UG: "Shastrartha Vada(UG&PG)",   PG: "Shastrartha Vada(UG&PG)" },
 };
 
 // =====================================================
 // REGISTER PARTICIPANT
-// =====================================================
+// =====================================================  
 export const registerParticipant = async (req, res, next) => {
   try {
     const {
@@ -69,18 +76,24 @@ export const registerParticipant = async (req, res, next) => {
     }
 
     // ================= SHEET RESOLUTION =================
-    const sheetName = EVENT_SHEET_MAP[eventName];
+    // Check fixed map first, then combined map with category
+    let sheetName = EVENT_SHEET_MAP[eventName];
+    if (!sheetName && COMBINED_EVENT_SHEET_MAP[eventName]) {
+      sheetName = COMBINED_EVENT_SHEET_MAP[eventName][category];
+    }
 
     if (!sheetName) {
       return res.status(400).json({
         success: false,
-        message: `No Google Sheet mapped for event: ${eventName}`,
+        message: `No Google Sheet mapped for event: ${eventName} (${category})`,
       });
     }
 
     // ================= DUPLICATE CHECKS =================
+    // For combined events, check duplicates per category (same college can register separately for UG and PG)
     const existingRegistrations = await Registration.countDocuments({
       eventName,
+      category,
       collegeName: normalizedCollegeName,
     });
 
@@ -155,7 +168,7 @@ export const registerParticipant = async (req, res, next) => {
 
     await googleSheets.spreadsheets.values.append({
       spreadsheetId,
-      range: `${sheetName}!A1`,
+      range: `'${sheetName}'!A1`,
       valueInputOption: 'USER_ENTERED',
       insertDataOption: 'INSERT_ROWS',
       resource: {

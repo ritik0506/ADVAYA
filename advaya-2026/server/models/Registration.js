@@ -15,7 +15,7 @@ const registrationSchema = new mongoose.Schema(
     category: {
       type: String,
       required: [true, 'Category is required'],
-      enum: ['UG', 'PG', 'UG/PG'],
+      enum: ['UG', 'PG'],
     },
     registrationFee: {
       type: Number,
