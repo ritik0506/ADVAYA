@@ -1,6 +1,53 @@
-# Advaya 2026 - Technical & Cultural Festival
+🚀 Advaya 2026 – Technical & Cultural Festival Platform
 
-A modern full-stack web application for managing technical and cultural festival events with 3D visualizations and mythology-inspired design.
+Where Technology Meets Tradition
+
+Advaya 2026 is the official event management and registration platform developed for the annual Technical & Cultural Festival. The platform streamlines participant registration, enquiry management, event discovery, team formation, and organizer workflows through a modern full-stack architecture.
+
+Built with a mythology-inspired design language and immersive 3D experiences, the platform combines aesthetics with functionality to deliver a seamless user experience for thousands of student participants.
+
+✨ Key Features
+🎭 Mythology Inspired User Interface
+Indian mythology-inspired visual identity
+Modern animations and transitions
+Unique festival branding
+Immersive event presentation
+🎮 Interactive 3D Experience
+Three.js powered 3D visualizations
+Dynamic user interactions
+Modern web graphics
+Enhanced participant engagement
+📝 Smart Registration System
+Team-based event registration
+Multi-member team support
+Automated Team ID generation
+Category-based participant management
+Real-time form validation
+📧 Automated Email Notifications
+
+Upon successful registration:
+
+Confirmation email sent automatically
+Team details summary included
+Team ID generated and shared
+Payment portal link provided
+Event information attached
+📊 Centralized Data Management
+Registration records stored securely
+Google Sheets integration for organizer access
+Easy filtering and reporting
+Export-friendly data structure
+🔍 Error Monitoring System
+Frontend error tracking
+Backend logging infrastructure
+Request monitoring
+Production debugging support
+📱 Responsive Design
+Mobile-first development approach
+Tablet compatibility
+Desktop optimized layouts
+Cross-browser support
+
 
 ## 🏗️ Project Structure
 
@@ -142,6 +189,75 @@ Team IDs are auto-generated from the event name initials + category:
 
 Format: `[Event Initials][Category]-[Random 3-digit number]`
 
+
+🔄 Registration Workflow
+
+The registration system is designed to automate the complete participant onboarding process.
+
+Step 1: Event Selection
+
+Participants browse available events and select their preferred competition.
+
+Step 2: Team Registration
+
+The team captain fills in:
+
+Team information
+Participant details
+College details
+Contact information
+Step 3: Validation
+
+The system validates:
+
+Required fields
+Team size constraints
+Email formats
+Event-specific rules
+Step 4: Team ID Generation
+
+A unique Team ID is generated automatically based on:
+
+[Event Initials][Category]-[Random Number]
+
+Example:
+
+CKUG-482
+MLPG-173
+SVUG-291
+Step 5: Data Persistence
+
+Registration details are:
+
+Stored in MongoDB
+Logged into Google Sheets
+Available for organizer review
+Step 6: Email Confirmation
+
+The captain receives an automated confirmation email containing:
+
+Team ID
+Event details
+Team member information
+Payment instructions
+Important event links
+🆔 Team ID Generation Logic
+
+Each registered team receives a unique identifier.
+
+Event	Category	Example Team ID
+Code Kurukshetra	UG	CKUG-482
+Code Kurukshetra	PG	CKPG-173
+Maya Loop	UG	MLUG-382
+Shastrartha Vāda	PG	SVPG-719
+
+Benefits:
+
+Easy participant tracking
+Faster organizer management
+Reduced duplicate registrations
+Simplified verification process
+
 ## 📝 API Endpoints
 
 | Method | Endpoint | Description |
@@ -153,18 +269,27 @@ Format: `[Event Initials][Category]-[Random 3-digit number]`
 | `GET` | `/api/logs` | Get all logs |
 | `GET` | `/api/logs/errors` | Get error logs |
 
-## 📄 License
+🚀 Future Enhancements
+Admin Dashboard
+Registration Analytics
+QR-based Check-In System
+Event Attendance Tracking
+Certificate Generation
+Real-time Registration Statistics
+Payment Verification Automation
+Role-Based Access Control
+🤝 Team Collaboration
 
-MIT License - feel free to use this project for your events!
+The project follows a structured development workflow where contributors work independently within designated event or feature modules, ensuring efficient collaboration and maintainable code.
 
-## 🤝 Contributing
+📄 License
 
-1. Create your feature branch
-2. Work in your designated team folder
-3. Commit your changes
-4. Push to the branch
-5. Create a Pull Request
+MIT License
 
----
+This project may be used and modified for educational institutions, technical festivals, hackathons, and event management platforms.
 
-**Advaya 2026** - Where Technology Meets Tradition
+👨‍💻 Developed For
+
+Advaya 2026 – Technical & Cultural Festival
+
+A digital platform designed to simplify event management, automate registrations, and enhance participant engagement through modern web technologies.
